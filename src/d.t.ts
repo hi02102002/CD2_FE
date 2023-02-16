@@ -12,6 +12,9 @@ declare module '@mui/material/styles' {
             height: {
                 header: string;
             };
+            width: {
+                sidebar: string;
+            };
         };
     }
     // allow configuration using `createTheme`
@@ -25,6 +28,9 @@ declare module '@mui/material/styles' {
         size?: {
             height?: {
                 header?: string;
+            };
+            width?: {
+                sidebar?: string;
             };
         };
     }

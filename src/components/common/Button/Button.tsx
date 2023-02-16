@@ -20,7 +20,6 @@ const StyledButton = styled(MButton)<Props>`
     font-weight: 400;
     text-transform: initial;
     border-radius: ${pxToRem(5)};
-    min-height: ${pxToRem(44)};
     &:disabled {
         background-color: ${grey[200]};
         color: ${grey[500]};
@@ -31,9 +30,9 @@ const StyledButton = styled(MButton)<Props>`
         if (typeButton === 'primary') {
             if (variant === 'outlined') {
                 return css`
-                    background-color: ${theme.themeColor.primary};
+                    background-color: ${common.white};
                     border: 2px solid ${theme.themeColor.primary};
-                    color: ${common.white};
+                    color: ${theme.themeColor.primary};
 
                     &:hover {
                         background-color: ${theme.themeColor.primary};

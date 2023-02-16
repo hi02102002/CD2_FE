@@ -28,5 +28,8 @@ export const theme = createTheme({
         height: {
             header: pxToRem(60),
         },
+        width: {
+            sidebar: pxToRem(230),
+        },
     },
 });
