@@ -1,9 +1,13 @@
-import { Button } from '@mui/material';
+import { Button } from '@/components/common';
+import Header from '@/layouts/client/Header';
 
 export default function Home() {
     return (
         <>
-            <Button>Hello</Button>
+            <Header />
+            <Button isLoading typeButton="primary" variant="contained">
+                Hello
+            </Button>
         </>
     );
 }
