@@ -5,8 +5,8 @@ interface Props {
     width?: string;
 }
 
-function ButtonLogIn(props:Props){
-    return <ButtonI variant="contained" sx={{width: props.width === "lg" ? "100%" : "40%"}}>{props.content}</ButtonI>
+function ButtonLR(props:Props){
+    return <ButtonI variant="contained" sx={{width: props.width === "lg" ? "100%" : "50%"}}>{props.content}</ButtonI>
 
 }
 
@@ -26,4 +26,4 @@ const ButtonI = styled(Button)<Props>`
     }
 `
 
-export default ButtonLogIn
+export default ButtonLR

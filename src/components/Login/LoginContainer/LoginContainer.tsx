@@ -1,5 +1,6 @@
 import { Grid, styled, Typography } from "@mui/material"
-import ButtonLogIn from "../../common/ButtonLogIn"
+
+import { ButtonLR } from "@/components/common"
 import LoginForm from "../LoginForm"
 
 function LoginContainer(){
@@ -14,7 +15,7 @@ function LoginContainer(){
                     <Grid item className="Unregistered" sm={6} sx={{padding:'0 0 0 48px'}}>
                         <Typography variant="h5" fontWeight='600' mb='15px' lineHeight='42px'>Create an Account</Typography>
                         <Text>Sign up for early Sale access plus tailored new arrivals, trends and promotions. To opt out, click unsubscribe in our emails.</Text>
-                        <ButtonLogIn content="Create an Account" width="sm"></ButtonLogIn>
+                        <ButtonLR content="Create an Account" width="sm"></ButtonLR>
                     </Grid>
                </Grid>
         </LoginContainerL>

@@ -1,16 +1,25 @@
 import styled from "@emotion/styled"
 import { Box, Checkbox, FormControl, FormControlLabel, TextField, Typography } from "@mui/material"
-import ButtonLogIn from "../../common/ButtonLogIn"
 
+import { ButtonLR } from "@/components/common"
 
 function LoginFrom(){
+
     return <Box component='div'>
-    <FormControl sx={{width:'100%'}}><TextFieldL id="outlined-basic" label="Email *" variant="outlined" fullWidth  /></FormControl>
-    <FormControl sx={{width:'100%'}}><TextFieldL id="outlined-basic" label="Password *" variant="outlined" fullWidth /></FormControl>
+    <FormControl sx={{width:'100%'}}>
+        <TextFieldL id="outlined-basic" label="Email *" variant="outlined" fullWidth  />
+    </FormControl>
+
+    <FormControl sx={{width:'100%'}}>
+        <TextFieldL id="outlined-basic" label="Password *" variant="outlined" type='password' fullWidth />
+    </FormControl>
+
     <FormControlLabel control={<Checkbox/>} sx={{mb:'20px'}} label='Show Password'></FormControlLabel>
-    <ButtonLogIn content="Sign In" width="lg"></ButtonLogIn>
+
+    <ButtonLR content="Sign In" width="lg"></ButtonLR>
+
     <Box component={'div'} sx={{display:'flex',justifyContent:'space-between',mt:'10px'}}>
-        <Typography variant="body1" sx={{font:'0.8rem',color:'#e22b2e'}}>* Required Fields</Typography>
+        <Typography variant="body1" sx={{color:'#e22b2e',fontSize:'0.8rem'}}>* Required Fields</Typography>
         <SpanText>Forgot Your Password?</SpanText>
     </Box>
     </Box>
