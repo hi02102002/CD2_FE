@@ -1,4 +1,5 @@
 import { PageTop } from '@/components/common';
+import {LoginBody} from '@/components/common';
 import { ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
@@ -21,7 +22,7 @@ const Login: NextPageWithLayout<Props> = (props) => {
                     },
                 ]}
             />
-            <div>Login</div>
+            <LoginBody></LoginBody>
         </>
     );
 };
