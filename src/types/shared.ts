@@ -13,3 +13,8 @@ export type SidebarItem = {
     name: string;
     Icon: Icon;
 };
+
+export type Breadcrumb = {
+    href: string;
+    name: string;
+};
