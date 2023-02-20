@@ -7,10 +7,27 @@ declare module '@mui/material/styles' {
         };
         themeColor: {
             primary: string;
+            body: string;
+            title: string;
         };
         size: {
             height: {
                 header: string;
+            };
+            width: {
+                sidebar: string;
+            };
+        };
+        button: {
+            primary: {
+                background: string;
+                color: string;
+                border: string;
+            };
+            secondary: {
+                background: string;
+                color: string;
+                border: string;
             };
         };
     }
@@ -21,10 +38,27 @@ declare module '@mui/material/styles' {
         };
         themeColor?: {
             primary?: string;
+            body?: string;
+            title?: string;
         };
         size?: {
             height?: {
                 header?: string;
+            };
+            width?: {
+                sidebar?: string;
+            };
+        };
+        button?: {
+            primary?: {
+                background?: string;
+                color?: string;
+                border: string;
+            };
+            secondary?: {
+                background?: string;
+                color?: string;
+                border: string;
             };
         };
     }

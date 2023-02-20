@@ -18,15 +18,34 @@ export const theme = createTheme({
     },
     themeColor: {
         primary: '#222',
+        title: '#222',
+        body: '#666',
     },
     typography: {
         fontFamily: 'var(--font-base)',
-        fontSize: 14,
+        body1: {
+            color: '#666',
+        },
     },
     spacing: (factor: number) => `${factor / 16}rem`,
     size: {
         height: {
             header: pxToRem(60),
+        },
+        width: {
+            sidebar: pxToRem(230),
+        },
+    },
+    button: {
+        primary: {
+            background: '#222',
+            color: '#fff',
+            border: '#222',
+        },
+        secondary: {
+            background: '#fff',
+            color: '#222',
+            border: '#222',
         },
     },
 });
