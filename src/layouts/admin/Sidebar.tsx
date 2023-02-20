@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { common, grey } from '@mui/material/colors';
 
-import { ROUTES } from '@/constants';
+import { DEVICE, ROUTES } from '@/constants';
 import sidebarItems from '@/constants/sidebar';
 import { pxToRem } from '@/utils/pxToRem';
 
@@ -31,19 +31,13 @@ const Sidebar = ({ isOpen, onClose }: Props) => {
     return (
         <>
             <Backdrop
-                open={isMobile && isOpen}
+                open={isOpen}
                 sx={{
                     zIndex: 10,
                 }}
                 onClick={onClose}
             />
-            <StyledSidebar
-                component="aside"
-                sx={{
-                    left: isMobile ? '-100%' : 0,
-                }}
-                isOpen={isOpen}
-            >
+            <StyledSidebar component="aside" isOpen={isOpen}>
                 <StyledLogo>
                     <Link href={ROUTES.ADMIN} className="admin-logo">
                         <Typography>Admin</Typography>
@@ -53,7 +47,10 @@ const Sidebar = ({ isOpen, onClose }: Props) => {
                     {sidebarItems.map((item) => {
                         return (
                             <StyledLink key={item.href} href={item.href}>
-                                <ListItem disablePadding>
+                                <ListItem
+                                    disablePadding
+                                    onClick={isMobile ? onClose : undefined}
+                                >
                                     <ListItemButton
                                         sx={{
                                             padding: `${pxToRem(4)} ${pxToRem(
@@ -86,12 +83,18 @@ const StyledSidebar = styled(Box)<BoxProps & Pick<Props, 'isOpen'>>`
     width: ${({ theme }) => theme.size.width.sidebar};
     border-right: 2px solid ${grey[200]};
     position: fixed;
-    left: ${({ isOpen }) => (isOpen ? 0 : '-100%')} !important;
     top: 0;
     bottom: 0;
     transition: left 0.3s ease;
     z-index: 100;
     background-color: ${common.white};
+    left: -100%;
+
+    @media ${DEVICE.tablet} {
+        left: 0;
+    }
+
+    left: ${({ isOpen }) => (isOpen ? '0' : '-100%')};
 `;
 
 const StyledLogo = styled(Box)<BoxProps>`
@@ -110,7 +113,7 @@ const StyledLogo = styled(Box)<BoxProps>`
 
     & .MuiTypography-root {
         font-size: ${pxToRem(32)};
-        font-weight: 700;
+        font-weight: 800;
     }
 `;
 
