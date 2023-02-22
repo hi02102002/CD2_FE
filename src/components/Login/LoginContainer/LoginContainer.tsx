@@ -1,21 +1,22 @@
-import { Grid, styled, Typography } from "@mui/material"
+import {  Grid, styled, Typography } from "@mui/material"
 
-import { ButtonLR } from "@/components/common"
+import { Button } from "@/components/common"
 import LoginForm from "../LoginForm"
+import { DEVICE } from '@/constants';
 
 function LoginContainer(){
     return <LoginContainerL>
                <Grid container >
-                    <Grid item className="Registered" sm={6} sx={{padding:'0 48px 0 0',mb:'48px'}}>
+                    <Grid item className="Registered" sm={12} md={6} sx={{padding:'0 48px 0 0',mb:'48px'}}>
                         <Typography variant="h5" fontWeight='600' mb='15px' lineHeight='42px' >Registered Customers</Typography>
                         <Text>If you have an account, sign in with your email address.</Text>
                         <LoginForm></LoginForm>
                     </Grid>
     
-                    <Grid item className="Unregistered" sm={6} sx={{padding:'0 0 0 48px'}}>
+                    <Grid item className="Unregistered" sm={12} md={6} sx={{padding:'0 0 0 48px'}}>
                         <Typography variant="h5" fontWeight='600' mb='15px' lineHeight='42px'>Create an Account</Typography>
                         <Text>Sign up for early Sale access plus tailored new arrivals, trends and promotions. To opt out, click unsubscribe in our emails.</Text>
-                        <ButtonLR content="Create an Account" width="sm"></ButtonLR>
+                        <Button typeButton="primary" className="btn-create">Create an Account</Button>
                     </Grid>
                </Grid>
         </LoginContainerL>
@@ -24,6 +25,18 @@ function LoginContainer(){
 const LoginContainerL = styled('div')`
     max-width: 60rem;
     margin: auto;
+
+
+    .btn-create{
+        width: 50%;
+    }
+
+    .Registered{
+        @media ${DEVICE.tablet}{
+            padding: 0 0 0 15px;
+        }
+        
+    }
 
 `
 
