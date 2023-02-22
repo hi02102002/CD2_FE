@@ -2,7 +2,7 @@ import {  Grid, styled, Typography } from "@mui/material"
 
 import { Button } from "@/components/common"
 import LoginForm from "../LoginForm"
-import { DEVICE } from '@/constants';
+// import { DEVICE } from '@/constants';
 
 function LoginContainer(){
     return <LoginContainerL>
@@ -31,12 +31,7 @@ const LoginContainerL = styled('div')`
         width: 50%;
     }
 
-    .Registered{
-        @media ${DEVICE.tablet}{
-            padding: 0 0 0 15px;
-        }
-        
-    }
+   
 
 `
 
