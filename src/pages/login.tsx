@@ -1,9 +1,14 @@
-import { PageTop } from '@/components/common';
+import { styled } from '@mui/material';
+
+import { LoginContainer } from '@/components/Login';
+import { PageTop, SignInSocial } from '@/components/common';
 import { ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 
-const Login: NextPageWithLayout = () => {
+type Props = {};
+
+const Login: NextPageWithLayout<Props> = (props) => {
     return (
         <>
             <PageTop
@@ -19,7 +24,13 @@ const Login: NextPageWithLayout = () => {
                     },
                 ]}
             />
-            <div>Login</div>
+            <Main className="main">
+                <LoginP className="block-content">
+                    <SignInSocial social="facebook" />
+                    <SignInSocial social="google" />
+                </LoginP>
+                <LoginContainer></LoginContainer>
+            </Main>
         </>
     );
 };
@@ -27,5 +38,16 @@ const Login: NextPageWithLayout = () => {
 Login.getLayout = (page) => {
     return <ClientLayout>{page}</ClientLayout>;
 };
+
+const LoginP = styled('div')`
+    display: flex;
+    justify-content: center;
+    margin-bottom: 48px;
+`;
+
+const Main = styled('div')`
+    max-width: 1200px;
+    margin: 40px auto 0px;
+`;
 
 export default Login;

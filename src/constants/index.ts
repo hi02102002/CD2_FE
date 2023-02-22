@@ -7,6 +7,7 @@ export const ROUTES = {
     ADMIN_PRODUCT: '/admin/products',
     ADMIN_ORDERS: '/admin/orders',
     ADMIN_ADD_PRODUCT: '/admin/products/add-product',
+    REGISTER: '/register',
 };
 
 export const SIZE_MEDIA = {
