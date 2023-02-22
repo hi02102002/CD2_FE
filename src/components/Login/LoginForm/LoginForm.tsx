@@ -41,7 +41,6 @@ function LoginFrom(){
         <FormControlLabel control={<Checkbox/>} sx={{mb:'20px'}} label='Show Password'></FormControlLabel>
     
         <Button typeButton="primary" className="btn-signin" type="submit">Sign In</Button>
-            <input type='submit'/>
         </form>
         <Box component={'div'} sx={{display:'flex',justifyContent:'space-between',mt:'10px'}}>
             <Typography variant="body1" sx={{color:'#e22b2e',fontSize:'0.8rem'}}>* Required Fields</Typography>
