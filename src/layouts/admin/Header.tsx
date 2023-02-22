@@ -49,7 +49,6 @@ const Header = ({ onToggleSidebar, isOpenSidebar }: Props) => {
         >
             <Button
                 onClick={onToggleSidebar}
-                variant="outlined"
                 typeButton="primary"
                 className="button-toggle-sidebar"
             >

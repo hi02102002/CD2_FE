@@ -1,9 +1,17 @@
 import Image from 'next/image';
 
-import { Box, BoxProps, Drawer, Typography, styled } from '@mui/material';
+import {
+    Box,
+    BoxProps,
+    Drawer,
+    DrawerProps,
+    Typography,
+    styled,
+} from '@mui/material';
 import { IconX } from '@tabler/icons-react';
 
 import { Button } from '@/components/common';
+import { DEVICE } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
 
 type Props = {
@@ -13,14 +21,12 @@ type Props = {
 
 const DrawerCart = ({ isOpen, onClose }: Props) => {
     return (
-        <Drawer
+        <StyledDrawerCart
             ModalProps={{
                 keepMounted: false,
             }}
             PaperProps={{
-                sx: {
-                    width: 450,
-                },
+                className: 'paper-wrapper',
             }}
             anchor="right"
             open={isOpen}
@@ -60,9 +66,23 @@ const DrawerCart = ({ isOpen, onClose }: Props) => {
                     Return to shop
                 </Button>
             </StyledBody>
-        </Drawer>
+        </StyledDrawerCart>
     );
 };
+
+const StyledDrawerCart = styled(Drawer)<DrawerProps>`
+    .paper-wrapper {
+        width: 100%;
+
+        @media screen and (${DEVICE.mobileM}) {
+            width: ${pxToRem(320)};
+        }
+
+        @media screen and (${DEVICE.tablet}) {
+            width: ${pxToRem(450)};
+        }
+    }
+`;
 
 const StyledHeader = styled(Box)<BoxProps>`
     padding: ${pxToRem(24)} ${pxToRem(24)} ${pxToRem(5)} ${pxToRem(24)};

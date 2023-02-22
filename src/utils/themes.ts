@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material';
-import { orange } from '@mui/material/colors';
+import { common, orange } from '@mui/material/colors';
 import { Jost } from '@next/font/google';
 
 import { pxToRem } from './pxToRem';
@@ -25,6 +25,30 @@ export const theme = createTheme({
         fontFamily: 'var(--font-base)',
         body1: {
             color: '#666',
+        },
+        h1: {
+            color: common.black,
+            lineHeight: 1.3,
+            fontSize: 45,
+            fontWeight: 600,
+        },
+        h2: {
+            color: common.black,
+            fontWeight: 600,
+            lineHeight: 1.428,
+            fontSize: 36,
+        },
+        h3: {
+            color: common.black,
+            fontWeight: 600,
+            lineHeight: 1.428,
+            fontSize: 24,
+        },
+        h4: {
+            color: common.black,
+            fontWeight: 600,
+            lineHeight: 1.428,
+            fontSize: 18,
         },
     },
     spacing: (factor: number) => `${factor / 16}rem`,
