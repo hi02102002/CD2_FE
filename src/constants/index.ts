@@ -15,6 +15,7 @@ export const SIZE_MEDIA = {
     mobileL: '425px',
     tablet: '768px',
     laptop: '1024px',
+    laptopM: '1200px',
     laptopL: '1440px',
     desktop: '2560px',
 };
@@ -36,6 +37,7 @@ export const DEVICE = {
     mobileL: `(min-width: ${SIZE_MEDIA.mobileL})`,
     tablet: `(min-width: ${SIZE_MEDIA.tablet})`,
     laptop: `(min-width: ${SIZE_MEDIA.laptop})`,
+    laptopM: `(min-width: ${SIZE_MEDIA.laptopM})`,
     laptopL: `(min-width: ${SIZE_MEDIA.laptopL})`,
     desktop: `(min-width: ${SIZE_MEDIA.desktop})`,
     desktopL: `(min-width: ${SIZE_MEDIA.desktop})`,

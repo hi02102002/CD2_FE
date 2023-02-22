@@ -9,8 +9,6 @@ import { common } from '@mui/material/colors';
 type Props = {} & TooltipProps;
 
 const Tooltip = ({ children, title, ...rest }: Props) => {
-    console.log(tooltipClasses.tooltip);
-
     return (
         <StyledTooltip title={title} {...rest}>
             {children}
