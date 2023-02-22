@@ -18,7 +18,6 @@ type Props = {
 } & InputBaseProps;
 
 const Input = ({ label,required, messageError, isError,...rest }: Props) => {
-    console.log(messageError,isError);
     
     return (
         

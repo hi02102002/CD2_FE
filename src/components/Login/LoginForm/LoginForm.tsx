@@ -20,7 +20,7 @@ const SignupSChema=yup.object().shape({
 
 
 function LoginFrom(){
-    const {control,handleSubmit,register,formState:{errors}}=useForm<IFormInputs>({resolver:yupResolver(SignupSChema)});
+    const {control,handleSubmit,formState:{errors}}=useForm<IFormInputs>({resolver:yupResolver(SignupSChema)});
 
     
   const onSubmit = (data: IFormInputs) => {
@@ -30,11 +30,11 @@ function LoginFrom(){
     return <Boxx component='div'>
         <form onSubmit={handleSubmit(onSubmit)}>
             <Controller name="email" control={control} defaultValue='' render={({field})=>
-                <Input label="Email" nameI="email" register={register} messageError={errors.email?.message} isError={errors.email!=undefined} required sx={{mb:'12px'}} {...field} ></Input>  
+                <Input label="Email"   messageError={errors.email?.message} isError={errors.email!=undefined} required sx={{mb:'12px'}} {...field} ></Input>  
             }></Controller>
                
             <Controller name="password" control={control} defaultValue='' render={({field})=>
-                 <Input label="Password" nameI="password" register={register} messageError={errors.password?.message} isError={errors.password!=undefined} required {...field} type='password'></Input>
+                 <Input label="Password"   messageError={errors.password?.message} isError={errors.password!=undefined} required {...field} type='password'></Input>
             }></Controller>
            
     
