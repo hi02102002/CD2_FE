@@ -10,18 +10,14 @@ import {
 import { red } from '@mui/material/colors';
 
 import { pxToRem } from '@/utils/pxToRem';
-import { UseFormRegister } from 'react-hook-form';
 
 type Props = {
     label?: string;
-    nameI:string;
     isError?: boolean;
     messageError?: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    register: UseFormRegister<any>;
 } & InputBaseProps;
 
-const Input = ({ label, nameI,required, messageError, isError, register,...rest }: Props) => {
+const Input = ({ label,required, messageError, isError,...rest }: Props) => {
     console.log(messageError,isError);
     
     return (
@@ -32,7 +28,7 @@ const Input = ({ label, nameI,required, messageError, isError, register,...rest 
                     {label}
                 </Typography>
             )}
-            <StyledInput required={required} isError={isError} {...rest} {...register(nameI)}/>
+            <StyledInput required={required} isError={isError} {...rest} />
             {messageError && isError && (
                 <Typography
                     variant="body1"
