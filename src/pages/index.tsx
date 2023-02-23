@@ -1,4 +1,5 @@
 import { Button } from '@/components/common';
+import Footer from '@/components/common/Footer';
 import Header from '@/layouts/client/Header';
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
             <Button isLoading typeButton="primary" variant="contained">
                 Hello
             </Button>
+            <Footer></Footer>
         </>
     );
 }

@@ -1,5 +1,7 @@
 import { Box, BoxProps } from '@mui/system';
 
+import Footer from '@/components/common/Footer';
+
 import Header from './Header';
 
 type Props = {
