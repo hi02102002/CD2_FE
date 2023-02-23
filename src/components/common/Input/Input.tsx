@@ -17,10 +17,8 @@ type Props = {
     messageError?: string;
 } & InputBaseProps;
 
-const Input = ({ label,required, messageError, isError,...rest }: Props) => {
-    
+const Input = ({ label, required, messageError, isError, ...rest }: Props) => {
     return (
-        
         <StyledInputWrap required={required}>
             {label && (
                 <Typography component="label" variant="body1" className="label">
