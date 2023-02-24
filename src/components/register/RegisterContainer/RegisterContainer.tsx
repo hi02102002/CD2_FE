@@ -28,7 +28,7 @@ const SignupSChema=yup.object().shape({
         .min(8,"Mật khẩu quá ngắn" )
         .matches(/\d+/, "Mật khẩu cần ít nhất 1 số" )
         .matches(/[a-z]+/,"Mật khẩu cần ít nhất 1 kí tự thường" )
-        // .matches(/[A-Z]+/,"Mật khẩu cần ít nhất 1 kí tự in hoa" )
+        .matches(/[A-Z]+/,"Mật khẩu cần ít nhất 1 kí tự in hoa" )
         .matches(/[!@#$%^&*()-+]+/,  "Mật khẩu cần ít nhất 1 kí tự đặc biệt" )
         // .matches(/ ![a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêếìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\ ]+$/,  "Mật khdsadsẩu cần ít nhất 1 kí tự đặc biệt" )
   .test(
