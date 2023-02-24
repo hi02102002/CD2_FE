@@ -6,7 +6,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Button } from "@/components/common"
 import Input from "@/components/common/Input"
-import {  useState } from "react";
 
 
 interface IFormInputs {
@@ -15,35 +14,31 @@ interface IFormInputs {
 }
 
 const SignupSChema=yup.object().shape({
-        email:yup.string().required('Vui lòng nhập email ').email('Vui lòng nhập đúng địa chỉ email'),
-        password:yup.string().required('Vui lòng nhập mật khẩu')
+        email:yup.string().required(),
+        password:yup.string().required()
     })
 
 
 function LoginFrom(){
     const {control,handleSubmit,formState:{errors}}=useForm<IFormInputs>({resolver:yupResolver(SignupSChema)});
 
-    const [showPassword, setShowPassword] = useState(false);
-
+    
   const onSubmit = (data: IFormInputs) => {
     console.log(data);
   };
 
-  const handleTogglePassword =()=>{
-        setShowPassword(!showPassword)
-  }
     return <Boxx component='div'>
         <form onSubmit={handleSubmit(onSubmit)}>
-            <Controller name="email" control={control} defaultValue='' render={({field:{onChange,value}})=>
-                <Input label="Email" onChange={onChange} value={value} messageError={errors.email?.message} isError={errors.email!=undefined} required sx={{mb:'12px'}}  ></Input>  
+            <Controller name="email" control={control} defaultValue='' render={({field})=>
+                <Input label="Email"   messageError={errors.email?.message} isError={errors.email!=undefined} required sx={{mb:'12px'}} {...field} ></Input>  
             }></Controller>
                
-            <Controller name="password" control={control} defaultValue='' render={({field:{onChange,value}})=>
-                 <Input label="Password" onChange={onChange} value={value}  messageError={errors.password?.message} isError={errors.password!=undefined} required  type={showPassword ? 'text' :'password'}></Input>
+            <Controller name="password" control={control} defaultValue='' render={({field})=>
+                 <Input label="Password"   messageError={errors.password?.message} isError={errors.password!=undefined} required {...field} type='password'></Input>
             }></Controller>
            
     
-        <FormControlLabel control={<Checkbox />} sx={{mb:'20px'}} label='Show Password' onChange={handleTogglePassword}></FormControlLabel>
+        <FormControlLabel control={<Checkbox/>} sx={{mb:'20px'}} label='Show Password'></FormControlLabel>
     
         <Button typeButton="primary" className="btn-signin" type="submit">Sign In</Button>
         </form>

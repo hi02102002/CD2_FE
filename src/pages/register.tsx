@@ -3,13 +3,14 @@
 //     return <div>Register</div>;
 // };
 // export default Register;
-import { styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 
-import { LoginContainer } from '@/components/Login';
 import { PageTop, SignInSocial } from '@/components/common';
-import { ROUTES } from '@/constants';
+import { DEVICE, ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
+import { pxToRem } from '@/utils/pxToRem';
+import RegisterContainer from '@/components/register/RegisterContainer';
 
 type Props = {};
 
@@ -29,13 +30,13 @@ const Login: NextPageWithLayout<Props> = (props) => {
                     },
                 ]}
             />
-            <Main className="main">
-                <LoginP className="block-content">
+            <Box className="container-app">
+                <LoginSocial className="block-content">
                     <SignInSocial social="facebook" />
                     <SignInSocial social="google" />
-                </LoginP>
-                <LoginContainer></LoginContainer>
-            </Main>
+                </LoginSocial>
+                <RegisterContainer></RegisterContainer>
+            </Box>
         </>
     );
 };
@@ -44,15 +45,24 @@ Login.getLayout = (page) => {
     return <ClientLayout>{page}</ClientLayout>;
 };
 
-const LoginP = styled('div')`
+const LoginSocial = styled('div')`
     display: flex;
     justify-content: center;
-    margin-bottom: 48px;
+    margin-bottom: ${pxToRem(48)};
+    
+    
+
+        @media ${DEVICE.mobileS} {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @media ${DEVICE.tablet} {
+            flex-direction: row;
+            /* align-items: center; */
+        }
 `;
 
-const Main = styled('div')`
-    max-width: 1200px;
-    margin: 40px auto 0px;
-`;
+
 
 export default Login;
