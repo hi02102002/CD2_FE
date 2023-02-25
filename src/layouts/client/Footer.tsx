@@ -3,9 +3,16 @@ import * as React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { useTheme } from '@mui/material';
-import { Box, BoxProps, Card, CardContent, Grid, styled } from '@mui/material';
-import Typography from '@mui/material/Typography';
+import {
+    Box,
+    Card,
+    CardContent,
+    Grid,
+    Typography,
+    TypographyProps,
+    css,
+    styled,
+} from '@mui/material';
 import { common } from '@mui/material/colors';
 import {
     IconArrowRight,
@@ -33,7 +40,7 @@ type ItemTopFooterProps = {
 
 const ItemTopFooter = ({ icon, title, des }: ItemTopFooterProps) => {
     return (
-        <Grid item xs={12} md={6} xl={3}>
+        <Grid item xs={12} md={6} xl={3} component="div" className="grid-item">
             <Box
                 className="top-footer-item"
                 sx={{
@@ -79,271 +86,205 @@ const ItemTopFooter = ({ icon, title, des }: ItemTopFooterProps) => {
 };
 
 export default function Footer() {
-    const theme = useTheme();
     return (
-        <Box
-            component="div"
-            className="footer"
-            sx={{ backgroundColor: theme.themeColor.footerBg }}
-        >
-            <Box
-                component="div"
-                className="top-footer"
-                sx={{
-                    backgroundColor: common.white,
-                    borderTop: '1px solid #eee',
-                    padding: `${pxToRem(40)} ${pxToRem(55)}`,
-                    marginTop: 100,
-                }}
-            >
-                <Grid container spacing={30}>
-                    <ItemTopFooter
-                        title="Free Shipping"
-                        icon={<IconBoxSeam></IconBoxSeam>}
-                        des="Free Shipping for orders over £130"
-                    ></ItemTopFooter>
-                    <ItemTopFooter
-                        title="Money Guarantee"
-                        icon={<IconCoin></IconCoin>}
-                        des="Within 30 days for an exchange."
-                    ></ItemTopFooter>
-                    <ItemTopFooter
-                        title="Online Support"
-                        icon={<IconHeadphones></IconHeadphones>}
-                        des="24 hours a day, 7 days a week"
-                    ></ItemTopFooter>
-                    <ItemTopFooter
-                        title="Flexible Payment"
-                        icon={<IconInbox></IconInbox>}
-                        des="Pay with Multiple Credit Cards"
-                    ></ItemTopFooter>
-                </Grid>
-            </Box>
+        <StyledFooter component="footer">
+            <StyledTopFooter component="div" className="top-footer">
+                <Box component="div" className="container-app">
+                    <Grid container spacing={30}>
+                        <ItemTopFooter
+                            title="Free Shipping"
+                            icon={<IconBoxSeam />}
+                            des="Free Shipping for orders over £130"
+                        />
+                        <ItemTopFooter
+                            title="Money Guarantee"
+                            icon={<IconCoin />}
+                            des="Within 30 days for an exchange."
+                        />
+                        <ItemTopFooter
+                            title="Online Support"
+                            icon={<IconHeadphones />}
+                            des="24 hours a day, 7 days a week"
+                        />
+                        <ItemTopFooter
+                            title="Flexible Payment"
+                            icon={<IconInbox />}
+                            des="Pay with Multiple Credit Cards"
+                        />
+                    </Grid>
+                </Box>
+            </StyledTopFooter>
             <StyledMainFooter component="div" className="main-footer">
-                <Grid container spacing={2}>
-                    <Grid item xs={12} md={6} xl={3}>
-                        <Card className="card-item" sx={{ boxShadow: 0 }}>
-                            <CardContent sx={{ padding: 0 }}>
-                                <Typography
-                                    variant="h3"
-                                    sx={{
-                                        fontSize: 16,
-                                        fontWeight: 600,
-                                        margin: `${pxToRem(18)} 0`,
-                                    }}
-                                    color={common.black}
-                                >
-                                    Company
-                                </Typography>
-                                <Typography sx={{ marginBottom: 9 }}>
-                                    Find a location nearest you.
-                                </Typography>
-                                <Typography sx={{ marginBottom: 24 }}>
-                                    See Our Stores
-                                </Typography>
-                                <Link href="./abc.tsx">
-                                    <Typography
-                                        sx={{ marginBottom: 9 }}
-                                        title="+391 (0)35 2568 4593"
+                <Box component="div" className="container-app">
+                    <Grid container>
+                        <Grid
+                            item
+                            xs={12}
+                            md={6}
+                            xl={3}
+                            component="div"
+                            className="grid-item"
+                        >
+                            <Card className="card-item">
+                                <CardContent sx={{ padding: 0 }}>
+                                    <StyledMainFooterTitle variant="h4">
+                                        Company
+                                    </StyledMainFooterTitle>
+                                    <StyledMainFooterText>
+                                        Find a location nearest you.
+                                    </StyledMainFooterText>
+                                    <StyledMainFooterText
+                                        sx={{ marginBottom: 24 }}
                                     >
-                                        +391 (0)35 2568 4593
-                                    </Typography>
-                                </Link>
-                                <Link href="mailto:webmaster@example.com">
-                                    <Typography sx={{}}>
-                                        hello@domain.com
-                                    </Typography>
-                                </Link>
-                            </CardContent>
-                        </Card>
+                                        See Our Stores
+                                    </StyledMainFooterText>
+                                    <Link href="./abc.tsx">
+                                        <StyledMainFooterText title="+391 (0)35 2568 4593">
+                                            +391 (0)35 2568 4593
+                                        </StyledMainFooterText>
+                                    </Link>
+                                    <Link href="mailto:webmaster@example.com">
+                                        <StyledMainFooterText>
+                                            hello@domain.com
+                                        </StyledMainFooterText>
+                                    </Link>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid
+                            item
+                            xs={12}
+                            md={6}
+                            xl={3}
+                            component="div"
+                            className="grid-item"
+                        >
+                            <Card className="card-item">
+                                <CardContent sx={{ padding: 0 }}>
+                                    <StyledMainFooterTitle variant="h4">
+                                        Information
+                                    </StyledMainFooterTitle>
+                                    <Link href="./abc.tsx">
+                                        <StyledMainFooterText isHover>
+                                            My account
+                                        </StyledMainFooterText>
+                                    </Link>
+                                    <Link href="./abc.tsx">
+                                        <StyledMainFooterText isHover>
+                                            Login
+                                        </StyledMainFooterText>
+                                    </Link>
+                                    <Link href="./abc.tsx">
+                                        <StyledMainFooterText isHover>
+                                            My cart
+                                        </StyledMainFooterText>
+                                    </Link>
+                                    <Link href="./abc.tsx">
+                                        <StyledMainFooterText isHover>
+                                            Wishlist
+                                        </StyledMainFooterText>
+                                    </Link>
+                                    <Link href="./abc.tsx">
+                                        <Typography
+                                            sx={{
+                                                '&: hover': { opacity: 0.5 },
+                                            }}
+                                        >
+                                            Check out
+                                        </Typography>
+                                    </Link>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid
+                            item
+                            xs={12}
+                            md={6}
+                            xl={3}
+                            component="div"
+                            className="grid-item"
+                        >
+                            <Card className="card-item">
+                                <CardContent sx={{ padding: 0 }}>
+                                    <StyledMainFooterTitle variant="h4">
+                                        Services
+                                    </StyledMainFooterTitle>
+                                    <Link href="./abc.tsx">
+                                        <StyledMainFooterText isHover>
+                                            About Us
+                                        </StyledMainFooterText>
+                                    </Link>
+                                    <Link href="./abc.tsx">
+                                        <StyledMainFooterText isHover>
+                                            Privacy Policy
+                                        </StyledMainFooterText>
+                                    </Link>
+                                    <Link href="./abc.tsx">
+                                        <StyledMainFooterText isHover>
+                                            Faq&apos;s
+                                        </StyledMainFooterText>
+                                    </Link>
+                                    <Link href="./abc.tsx">
+                                        <StyledMainFooterText isHover>
+                                            Contact us
+                                        </StyledMainFooterText>
+                                    </Link>
+                                    <Link href="./abc.tsx">
+                                        <StyledMainFooterText isHover>
+                                            Delivery Information
+                                        </StyledMainFooterText>
+                                    </Link>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid
+                            item
+                            xs={12}
+                            md={6}
+                            xl={3}
+                            component="div"
+                            className="grid-item"
+                        >
+                            <Card className="card-item">
+                                <CardContent sx={{ padding: 0 }}>
+                                    <StyledMainFooterTitle variant="h4">
+                                        Subscribe
+                                    </StyledMainFooterTitle>
+                                    <StyledMainFooterText>
+                                        Enter your email below to be the first
+                                        to know about new collections and
+                                        product launches.
+                                    </StyledMainFooterText>
+                                    <StyledMainFooterFormWrapper>
+                                        <form
+                                            className="box-email"
+                                            action="mailto:webmaster@example.com"
+                                        >
+                                            <IconMail width={22} height={22} />
+                                            <input
+                                                className="email-input"
+                                                placeholder="Your email address"
+                                                type="email"
+                                                id="emails"
+                                                name="emails"
+                                                title="Please write your email address"
+                                                multiple
+                                            />
+                                            <button
+                                                className="email-submit"
+                                                type="submit"
+                                            >
+                                                <IconArrowRight />
+                                            </button>
+                                        </form>
+                                    </StyledMainFooterFormWrapper>
+                                </CardContent>
+                            </Card>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} md={6} xl={3}>
-                        <Card className="card-item" sx={{ boxShadow: 0 }}>
-                            <CardContent sx={{ padding: 0 }}>
-                                <Typography
-                                    variant="h3"
-                                    sx={{
-                                        fontSize: 16,
-                                        fontWeight: 600,
-                                        margin: `${pxToRem(18)} 0`,
-                                    }}
-                                    color={common.black}
-                                >
-                                    Information
-                                </Typography>
-                                <Link href="./abc.tsx">
-                                    <Typography
-                                        sx={{
-                                            marginBottom: 9,
-                                            '&: hover': { opacity: 0.5 },
-                                        }}
-                                    >
-                                        My account
-                                    </Typography>
-                                </Link>
-                                <Link href="./abc.tsx">
-                                    <Typography
-                                        sx={{
-                                            marginBottom: 9,
-                                            '&: hover': { opacity: 0.5 },
-                                        }}
-                                    >
-                                        Login
-                                    </Typography>
-                                </Link>
-                                <Link href="./abc.tsx">
-                                    <Typography
-                                        sx={{
-                                            marginBottom: 9,
-                                            '&: hover': { opacity: 0.5 },
-                                        }}
-                                    >
-                                        My cart
-                                    </Typography>
-                                </Link>
-                                <Link href="./abc.tsx">
-                                    <Typography
-                                        sx={{
-                                            marginBottom: 9,
-                                            '&: hover': { opacity: 0.5 },
-                                        }}
-                                    >
-                                        Wishlist
-                                    </Typography>
-                                </Link>
-                                <Link href="./abc.tsx">
-                                    <Typography
-                                        sx={{
-                                            '&: hover': { opacity: 0.5 },
-                                        }}
-                                    >
-                                        Check out
-                                    </Typography>
-                                </Link>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                    <Grid item xs={12} md={6} xl={3}>
-                        <Card className="card-item" sx={{ boxShadow: 0 }}>
-                            <CardContent sx={{ padding: 0 }}>
-                                <Typography
-                                    variant="h3"
-                                    sx={{
-                                        fontSize: 16,
-                                        fontWeight: 600,
-                                        margin: `${pxToRem(18)} 0`,
-                                    }}
-                                    color={common.black}
-                                >
-                                    Services
-                                </Typography>
-                                <Link href="./abc.tsx">
-                                    <Typography
-                                        sx={{
-                                            marginBottom: 9,
-                                            '&: hover': { opacity: 0.5 },
-                                        }}
-                                    >
-                                        About Us
-                                    </Typography>
-                                </Link>
-                                <Link href="./abc.tsx">
-                                    <Typography
-                                        sx={{
-                                            marginBottom: 9,
-                                            '&: hover': { opacity: 0.5 },
-                                        }}
-                                    >
-                                        Privacy Policy
-                                    </Typography>
-                                </Link>
-                                <Link href="./abc.tsx">
-                                    <Typography
-                                        sx={{
-                                            marginBottom: 9,
-                                            '&: hover': { opacity: 0.5 },
-                                        }}
-                                    >
-                                        Faq's
-                                    </Typography>
-                                </Link>
-                                <Link href="./abc.tsx">
-                                    <Typography
-                                        sx={{
-                                            marginBottom: 9,
-                                            '&: hover': { opacity: 0.5 },
-                                        }}
-                                    >
-                                        Contact us
-                                    </Typography>
-                                </Link>
-                                <Link href="./abc.tsx">
-                                    <Typography
-                                        sx={{
-                                            '&: hover': { opacity: 0.5 },
-                                        }}
-                                    >
-                                        Delivery Inforamtion
-                                    </Typography>
-                                </Link>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                    <Grid item xs={12} md={6} xl={3}>
-                        <Card className="card-item" sx={{ boxShadow: 0 }}>
-                            <CardContent sx={{ padding: 0 }}>
-                                <Typography
-                                    variant="h3"
-                                    sx={{
-                                        fontSize: 16,
-                                        fontWeight: 600,
-                                        margin: `${pxToRem(18)} 0`,
-                                    }}
-                                    color={common.black}
-                                >
-                                    Subscribe
-                                </Typography>
-                                <Typography sx={{ marginBottom: 9 }}>
-                                    Enter your email below to be the first to
-                                    know about new collections and product
-                                    launches.
-                                </Typography>
-                                <form
-                                    className="box-email"
-                                    action="mailto:webmaster@example.com"
-                                >
-                                    <Box
-                                        sx={{
-                                            '& svg': {
-                                                width: 22,
-                                                height: 22,
-                                            },
-                                        }}
-                                    >
-                                        <IconMail></IconMail>
-                                    </Box>
-                                    <input
-                                        className="email-input"
-                                        placeholder="Your email address"
-                                        type="email"
-                                        id="emails"
-                                        name="emails"
-                                        title="Please write your email address"
-                                        multiple
-                                    />
-                                    <button
-                                        className="email-submit"
-                                        type="submit"
-                                    >
-                                        <IconArrowRight />
-                                    </button>
-                                </form>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                </Grid>
+                </Box>
             </StyledMainFooter>
-            <StyledBottomFooter className="bottom-footer">
+            <StyledBottomFooter>
                 <Image src={img} alt="" />
                 <Typography
                     variant="h3"
@@ -375,52 +316,94 @@ export default function Footer() {
                     </Link>
                 </Box>
             </StyledBottomFooter>
-            <style jsx>{`
-                .box-email {
-                    display: flex;
-                    align-items: center;
-                    background-color: ${common.white};
-                    border-radius: ${pxToRem(5)};
-                    padding: ${pxToRem(8)};
-                    margin-right: 35px;
-                }
-                .email-input {
-                    flex: 1;
-                    padding-left: ${pxToRem(12)};
-                    border: none;
-                    outline: none;
-                }
-                .email-submit {
-                    border: none;
-                    background-color: transparent;
-                }
-                @media screen and (${DEVICE.tablet}) {
-                    .bottom-footer {
-                        flex-direction: column;
-                    }
-                }
-            `}</style>
-        </Box>
+        </StyledFooter>
     );
 }
 
-const StyledMainFooter = styled(Box)<BoxProps>`
-    box-shadow: 0;
-    & .card-item {
+const StyledFooter = styled(Box)`
+    margin-top: ${pxToRem(100)};
+`;
+
+const StyledTopFooter = styled(Box)`
+    background-color: ${common.white};
+    border-top: 1px solid #eee;
+    padding: ${pxToRem(40)} 0;
+`;
+
+const StyledMainFooter = styled(Box)`
+    background-color: ${theme.themeColor.footerBg};
+    padding-top: ${pxToRem(30)};
+    padding-bottom: ${pxToRem(15)};
+    .card-item {
         height: 100%;
         border-radius: 0;
-        border-top: 1px solid #dedede;
-        padding: 8px 0 8px 35px;
-        background-color: ${theme.themeColor.footerBg};
-        border-right: 1px solid #dedede;
+        border-top: 0;
+        border-right: 0;
+        box-shadow: none;
+        background-color: inherit;
         @media screen and (${DEVICE.laptopM}) {
             padding: 58px 0 58px 35px;
             border-top: none;
         }
     }
+
+    @media screen and (${DEVICE.laptopM}) {
+        padding: 0;
+
+        .card-item {
+            padding: 58px 0 58px 35px;
+            border-top: none;
+        }
+
+        .grid-item:not(:last-child) .card-item {
+            border-right: 1px solid #dedede;
+        }
+    }
 `;
 
-const StyledBottomFooter = styled(Box)<BoxProps>`
+const StyledMainFooterTitle = styled(Typography)`
+    font-size: ${pxToRem(16)};
+    margin-bottom: ${pxToRem(18)};
+`;
+
+const StyledMainFooterText = styled(Typography)<
+    TypographyProps & {
+        isHover?: boolean;
+    }
+>`
+    margin-bottom: ${pxToRem(9)};
+    transition: opacity 0.3s ease;
+    ${({ isHover }) =>
+        isHover
+            ? css`
+                  &:hover {
+                      opacity: 0.7;
+                  }
+              `
+            : undefined}
+`;
+
+const StyledMainFooterFormWrapper = styled(Box)`
+    .box-email {
+        display: flex;
+        align-items: center;
+        background-color: ${common.white};
+        border-radius: ${pxToRem(5)};
+        padding: ${pxToRem(8)};
+    }
+    .email-input {
+        flex: 1;
+        padding-left: ${pxToRem(12)};
+        border: none;
+        outline: none;
+    }
+    .email-submit {
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+    }
+`;
+const StyledBottomFooter = styled(Box)`
     margin: 0;
     border: ${pxToRem(1)} solid #dedede;
     display: flex;
@@ -428,8 +411,9 @@ const StyledBottomFooter = styled(Box)<BoxProps>`
     justify-content: space-between;
     padding: ${pxToRem(16)} ${pxToRem(55)};
     flex-direction: column;
+    gap: ${pxToRem(8)};
 
-    @media screen and (${DEVICE.tablet}) {
+    @media screen and (${DEVICE.laptopM}) {
         flex-direction: row;
     }
 `;
