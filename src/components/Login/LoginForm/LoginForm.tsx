@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from "@/components/common"
 import Input from "@/components/common/Input"
 import {  useState } from "react";
+import { pxToRem } from "@/utils/pxToRem";
 
 
 interface IFormInputs {
@@ -43,12 +44,12 @@ function LoginFrom(){
             }></Controller>
            
     
-        <FormControlLabel control={<Checkbox />} sx={{mb:'20px'}} label='Show Password' onChange={handleTogglePassword}></FormControlLabel>
+        <FormControlLabel control={<Checkbox />} sx={{mb:pxToRem(20)}} label='Show Password' onChange={handleTogglePassword}></FormControlLabel>
     
         <Button typeButton="primary" className="btn-signin" type="submit">Sign In</Button>
         </form>
-        <Box component={'div'} sx={{display:'flex',justifyContent:'space-between',mt:'10px'}}>
-            <Typography variant="body1" sx={{color:'#e22b2e',fontSize:'0.8rem'}}>* Required Fields</Typography>
+        <Box component={'div'} sx={{display:'flex',justifyContent:'space-between',mt:pxToRem(10)}}>
+            <Typography variant="body1" sx={{color:'#e22b2e',fontSize:pxToRem(12)}}>* Required Fields</Typography>
             <SpanText>Forgot Your Password?</SpanText>
         </Box>
 

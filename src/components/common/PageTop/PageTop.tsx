@@ -24,7 +24,7 @@ const PageTop = ({ title = 'Title', breadcrumbItems }: Props) => {
             }}
             className="page-top"
         >
-            <Typography className="title" component="h2" variant="h2">
+            <Typography className="title" textAlign='center' component="h2" variant="h2">
                 {title}
             </Typography>
             {breadcrumbItems && (

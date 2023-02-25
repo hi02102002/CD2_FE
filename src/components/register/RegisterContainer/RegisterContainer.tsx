@@ -56,21 +56,21 @@ function RegisterContainer(){
     return  <form onSubmit={handleSubmit(onSubmit)} >
             <RegisterContainerr>
                 <Box  className="PersonalInfor"  >
-                    <Typography variant="h5" fontWeight='600' mb={pxToRem(15)} lineHeight='42px' >Personal Information</Typography>
+                    <Typography variant="h5" sx={{fontWeight:'600',mb:pxToRem(15),lineHeight:pxToRem(42)}} >Personal Information</Typography>
                         <Box component='div'>
                                 <Controller name='fullname' control={control} defaultValue='' render={({field:{onChange,value}})=>
                                     <Input label="Full Name"  onChange={onChange} value={value}   messageError={errors.fullname?.message} isError={errors.fullname!=undefined} required sx={{mb:'12px'}} ></Input>  
                                 }></Controller>
     
-                    <FormControlLabel control={<Checkbox/>} sx={{mb:`${pxToRem(20)}`,display:'block'}} label='Sign Up for Newsletter' ></FormControlLabel>
+                    <FormControlLabel control={<Checkbox/>} sx={{mb:pxToRem(20),display:'block'}} label='Sign Up for Newsletter' ></FormControlLabel>
 
-                    <FormControlLabel control={<Checkbox/>} sx={{mb:`${pxToRem(20)}`}} label='Allow remote shopping assistance'></FormControlLabel>
+                    <FormControlLabel control={<Checkbox/>} sx={{mb:pxToRem(20)}} label='Allow remote shopping assistance'></FormControlLabel>
 
                         </Box>
                 </Box>
         
                 <Box  className="SignInInfo"  >
-                        <Typography variant="h5" fontWeight='600' mb={pxToRem(15)} lineHeight='42px'>Sign-in Information</Typography>
+                        <Typography variant="h5" sx={{fontWeight:'600',mb:pxToRem(15),lineHeight:pxToRem(42)}}>Sign-in Information</Typography>
                             <Box component='div'>
                                 <Controller name="email" control={control} defaultValue='' render={({field:{onChange,value}})=>
                                     <Input label="Email"  onChange={onChange} value={value}  messageError={errors.email?.message} isError={errors.email!=undefined} required sx={{mb:'12px'}} ></Input>  
