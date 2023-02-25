@@ -1,15 +1,20 @@
-import { Button } from '@/components/common';
-import Footer from '@/components/common/Footer';
-import Header from '@/layouts/client/Header';
+import { Box } from '@mui/material';
 
-export default function Home() {
+import { Banner, SectionCategory } from '@/components/pages/home';
+import { ClientLayout } from '@/layouts/client';
+import { NextPageWithLayout } from '@/types/shared';
+
+const Home: NextPageWithLayout = () => {
     return (
-        <>
-            <Header />
-            <Button isLoading typeButton="primary" variant="contained">
-                Hello
-            </Button>
-            <Footer></Footer>
-        </>
+        <Box>
+            <Banner />
+            <SectionCategory />
+        </Box>
     );
-}
+};
+
+Home.getLayout = (page) => {
+    return <ClientLayout>{page}</ClientLayout>;
+};
+
+export default Home;

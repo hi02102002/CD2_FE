@@ -1,75 +1,94 @@
 import {
-    ButtonProps,
+    ButtonBase,
+    ButtonBaseProps,
     CircularProgress,
     CircularProgressProps,
-    Button as MButton,
     css,
     styled,
 } from '@mui/material';
-import { common, grey } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
 
 import { pxToRem } from '@/utils/pxToRem';
 
 type Props = {
-    typeButton?: 'primary';
+    typeButton?: 'primary' | 'secondary';
     isLoading?: boolean;
     propsIconLoading?: CircularProgressProps;
-} & ButtonProps;
+} & ButtonBaseProps;
 
-const StyledButton = styled(MButton)<Props>`
-    font-weight: 400;
+const StyledButton = styled(ButtonBase)<Props>`
+    font-weight: 500;
     text-transform: initial;
     border-radius: ${pxToRem(5)};
-    &:disabled {
-        background-color: ${grey[200]};
-        color: ${grey[500]};
-        border: 2px solid ${grey[200]};
+    font-size: ${pxToRem(16)};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: ${pxToRem(10.5)} ${pxToRem(32)};
+    transition: all 0.2s ease;
+    font-family: var(--font-base);
+
+    &.primary {
+        ${({ theme }) => {
+            return css`
+                background-color: ${theme.button.primary.background};
+                color: ${theme.button.primary.color};
+                border: 1px solid ${theme.button.primary.border};
+                &:hover {
+                    box-shadow: 0 0 0 0.1rem ${theme.button.primary.border};
+                }
+            `;
+        }};
     }
 
-    ${({ variant, typeButton, theme }) => {
-        if (typeButton === 'primary') {
-            if (variant === 'outlined') {
-                return css`
-                    background-color: ${common.white};
-                    border: 2px solid ${theme.themeColor.primary};
-                    color: ${theme.themeColor.primary};
+    &.secondary {
+        ${({ theme }) => {
+            return css`
+                background-color: ${theme.button.secondary.background};
+                color: ${theme.button.secondary.color};
+                border: 1px solid ${theme.button.secondary.border};
+                &:hover {
+                    box-shadow: 0 0 0 0.1rem ${theme.button.secondary.border};
+                    background-color: ${theme.button.secondary.color};
+                    color: ${theme.button.secondary.background};
+                }
+            `;
+        }};
+    }
 
-                    &:hover {
-                        background-color: ${theme.themeColor.primary};
-                        border: 2px solid ${theme.themeColor.primary};
-                        color: ${common.white};
-                    }
-                `;
-            }
+    &:disabled {
+        background-color: ${grey[200]};
+        border: 1px solid ${grey[200]};
+        color: ${grey[600]};
+    }
 
-            if (variant === 'contained') {
-                return css`
-                    background-color: ${theme.themeColor.primary};
-                    border: 2px solid ${theme.themeColor.primary};
-                    color: ${common.white};
-
-                    &:hover,
-                    &:active {
-                        box-shadow: 0px 0px 0px 0.2rem
-                            ${theme.themeColor.primary};
-                        background-color: ${theme.themeColor.primary};
-                    }
-                `;
-            }
-        }
-    }};
+    &:active {
+        transform: translateY(3px);
+    }
 `;
 
-const Button = ({ isLoading, disabled, ...props }: Props) => {
+const Button = ({
+    isLoading,
+    disabled,
+    className = '',
+    typeButton = 'primary',
+    ...props
+}: Props) => {
     return (
-        <StyledButton disableRipple {...props} disabled={isLoading || disabled}>
+        <StyledButton
+            {...props}
+            typeButton={typeButton}
+            disableRipple
+            disabled={isLoading || disabled}
+            className={`${className} ${typeButton}`}
+        >
             {isLoading ? (
                 <CircularProgress
                     {...props.propsIconLoading}
                     size={props.propsIconLoading?.size || 20}
                     sx={{
                         marginRight: pxToRem(8),
-                        color: disabled || isLoading ? grey[500] : common.white,
+                        color: 'inherit',
                         ...props.propsIconLoading?.sx,
                     }}
                 />

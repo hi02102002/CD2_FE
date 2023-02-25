@@ -2,12 +2,8 @@ import Link from 'next/link';
 
 import { Box, Breadcrumbs, Link as MuiLink, Typography } from '@mui/material';
 
+import { Breadcrumb } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
-
-type Breadcrumb = {
-    href: string;
-    name: string;
-};
 
 type Props = {
     title?: string;

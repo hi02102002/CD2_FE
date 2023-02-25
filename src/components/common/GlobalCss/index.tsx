@@ -141,6 +141,25 @@ License: none (public domain)
                     font-size: ${pxToRem(14)};
                 }
 
+                html {
+                    box-sizing: border-box;
+                }
+                *,
+                *:before,
+                *:after {
+                    box-sizing: inherit;
+                }
+
+                a {
+                    text-decoration: none;
+                    color: inherit;
+                }
+
+                body {
+                    color: #666;
+                    font-size: 1rem;
+                }
+
                 .container-app {
                     max-width: 1232px;
                     width: 100%;

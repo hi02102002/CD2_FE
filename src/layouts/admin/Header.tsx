@@ -17,6 +17,7 @@ import { common, grey } from '@mui/material/colors';
 import { IconLogout, IconMenu2, IconSettings } from '@tabler/icons-react';
 
 import { Button } from '@/components/common';
+import { DEVICE } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
 
 type Props = {
@@ -46,24 +47,13 @@ const Header = ({ onToggleSidebar, isOpenSidebar }: Props) => {
             isOpenSidebar={isOpenSidebar}
             isMobile={isMobile}
         >
-            {isMobile && (
-                <Button
-                    onClick={onToggleSidebar}
-                    sx={{
-                        display: 'flex',
-                        height: pxToRem(32),
-                        minWidth: pxToRem(32),
-                        padding: 0,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: '3px',
-                    }}
-                    variant="outlined"
-                    typeButton="primary"
-                >
-                    <IconMenu2 />
-                </Button>
-            )}
+            <Button
+                onClick={onToggleSidebar}
+                typeButton="primary"
+                className="button-toggle-sidebar"
+            >
+                <IconMenu2 />
+            </Button>
             <Box sx={{ marginLeft: 'auto' }}>
                 <Box
                     sx={{
@@ -146,9 +136,8 @@ const StyledHeader = styled(Box)<BoxProps & Omit<Props, 'onToggleSidebar'>>`
     height: ${({ theme }) => theme.size.height.header};
     position: fixed;
     top: 0;
-    left: ${({ theme, isOpenSidebar, isMobile }) =>
-        isOpenSidebar ? (isMobile ? 0 : theme.size.width.sidebar) : 0};
     right: 0;
+    left: 0;
     transition: left 0.3s ease;
     display: flex;
     align-items: center;
@@ -156,6 +145,24 @@ const StyledHeader = styled(Box)<BoxProps & Omit<Props, 'onToggleSidebar'>>`
     padding: 0 ${pxToRem(16)};
     border-bottom: 2px solid ${grey[300]};
     background-color: ${common.white};
+
+    @media ${DEVICE.tablet} {
+        left: ${({ theme }) => theme.size.width.sidebar};
+    }
+
+    .button-toggle-sidebar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border-radius: 4px;
+        height: ${pxToRem(32)};
+        min-width: ${pxToRem(32)};
+
+        @media ${DEVICE.tablet} {
+            display: none;
+        }
+    }
 `;
 
 export default Header;
