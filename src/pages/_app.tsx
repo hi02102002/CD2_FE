@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 import { EmotionCache } from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
+import NextNProgress from 'nextjs-progressbar';
 
 import { GlobalCSS } from '@/components/common';
 import '@/styles/globals.css';
@@ -36,6 +37,13 @@ export default function App({
                 <ThemeProvider theme={theme}>
                     <GlobalCSS />
                     <CssBaseline />
+                    <NextNProgress
+                        color="#222"
+                        height={3}
+                        options={{
+                            showSpinner: false,
+                        }}
+                    />
                     {getLayout(<Component {...pageProps} />)}
                 </ThemeProvider>
             </CacheProvider>

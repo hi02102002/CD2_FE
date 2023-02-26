@@ -1,10 +1,11 @@
-import { styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 
 import { LoginContainer } from '@/components/Login';
 import { PageTop, SignInSocial } from '@/components/common';
 import { ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
+import { pxToRem } from '@/utils/pxToRem';
 
 type Props = {};
 
@@ -24,13 +25,13 @@ const Login: NextPageWithLayout<Props> = (props) => {
                     },
                 ]}
             />
-            <Main className="main">
+            <Box className="container-app">
                 <LoginP className="block-content">
                     <SignInSocial social="facebook" />
                     <SignInSocial social="google" />
                 </LoginP>
                 <LoginContainer></LoginContainer>
-            </Main>
+            </Box>
         </>
     );
 };
@@ -42,7 +43,7 @@ Login.getLayout = (page) => {
 const LoginP = styled('div')`
     display: flex;
     justify-content: center;
-    margin-bottom: 48px;
+    margin-bottom: ${pxToRem(48)};
 `;
 
 const Main = styled('div')`

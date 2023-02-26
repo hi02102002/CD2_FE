@@ -1,5 +1,6 @@
 import { Box, Stack, Typography, styled } from '@mui/material';
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
+import { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { DEVICE } from '@/constants';
@@ -7,11 +8,9 @@ import { pxToRem } from '@/utils/pxToRem';
 
 import CategoryItem from '../CategoryItem';
 
-type Props = {};
-
-const SectionCategory = (props: Props) => {
+const SectionCategories = () => {
     return (
-        <StyledSectionCategory className="container-app">
+        <StyledSectionCategories className="container-app">
             <Stack
                 direction="row"
                 alignItems="center"
@@ -20,10 +19,16 @@ const SectionCategory = (props: Props) => {
             >
                 <StyledTitle variant="h3">Section Collection</StyledTitle>
                 <Stack direction="row" alignItems="center" spacing={16}>
-                    <StyledButtonNavigateSlider component="button">
+                    <StyledButtonNavigateSlider
+                        component="button"
+                        className="btn-navigation-left"
+                    >
                         <IconArrowLeft />
                     </StyledButtonNavigateSlider>
-                    <StyledButtonNavigateSlider component="button">
+                    <StyledButtonNavigateSlider
+                        component="button"
+                        className="btn-navigation-right"
+                    >
                         <IconArrowRight />
                     </StyledButtonNavigateSlider>
                 </Stack>
@@ -39,6 +44,11 @@ const SectionCategory = (props: Props) => {
                         slidesPerView: 4,
                     },
                 }}
+                navigation={{
+                    nextEl: '.btn-navigation-right',
+                    prevEl: '.btn-navigation-left',
+                }}
+                modules={[Navigation]}
             >
                 <SwiperSlide>
                     <CategoryItem />
@@ -65,11 +75,21 @@ const SectionCategory = (props: Props) => {
                     <CategoryItem />
                 </SwiperSlide>
             </Swiper>
-        </StyledSectionCategory>
+        </StyledSectionCategories>
     );
 };
 
-const StyledSectionCategory = styled(Box)``;
+const StyledSectionCategories = styled(Box)`
+    margin-bottom: ${pxToRem(50)};
+
+    @media screen and (${DEVICE.tablet}) {
+        margin-bottom: ${pxToRem(70)};
+    }
+
+    @media screen and (${DEVICE.laptop}) {
+        margin-bottom: ${pxToRem(100)};
+    }
+`;
 
 const StyledTitle = styled(Typography)`
     font-size: ${pxToRem(28)};
@@ -89,6 +109,9 @@ const StyledButtonNavigateSlider = styled(Box)`
     border: 0;
     outline: 0;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     svg {
         color: ${({ theme }) => theme.themeColor.primary};
@@ -102,9 +125,10 @@ const StyledButtonNavigateSlider = styled(Box)`
         }
     }
 
+    &:disabled svg,
     &:hover svg {
-        opacity: 0.7;
+        opacity: 0.6;
     }
 `;
 
-export default SectionCategory;
+export default SectionCategories;
