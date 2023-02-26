@@ -5,8 +5,8 @@ type Options = {
     isProtect: boolean;
 };
 
-type WithProtect = <
+export type WithProtect = <
     T extends Record<string, unknown> = Record<string, unknown>,
 >(
     options: Options,
-) => string;
+) => T;

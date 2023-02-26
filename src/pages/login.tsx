@@ -7,9 +7,7 @@ import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
 
-type Props = {};
-
-const Login: NextPageWithLayout<Props> = (props) => {
+const Login: NextPageWithLayout = () => {
     return (
         <>
             <PageTop
@@ -46,9 +44,9 @@ const LoginP = styled('div')`
     margin-bottom: ${pxToRem(48)};
 `;
 
-const Main = styled('div')`
-    max-width: 1200px;
-    margin: 40px auto 0px;
-`;
+// const Main = styled('div')`
+//     max-width: 1200px;
+//     margin: 40px auto 0px;
+// `;
 
 export default Login;

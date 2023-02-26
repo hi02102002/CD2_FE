@@ -29,6 +29,7 @@ const marks = [
 ];
 
 const Filter = (props: FilterProps) => {
+    console.log(props);
     return (
         <StyledFilter container rowSpacing={16} columnSpacing={16}>
             <Grid item xs={12} lg={3}>

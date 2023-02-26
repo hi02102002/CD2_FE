@@ -8,7 +8,7 @@ import { pxToRem } from '@/utils/pxToRem';
 
 type Props = {};
 
-const AddProduct: NextPageWithLayout<Props> = (props) => {
+const AddProduct: NextPageWithLayout<Props> = () => {
     return (
         <Box
             component="div"

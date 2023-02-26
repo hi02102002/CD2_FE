@@ -8,9 +8,7 @@ import { InputChangeAmount, TextLink } from '@/components/common';
 import { DEVICE } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
 
-type Props = {};
-
-export const CartItem = (props: Props) => {
+export const CartItem = () => {
     return (
         <StyledCartItem>
             <StyledImageWrapper>

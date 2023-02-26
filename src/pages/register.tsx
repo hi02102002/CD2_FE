@@ -11,9 +11,7 @@ import { ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 
-type Props = {};
-
-const Login: NextPageWithLayout<Props> = (props) => {
+const Login: NextPageWithLayout = () => {
     return (
         <>
             <PageTop
