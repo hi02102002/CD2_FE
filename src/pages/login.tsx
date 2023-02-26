@@ -46,4 +46,9 @@ const LoginP = styled('div')`
     margin-bottom: ${pxToRem(48)};
 `;
 
+const Main = styled('div')`
+    max-width: 1200px;
+    margin: 40px auto 0px;
+`;
+
 export default Login;
