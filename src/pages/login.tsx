@@ -1,11 +1,11 @@
 import { Box, styled } from '@mui/material';
 
-import { LoginContainer } from '@/components/Login';
 import { PageTop, SignInSocial } from '@/components/common';
 import { DEVICE, ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
+import { LoginContainer } from '@/components/pages/Login';
 
 type Props = {};
 

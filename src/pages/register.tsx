@@ -10,7 +10,7 @@ import { DEVICE, ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
-import RegisterContainer from '@/components/register/RegisterContainer';
+import RegisterContainer from '@/components/pages/register/RegisterContainer';
 
 type Props = {};
 
@@ -18,7 +18,7 @@ const Login: NextPageWithLayout<Props> = (props) => {
     return (
         <>
             <PageTop
-                title="Create New Customer Account"
+                title="Register"
                 breadcrumbItems={[
                     {
                         href: ROUTES.HOME,

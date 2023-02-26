@@ -9,13 +9,13 @@ import Link from "next/link";
 function LoginContainer(){
     return  <LoginContainerr   >
                     <Box  className="Registered"  >
-                        <Typography variant="h5" sx={{fontWeight:'600',mb:pxToRem(15),lineHeight:pxToRem(42)}}  >Registered Customers</Typography>
+                        <Typography variant="h5" sx={{fontWeight:'600',mb:pxToRem(15),lineHeight:pxToRem(42),color:'#000'}}>Registered Customers</Typography>
                         <Text>If you have an account, sign in with your email address.</Text>
                         <LoginForm></LoginForm>
                     </Box>
         
                     <Box  className="Unregistered"  >
-                        <Typography variant="h5" sx={{fontWeight:'600',mb:pxToRem(15),lineHeight:pxToRem(42)}}>Create an Account</Typography>
+                        <Typography variant="h5" sx={{fontWeight:'600',mb:pxToRem(15),lineHeight:pxToRem(42),color:'#000'}}>Create an Account</Typography>
                         <Text>Sign up for early Sale access plus tailored new arrivals, trends and promotions. To opt out, click unsubscribe in our emails.</Text>
                         <Link href={"/register"}><Button typeButton="primary" className="btn-create">Create an Account</Button></Link>
                     </Box>
