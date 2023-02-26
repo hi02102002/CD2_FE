@@ -1,6 +1,10 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box, styled } from '@mui/material';
+import { grey } from '@mui/material/colors';
+import { BoxProps } from '@mui/system';
+
+import { DEVICE } from '@/constants';
 
 import Header from './Header';
 import Sidebar from './Sidebar';
@@ -10,21 +14,11 @@ type Props = {
 };
 
 const MainLayout = ({ children }: Props) => {
-    const theme = useTheme();
-    const isMobile = useMediaQuery('(max-width:767px)');
     const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
 
     const handleToggleSidebar = () => {
         setIsOpenSidebar((isOpen) => !isOpen);
     };
-
-    useLayoutEffect(() => {
-        if (isMobile) {
-            setIsOpenSidebar(false);
-        } else {
-            setIsOpenSidebar(true);
-        }
-    }, [isMobile]);
 
     return (
         <Box
@@ -52,24 +46,22 @@ const MainLayout = ({ children }: Props) => {
                         setIsOpenSidebar(!isOpenSidebar);
                     }}
                 />
-                <Box
-                    component="main"
-                    sx={{
-                        marginLeft: isOpenSidebar
-                            ? isMobile
-                                ? 0
-                                : theme.size.width.sidebar
-                            : 0,
-                        width: '100%',
-                        marginTop: theme.size.height.header,
-                        transition: 'margin-left 0.3s ease',
-                    }}
-                >
-                    {children}
-                </Box>
+                <StyledMain component="main">{children}</StyledMain>
             </Box>
         </Box>
     );
 };
+
+const StyledMain = styled(Box)<BoxProps>`
+    width: 100%;
+    padding-top: ${({ theme }) => theme.size.height.header};
+    transition: padding-left 0.3s ease;
+    padding-left: 0;
+    background-color: ${grey[300]};
+
+    @media ${DEVICE.tablet} {
+        padding-left: ${({ theme }) => theme.size.width.sidebar};
+    }
+`;
 
 export default MainLayout;

@@ -1,5 +1,8 @@
 import { Box, BoxProps } from '@mui/system';
 
+import { ButtonScrollTop } from '@/components/client';
+
+import Footer from './Footer';
 import Header from './Header';
 
 type Props = {
@@ -13,6 +16,8 @@ const MainLayout = ({ MainProps, children, ...rest }: Props) => {
             <Box {...MainProps} component="main">
                 {children}
             </Box>
+            <ButtonScrollTop />
+            <Footer />
         </Box>
     );
 };
