@@ -42,7 +42,9 @@ const Products: NextPageWithLayout = () => {
                         }}
                     />
 
-                    <ProductGrid spacing={16} numCol={chooseGridMode} />
+                    <Box marginTop={16}>
+                        <ProductGrid spacing={16} numCol={chooseGridMode} />
+                    </Box>
                     <Stack
                         marginTop={30}
                         direction="row"

@@ -1,6 +1,8 @@
 export { default as Badge } from './Badge';
 export { default as Button } from './Button';
 export { default as GlobalCSS } from './GlobalCss';
+export { default as Input } from './Input';
+export * from './InputChangeAmount';
 export { StyledMenu as Menu, StyledMenuItem as MenuItem } from './Menu';
 export { default as PageTop } from './PageTop';
 export { default as Pagination } from './Pagination';
