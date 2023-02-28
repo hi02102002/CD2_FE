@@ -7,9 +7,7 @@ import { IconArrowRight } from '@tabler/icons-react';
 import { Button } from '@/components/common';
 import { pxToRem } from '@/utils/pxToRem';
 
-type Props = {};
-
-const CategoryItem = (props: Props) => {
+const CategoryItem = () => {
     return (
         <StyledCategoryItem>
             <Box position="relative">

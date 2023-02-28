@@ -16,10 +16,20 @@ export const theme = createTheme({
     status: {
         danger: orange[500],
     },
+    breakpoints: {
+        values: {
+            xs: 0,
+            sm: 425,
+            md: 768,
+            lg: 1024,
+            xl: 1200,
+        },
+    },
     themeColor: {
         primary: '#222',
         title: '#222',
         body: '#666',
+        footerBg: '#f5f5f5',
     },
     typography: {
         fontFamily: 'var(--font-base)',
@@ -52,6 +62,15 @@ export const theme = createTheme({
         },
     },
     spacing: (factor: number) => `${factor / 16}rem`,
+    breakpoints: {
+        values: {
+            xs: 0,
+            sm: 425,
+            md: 768,
+            lg: 1024,
+            xl: 1200,
+        },
+    },
     size: {
         height: {
             header: pxToRem(60),

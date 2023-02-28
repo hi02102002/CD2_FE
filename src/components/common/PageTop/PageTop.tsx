@@ -35,7 +35,7 @@ const PageTop = ({ title = 'Title', breadcrumbItems }: Props) => {
                                 <Typography
                                     key={item.href}
                                     sx={{
-                                        fontWeight: 700,
+                                        fontWeight: 500,
                                     }}
                                 >
                                     {item.name}
