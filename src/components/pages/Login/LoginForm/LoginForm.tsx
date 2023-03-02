@@ -1,12 +1,21 @@
 import { useState } from 'react';
 
+import Link from 'next/link';
+
 import styled from '@emotion/styled';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Checkbox, FormControlLabel, Typography } from '@mui/material';
+import {
+    Box,
+    Checkbox,
+    FormControlLabel,
+    Stack,
+    Typography,
+} from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import { Button, Input } from '@/components/common';
+import { Button, Input, TextHover } from '@/components/common';
+import { ROUTES } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
 
 interface IFormInputs {
@@ -82,7 +91,7 @@ function LoginFrom() {
                     sx={{ mb: pxToRem(20) }}
                     label="Show Password"
                     onChange={handleTogglePassword}
-                ></FormControlLabel>
+                />
 
                 <Button
                     typeButton="primary"
@@ -92,32 +101,22 @@ function LoginFrom() {
                     Sign In
                 </Button>
             </form>
-            <Box
-                component={'div'}
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    mt: pxToRem(10),
-                }}
+            <Stack
+                alignItems="center"
+                justifyContent="space-between"
+                direction="row"
+                marginTop={16}
             >
-                <Typography
-                    variant="body1"
-                    sx={{ color: '#e22b2e', fontSize: pxToRem(12) }}
-                >
+                <Typography sx={{ color: '#e22b2e', fontSize: pxToRem(12) }}>
                     * Required Fields
                 </Typography>
-                <SpanText>Forgot Your Password?</SpanText>
-            </Box>
+                <Link href={ROUTES.FORGOT_PASS}>
+                    <TextHover>Forgot Your Password?</TextHover>
+                </Link>
+            </Stack>
         </StyledLoginForm>
     );
 }
-
-const SpanText = styled('span')`
-    cursor: pointer;
-    &:hover {
-        color: #999;
-    }
-`;
 
 const StyledLoginForm = styled(Box)`
     .btn-signin {
