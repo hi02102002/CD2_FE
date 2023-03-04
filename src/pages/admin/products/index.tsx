@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router';
+
 import { Box, Grid } from '@mui/material';
 
 import { Breadcrumbs, MainContent, ProductFilter } from '@/components/admin';
@@ -9,6 +11,8 @@ import { pxToRem } from '@/utils/pxToRem';
 type Props = {};
 
 const Products: NextPageWithLayout = (props: Props) => {
+    const router = useRouter();
+
     return (
         <Box
             component="div"
@@ -49,6 +53,9 @@ const Products: NextPageWithLayout = (props: Props) => {
                             }}
                             ButtonAddProps={{
                                 textButton: 'Add Product',
+                                onClick: () => {
+                                    router.push(ROUTES.ADMIN_ADD_PRODUCT);
+                                },
                             }}
                         />
                     </Grid>

@@ -1,15 +1,15 @@
 import { Box, styled } from '@mui/material';
 
-import { LoginContainer } from '@/components/Login';
 import { PageTop, SignInSocial } from '@/components/common';
-import { ROUTES } from '@/constants';
+import { LoginContainer } from '@/components/pages/Login';
+import { DEVICE, ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
 
 type Props = {};
 
-const Login: NextPageWithLayout<Props> = (props) => {
+const Login: NextPageWithLayout<Props> = () => {
     return (
         <>
             <PageTop
@@ -26,11 +26,11 @@ const Login: NextPageWithLayout<Props> = (props) => {
                 ]}
             />
             <Box className="container-app">
-                <LoginP className="block-content">
+                <LoginSocial className="block-content">
                     <SignInSocial social="facebook" />
                     <SignInSocial social="google" />
-                </LoginP>
-                <LoginContainer></LoginContainer>
+                </LoginSocial>
+                <LoginContainer />
             </Box>
         </>
     );
@@ -40,15 +40,20 @@ Login.getLayout = (page) => {
     return <ClientLayout>{page}</ClientLayout>;
 };
 
-const LoginP = styled('div')`
+const LoginSocial = styled('div')`
     display: flex;
     justify-content: center;
     margin-bottom: ${pxToRem(48)};
-`;
 
-const Main = styled('div')`
-    max-width: 1200px;
-    margin: 40px auto 0px;
+    @media ${DEVICE.mobileS} {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    @media ${DEVICE.tablet} {
+        flex-direction: row;
+        /* align-items: center; */
+    }
 `;
 
 export default Login;
