@@ -9,6 +9,7 @@ declare module '@mui/material/styles' {
             primary: string;
             body: string;
             title: string;
+            footerBg: string;
         };
         size: {
             height: {
@@ -40,6 +41,7 @@ declare module '@mui/material/styles' {
             primary?: string;
             body?: string;
             title?: string;
+            footerBg?: string;
         };
         size?: {
             height?: {

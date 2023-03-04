@@ -1,17 +1,25 @@
-import Input from '@/components/common/Input';
-import Header from '@/layouts/client/Header';
+import { Box } from '@mui/material';
 
-export default function Home() {
+import {
+    Banner,
+    SectionCategories,
+    SectionProducts,
+} from '@/components/pages/home';
+import { ClientLayout } from '@/layouts/client';
+import { NextPageWithLayout } from '@/types/shared';
+
+const Home: NextPageWithLayout = () => {
     return (
-        <>
-            <Header />
-            <Input
-                required
-                label="Username"
-                isError
-                messageError="This field is required"
-                placeholder="User name"
-            />
-        </>
+        <Box>
+            <Banner />
+            <SectionCategories />
+            <SectionProducts />
+        </Box>
     );
-}
+};
+
+Home.getLayout = (page) => {
+    return <ClientLayout>{page}</ClientLayout>;
+};
+
+export default Home;
