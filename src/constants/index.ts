@@ -48,3 +48,5 @@ export const DEVICE = {
     desktop: `(min-width: ${SIZE_MEDIA.desktop})`,
     desktopL: `(min-width: ${SIZE_MEDIA.desktop})`,
 };
+
+export const API_URL = 'https://shopping-cart-ofji.onrender.com/api';

@@ -16,6 +16,7 @@ import * as yup from 'yup';
 
 import { Button, Input, TextHover } from '@/components/common';
 import { ROUTES } from '@/constants';
+import authService from '@/services/auth.service';
 import { pxToRem } from '@/utils/pxToRem';
 
 interface IFormInputs {
@@ -40,8 +41,9 @@ function LoginFrom() {
 
     const [showPassword, setShowPassword] = useState(false);
 
-    const onSubmit = (data: IFormInputs) => {
-        console.log(data);
+    const onSubmit = async (data: IFormInputs) => {
+        const res = await authService.login(data.email, data.password);
+        console.log(res);
     };
 
     const handleTogglePassword = () => {
