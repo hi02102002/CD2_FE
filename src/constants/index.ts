@@ -11,6 +11,8 @@ export const ROUTES = {
     PRODUCTS: '/products',
     CART: '/cart',
     CHECKOUT: '/checkout',
+    FORGOT_PASS: '/forgot-password',
+    RESET_PASS: '/reset-password',
 };
 
 export const SIZE_MEDIA = {
