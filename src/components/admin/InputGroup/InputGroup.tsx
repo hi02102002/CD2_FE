@@ -41,12 +41,7 @@ const InputGroup = ({
             >
                 {label}
             </Typography>
-            <Input
-                fullWidth
-                {...InputProps}
-                required={required}
-                error={!!messageError}
-            />
+            <Input fullWidth {...InputProps} error={!!messageError} />
             {messageError && (
                 <Typography
                     {...ErrorMessageProps}

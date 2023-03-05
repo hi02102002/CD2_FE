@@ -1,19 +1,26 @@
-import { Box } from '@mui/material';
+import { Box, Modal, styled } from '@mui/material';
 
-import { Breadcrumbs, MainContent } from '@/components/admin';
+import { Breadcrumbs, CategoryAction, MainContent } from '@/components/admin';
 import { ROUTES } from '@/constants';
+import { useDisclosure } from '@/hooks/useDisclosure';
 import { AdminLayout } from '@/layouts/admin';
 import { NextPageWithLayout } from '@/types/shared';
-import { pxToRem } from '@/utils/pxToRem';
 
 const Category: NextPageWithLayout = () => {
+    const {
+        isOpen: isOpenModalAdd,
+        onClose: onCloseModalAdd,
+        onOpen: onOpenModalAdd,
+    } = useDisclosure();
+
+    const {
+        isOpen: isOpenModalEdit,
+        onClose: onCloseModalEdit,
+        onOpen: onOpenModalEdit,
+    } = useDisclosure();
+
     return (
-        <Box
-            component="div"
-            sx={{
-                padding: pxToRem(16),
-            }}
-        >
+        <Box padding={16}>
             <Breadcrumbs
                 breadcrumbs={[
                     {
@@ -26,11 +33,7 @@ const Category: NextPageWithLayout = () => {
                     },
                 ]}
             />
-            <Box
-                sx={{
-                    marginTop: pxToRem(16),
-                }}
-            >
+            <Box marginTop={16}>
                 <MainContent
                     TableProps={{
                         columns: [],
@@ -38,9 +41,24 @@ const Category: NextPageWithLayout = () => {
                     }}
                     ButtonAddProps={{
                         textButton: 'Add category',
+                        onClick: onOpenModalAdd,
                     }}
                 />
             </Box>
+            <StyledModal open={isOpenModalAdd} onClose={onCloseModalAdd}>
+                <CategoryAction onClose={onCloseModalAdd} />
+            </StyledModal>
+            <StyledModal open={isOpenModalEdit} onClose={onCloseModalEdit}>
+                <CategoryAction
+                    onClose={onCloseModalEdit}
+                    type="EDIT"
+                    dataEdit={{
+                        code: 'category',
+                        name: 'Category',
+                        file: [],
+                    }}
+                />
+            </StyledModal>
         </Box>
     );
 };
@@ -48,5 +66,11 @@ const Category: NextPageWithLayout = () => {
 Category.getLayout = (page) => {
     return <AdminLayout>{page}</AdminLayout>;
 };
+
+const StyledModal = styled(Modal)`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
 
 export default Category;
