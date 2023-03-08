@@ -8,9 +8,7 @@ import { AdminLayout } from '@/layouts/admin';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
 
-type Props = {};
-
-const Products: NextPageWithLayout = (props: Props) => {
+const Products: NextPageWithLayout = () => {
     const router = useRouter();
 
     return (

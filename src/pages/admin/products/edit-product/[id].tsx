@@ -1,8 +1,6 @@
 import { ProductAction } from '@/components/admin';
 
-type Props = {};
-
-const EditProduct = (props: Props) => {
+const EditProduct = () => {
     return <ProductAction />;
 };
 

@@ -6,9 +6,7 @@ import { pxToRem } from '@/utils/pxToRem';
 
 import InputGroup from '../InputGroup';
 
-type Props = {};
-
-const ProductAction = (props: Props) => {
+const ProductAction = () => {
     const { control } = useForm();
 
     return (
@@ -71,6 +69,6 @@ const StyledContentWrapper = styled(Box)`
     background-color: ${common.white};
 `;
 
-const StyledInputGroup = styled(Box)``;
+// const StyledInputGroup = styled(Box)``;
 
 export default ProductAction;
