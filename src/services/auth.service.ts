@@ -3,7 +3,7 @@ import axiosClient from '@/lib/axiosClient';
 class AuthService {
     async login(email: string, password: string) {
         return await axiosClient.post(
-            '/auth/signin',
+            '/api/auth/signin',
             {
                 email,
                 password,
@@ -19,7 +19,7 @@ class AuthService {
         fullName: string;
         password: string;
     }) {
-        return await axiosClient.post('/auth/signup', {
+        return await axiosClient.post('/api/auth/signup', {
             ...data,
             roles: ['user'],
         });
