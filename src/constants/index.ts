@@ -50,4 +50,4 @@ export const DEVICE = {
     desktopL: `(min-width: ${SIZE_MEDIA.desktop})`,
 };
 
-export const API_URL = 'https://shopping-cart-demo.herokuapp.com/api';
+export const API_URL = 'https://shopping-cart-demo.herokuapp.com';
