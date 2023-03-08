@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { Box, Typography, styled } from '@mui/material';
+import { Box, BoxProps, Typography, styled } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { IconX } from '@tabler/icons-react';
 
@@ -8,10 +8,10 @@ import { InputChangeAmount, TextLink } from '@/components/common';
 import { DEVICE } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
 
-export const CartItem = () => {
+export const CartItem = (props: BoxProps) => {
     return (
-        <StyledCartItem>
-            <StyledImageWrapper>
+        <StyledCartItem {...props} className={`${props.className} cart`}>
+            <StyledImageWrapper className="img-wrapper">
                 <Image
                     src="https://blueskytechmage.com/minimog/media/catalog/product/cache/88bf2add142c4b6ca1b5495b85e72541/p/r/product_fashion_12_b_1_1_4.jpeg"
                     alt=""
@@ -46,6 +46,8 @@ export const CartItem = () => {
                 sx={{
                     cursor: 'pointer',
                 }}
+                component="div"
+                className="btn-remove"
             >
                 <IconX width={16} height={16} color={grey[500]} />
             </Box>

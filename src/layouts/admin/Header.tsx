@@ -8,6 +8,7 @@ import {
     ListItemIcon,
     Menu,
     MenuItem,
+    Stack,
     Tooltip,
     Typography,
     styled,
@@ -54,15 +55,16 @@ const Header = ({ onToggleSidebar, isOpenSidebar }: Props) => {
             >
                 <IconMenu2 />
             </Button>
-            <Box sx={{ marginLeft: 'auto' }}>
-                <Box
+            <Box marginLeft="auto">
+                <Stack
                     sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: pxToRem(8),
                         cursor: 'pointer',
                     }}
+                    alignItems="center"
                     onClick={handelOpenMenuSetting}
+                    component="div"
+                    gap={8}
+                    direction="row"
                 >
                     <Tooltip title="Setting">
                         <IconButton size="small">
@@ -76,7 +78,7 @@ const Header = ({ onToggleSidebar, isOpenSidebar }: Props) => {
                     >
                         Admin
                     </Typography>
-                </Box>
+                </Stack>
                 <Menu
                     open={isOpenMenuSetting}
                     onClose={handleCloseMenuSetting}
