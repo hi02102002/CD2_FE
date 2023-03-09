@@ -7,7 +7,6 @@ import NextNProgress from 'nextjs-progressbar';
 import { Toaster } from 'react-hot-toast';
 
 import { GlobalCSS } from '@/components/common';
-import { wrapper } from '@/store';
 import '@/styles/globals.css';
 import { NextPageWithLayout } from '@/types/shared';
 import createEmotionCache from '@/utils/createEmotionCache';
@@ -54,4 +53,4 @@ const App = ({
     );
 };
 
-export default wrapper.withRedux(App);
+export default App;

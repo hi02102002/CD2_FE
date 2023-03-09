@@ -1,17 +1,24 @@
+import axios from 'axios';
+
 import axiosClient from '@/lib/axiosClient';
+import { BaseResponse } from '@/types/shared';
+import { User } from '@/types/user';
 
 class AuthService {
-    async login(email: string, password: string) {
-        return await axiosClient.post(
-            '/api/auth/signin',
-            {
-                email,
-                password,
-            },
-            {
-                withCredentials: true,
-            },
-        );
+    async login(
+        email: string,
+        password: string,
+    ): Promise<
+        BaseResponse<
+            User & {
+                token: string;
+            }
+        >
+    > {
+        return await axiosClient.post('/api/auth/signin', {
+            email,
+            password,
+        });
     }
 
     async register(data: {
@@ -23,6 +30,10 @@ class AuthService {
             ...data,
             roles: ['user'],
         });
+    }
+
+    async logout() {
+        await axios.get('/api/logout');
     }
 }
 

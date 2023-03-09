@@ -8,5 +8,4 @@ export type User = {
     fullName: string;
     email: string;
     roles: ROLE[];
-    token: string;
 };
