@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { useRouter } from 'next/router';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
     Box,
@@ -8,22 +10,25 @@ import {
     Typography,
     styled,
 } from '@mui/material';
+import { AxiosError } from 'axios';
 import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 import * as yup from 'yup';
 
 import { Button, Input } from '@/components/common';
-import { DEVICE } from '@/constants';
+import { DEVICE, ROUTES } from '@/constants';
+import authService from '@/services/auth.service';
 import { pxToRem } from '@/utils/pxToRem';
 
 interface IFormInputs {
-    fullname: string;
+    fullName: string;
     email: string;
     password: string;
-    confirmpassword: string;
+    confirmPassword: string;
 }
 
-const SignupSChema = yup.object().shape({
-    fullname: yup
+const SignUpSChema = yup.object().shape({
+    fullName: yup
         .string()
         .required('Vui lòng nhập đầy đủ họ và tên')
         .min(6, 'Tối thiểu 6 kí tự'),
@@ -44,7 +49,7 @@ const SignupSChema = yup.object().shape({
             'Mật khẩu không chứa khoảng trắng',
             (value) => !/\s+/.test(value),
         ),
-    confirmpassword: yup
+    confirmPassword: yup
         .string()
         .required('Vui lòng nhập lại mật khẩu')
         .oneOf([yup.ref('password')], 'Mật khẩu nhập lại không chính xác'),
@@ -55,11 +60,30 @@ function RegisterContainer() {
         control,
         handleSubmit,
         formState: { errors },
-    } = useForm<IFormInputs>({ resolver: yupResolver(SignupSChema) });
+    } = useForm<IFormInputs>({ resolver: yupResolver(SignUpSChema) });
     const [showPassword, setShowPassword] = useState(false);
-
-    const onSubmit = (data: IFormInputs) => {
-        console.log(data);
+    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
+    const onSubmit = async (data: IFormInputs) => {
+        try {
+            setIsLoading(true);
+            await authService.register({
+                email: data.email,
+                fullName: data.fullName,
+                password: data.password,
+            });
+            setIsLoading(false);
+            toast.success('Register successfully!');
+            router.push(ROUTES.LOGIN);
+            setIsLoading(false);
+        } catch (error) {
+            setIsLoading(false);
+            if (error instanceof AxiosError) {
+                toast.error(error.response?.data.message);
+            } else {
+                toast.error('Something went wrong. Try again');
+            }
+        }
     };
 
     const handleTogglePassword = () => {
@@ -69,7 +93,7 @@ function RegisterContainer() {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <StyledRegisterContainer>
-                <Box className="PersonalInfor">
+                <Box className="PersonalInfo">
                     <Typography
                         variant="h5"
                         sx={{
@@ -83,7 +107,7 @@ function RegisterContainer() {
                     </Typography>
                     <Box component="div">
                         <Controller
-                            name="fullname"
+                            name="fullName"
                             control={control}
                             defaultValue=""
                             render={({
@@ -93,8 +117,8 @@ function RegisterContainer() {
                                     label="Full Name"
                                     onChange={onChange}
                                     value={value}
-                                    messageError={errors.fullname?.message}
-                                    isError={errors.fullname !== undefined}
+                                    messageError={errors.fullName?.message}
+                                    isError={errors.fullName !== undefined}
                                     required
                                     sx={{ mb: '12px' }}
                                     name={name}
@@ -174,7 +198,7 @@ function RegisterContainer() {
                         />
 
                         <Controller
-                            name="confirmpassword"
+                            name="confirmPassword"
                             control={control}
                             defaultValue=""
                             render={({
@@ -186,10 +210,10 @@ function RegisterContainer() {
                                     value={value}
                                     type={showPassword ? 'text' : 'password'}
                                     messageError={
-                                        errors.confirmpassword?.message
+                                        errors.confirmPassword?.message
                                     }
                                     isError={
-                                        errors.confirmpassword !== undefined
+                                        errors.confirmPassword !== undefined
                                     }
                                     name={name}
                                     onBlur={onBlur}
@@ -210,6 +234,7 @@ function RegisterContainer() {
                             typeButton="primary"
                             className="btn-create"
                             type="submit"
+                            isLoading={isLoading}
                         >
                             Create an Account
                         </Button>
@@ -223,52 +248,47 @@ function RegisterContainer() {
 const StyledRegisterContainer = styled('div')`
     max-width: 60rem;
     margin: auto;
-    display:flex;
-    
+    display: flex;
+
     @media ${DEVICE.mobileS} {
-           margin: ${pxToRem(15)};
-           /* justify-content: center; */
-           flex-direction: column;
-        }
-
-    @media ${DEVICE.tablet} {
-            margin: ${pxToRem(20)};
-           /* justify-content: center; */
-           flex-direction: row;
-        }
-
-        @media ${DEVICE.laptop} {
-            margin: auto;
-           /* justify-content: center; */
-           flex-direction: row;
-        }
-    
-        
-        
-        @media ${DEVICE.tablet} {
-            padding-left: 1rem;
-            padding-right: 1rem;
-        }
+        margin: ${pxToRem(15)};
+        /* justify-content: center; */
+        flex-direction: column;
     }
 
-    .PersonalInfor{
+    @media ${DEVICE.tablet} {
+        margin: ${pxToRem(20)};
+        /* justify-content: center; */
+        flex-direction: row;
+    }
+
+    @media ${DEVICE.laptop} {
+        margin: auto;
+        /* justify-content: center; */
+        flex-direction: row;
+    }
+
+    @media ${DEVICE.tablet} {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .PersonalInfo {
         padding: ${pxToRem(0)} ${pxToRem(30)} ${pxToRem(0)} ${pxToRem(0)};
         margin-bottom: ${pxToRem(30)};
         flex: 1;
         @media ${DEVICE.mobileS} {
-           padding: 0;
-           width: 100%;
-
+            padding: 0;
+            width: 100%;
         }
 
         @media ${DEVICE.tablet} {
-           padding-right: ${pxToRem(30)};
-           /* width: 100%; */
-
+            padding-right: ${pxToRem(30)};
+            /* width: 100%; */
         }
     }
 
-    .SignInInfo{
+    .SignInInfo {
         padding: ${pxToRem(0)} ${pxToRem(0)} ${pxToRem(0)} ${pxToRem(30)};
         flex: 1;
         @media ${DEVICE.mobileS} {
@@ -276,34 +296,31 @@ const StyledRegisterContainer = styled('div')`
         }
 
         @media ${DEVICE.tablet} {
-           padding-left: ${pxToRem(30)};
-           /* width: 100%; */
-
+            padding-left: ${pxToRem(30)};
+            /* width: 100%; */
         }
 
-        .btn-create{
+        .btn-create {
+            width: 100%;
             @media ${DEVICE.mobileS} {
                 padding-left: ${pxToRem(2)};
                 padding-right: ${pxToRem(2)};
                 margin: auto;
-                width: 60%;
-        }
-        @media ${DEVICE.mobileM} {
+            }
+            @media ${DEVICE.mobileM} {
                 padding-left: ${pxToRem(4)};
                 padding-right: ${pxToRem(4)};
                 margin: auto;
-                width: 50%;
-        }
+            }
 
-      
-        @media ${DEVICE.tablet} {
+            @media ${DEVICE.tablet} {
                 padding-left: ${pxToRem(10.5)};
                 padding-right: ${pxToRem(16)};
                 margin: 0;
                 width: 60%;
+            }
         }
     }
-
 `;
 
 export default RegisterContainer;

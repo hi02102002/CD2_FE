@@ -2,9 +2,9 @@ import AccountLayout from '@/layouts/account';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 
-type Props = {};
+// type Props = {};
 
-const Account: NextPageWithLayout = (props: Props) => {
+const Account: NextPageWithLayout = () => {
     return <div>Account</div>;
 };
 

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import styled from '@emotion/styled';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,12 +12,16 @@ import {
     Stack,
     Typography,
 } from '@mui/material';
+import { red } from '@mui/material/colors';
+import { setCookie } from 'cookies-next';
 import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 import * as yup from 'yup';
 
 import { Button, Input, TextHover } from '@/components/common';
 import { ROUTES } from '@/constants';
 import authService from '@/services/auth.service';
+import useAuthStore from '@/store/auth';
 import { pxToRem } from '@/utils/pxToRem';
 
 interface IFormInputs {
@@ -37,13 +42,39 @@ function LoginFrom() {
         control,
         handleSubmit,
         formState: { errors },
-    } = useForm<IFormInputs>({ resolver: yupResolver(SignupSChema) });
-
+    } = useForm<IFormInputs>({
+        resolver: yupResolver(SignupSChema),
+        defaultValues: {
+            email: 'admin@ut.edu.vn',
+            password: '12345678',
+        },
+    });
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
+    const { setAuth } = useAuthStore();
 
     const onSubmit = async (data: IFormInputs) => {
-        const res = await authService.login(data.email, data.password);
-        console.log(res);
+        try {
+            setIsLoading(true);
+            const res = await authService.login(data.email, data.password);
+            setAuth({
+                user: {
+                    email: res.data.email,
+                    id: res.data.id,
+                    fullName: res.data.fullName,
+                    roles: res.data.roles,
+                },
+                accessToken: res.data.token,
+            });
+            setIsLoading(false);
+            toast.success('Login successfully!');
+            setCookie('auth_token', res.data.token);
+            setCookie('roles', res.data.roles);
+            router.push(ROUTES.HOME);
+        } catch (error) {
+            setIsLoading(false);
+        }
     };
 
     const handleTogglePassword = () => {
@@ -99,6 +130,7 @@ function LoginFrom() {
                     typeButton="primary"
                     className="btn-signin"
                     type="submit"
+                    isLoading={isLoading}
                 >
                     Sign In
                 </Button>
@@ -109,7 +141,7 @@ function LoginFrom() {
                 direction="row"
                 marginTop={16}
             >
-                <Typography sx={{ color: '#e22b2e', fontSize: pxToRem(12) }}>
+                <Typography fontSize={12} color={red[500]}>
                     * Required Fields
                 </Typography>
                 <Link href={ROUTES.FORGOT_PASS}>

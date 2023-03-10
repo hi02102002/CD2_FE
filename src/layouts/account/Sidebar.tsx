@@ -1,8 +1,6 @@
 import Link from 'next/link';
 
-type Props = {};
-
-const Sidebar = (props: Props) => {
+const Sidebar = () => {
     return (
         <div>
             this is sidebar

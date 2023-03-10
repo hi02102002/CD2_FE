@@ -5,9 +5,7 @@ import { Button } from '@/components/common';
 import { DEVICE } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
 
-type Props = {};
-
-const SectionProducts = (props: Props) => {
+const SectionProducts = () => {
     return (
         <StyledSectionProducts>
             <Box component="div" className="container-app">
