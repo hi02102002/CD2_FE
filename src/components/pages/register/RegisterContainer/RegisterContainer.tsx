@@ -1,101 +1,211 @@
-import {  Box, Checkbox, FormControlLabel, styled, Typography } from "@mui/material"
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { pxToRem } from "@/utils/pxToRem";
-import { Controller, useForm } from "react-hook-form";
+import { useState } from 'react';
 
-import { Button } from "@/components/common"
+import { yupResolver } from '@hookform/resolvers/yup';
+import {
+    Box,
+    Checkbox,
+    FormControlLabel,
+    Typography,
+    styled,
+} from '@mui/material';
+import { Controller, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+
+import { Button } from '@/components/common';
+import Input from '@/components/common/Input';
 import { DEVICE } from '@/constants';
-import Input from "@/components/common/Input";
-import { useState } from "react";
-
+import { pxToRem } from '@/utils/pxToRem';
 
 interface IFormInputs {
     fullname: string;
-    email:string;
-    password:string;
-    confirmpassword:string,
+    email: string;
+    password: string;
+    confirmpassword: string;
 }
 
-
-  
-
-const SignupSChema=yup.object().shape({
-        fullname:yup.string().required('Vui lòng nhập đầy đủ họ và tên').min(6,'Tối thiểu 6 kí tự'),
-        email:yup.string().required('Vui lòng nhập email').email('Vui lòng nhập đúng địa chỉ email'),
-        password:yup.string()
+const SignupSChema = yup.object().shape({
+    fullname: yup
+        .string()
+        .required('Vui lòng nhập đầy đủ họ và tên')
+        .min(6, 'Tối thiểu 6 kí tự'),
+    email: yup
+        .string()
+        .required('Vui lòng nhập email')
+        .email('Vui lòng nhập đúng địa chỉ email'),
+    password: yup
+        .string()
         .required('Vui lòng nhập mật khẩu')
-        .min(8,"Mật khẩu quá ngắn" )
-        .matches(/\d+/, "Mật khẩu cần ít nhất 1 số" )
-        .matches(/[a-z]+/,"Mật khẩu cần ít nhất 1 kí tự thường" )
-        .matches(/[A-Z]+/,"Mật khẩu cần ít nhất 1 kí tự in hoa" )
-        .matches(/[!@#$%^&*()-+]+/,  "Mật khẩu cần ít nhất 1 kí tự đặc biệt" )
+        .min(8, 'Mật khẩu quá ngắn')
+        .matches(/\d+/, 'Mật khẩu cần ít nhất 1 số')
+        .matches(/[a-z]+/, 'Mật khẩu cần ít nhất 1 kí tự thường')
+        .matches(/[A-Z]+/, 'Mật khẩu cần ít nhất 1 kí tự in hoa')
+        .matches(/[!@#$%^&*()-+]+/, 'Mật khẩu cần ít nhất 1 kí tự đặc biệt')
         // .matches(/ ![a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêếìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\ ]+$/,  "Mật khdsadsẩu cần ít nhất 1 kí tự đặc biệt" )
-  .test(
-    "Mật khẩu không chứa khoảng trắng",
-    "Mật khẩu không chứa khoảng trắng" ,
-    value => !/\s+/.test(value)
-  ),
-        confirmpassword:yup.string().required('Vui lòng nhập lại mật khẩu').oneOf([yup.ref('password')], 'Mật khẩu nhập lại không chính xác'),
-    })
+        .test(
+            'Mật khẩu không chứa khoảng trắng',
+            'Mật khẩu không chứa khoảng trắng',
+            (value) => !/\s+/.test(value),
+        ),
+    confirmpassword: yup
+        .string()
+        .required('Vui lòng nhập lại mật khẩu')
+        .oneOf([yup.ref('password')], 'Mật khẩu nhập lại không chính xác'),
+});
 
-function RegisterContainer(){
-
-    const {control,handleSubmit,formState:{errors}}=useForm<IFormInputs>({resolver:yupResolver(SignupSChema)});
+function RegisterContainer() {
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<IFormInputs>({ resolver: yupResolver(SignupSChema) });
     const [showPassword, setShowPassword] = useState(false);
-
 
     const onSubmit = (data: IFormInputs) => {
         console.log(data);
-      };
+    };
 
-      const handleTogglePassword =()=>{
-        setShowPassword(!showPassword)
-  }
+    const handleTogglePassword = () => {
+        setShowPassword(!showPassword);
+    };
 
-    return  <form onSubmit={handleSubmit(onSubmit)} >
+    return (
+        <form onSubmit={handleSubmit(onSubmit)}>
             <RegisterContainerr>
-                <Box  className="PersonalInfor"  >
-                    <Typography variant="h5" sx={{fontWeight:'600',mb:pxToRem(15),lineHeight:pxToRem(42),color:'#000'}} >Personal Information</Typography>
-                        <Box component='div'>
-                                <Controller name='fullname' control={control} defaultValue='' render={({field:{onChange,value}})=>
-                                    <Input label="Full Name"  onChange={onChange} value={value}   messageError={errors.fullname?.message} isError={errors.fullname!=undefined} required sx={{mb:'12px'}} ></Input>  
-                                }></Controller>
-    
-                    <FormControlLabel control={<Checkbox/>} sx={{mb:pxToRem(20),display:'block'}} label='Sign Up for Newsletter' ></FormControlLabel>
+                <Box className="PersonalInfor">
+                    <Typography
+                        variant="h5"
+                        sx={{
+                            fontWeight: '600',
+                            mb: pxToRem(15),
+                            lineHeight: pxToRem(42),
+                            color: '#000',
+                        }}
+                    >
+                        Personal Information
+                    </Typography>
+                    <Box component="div">
+                        <Controller
+                            name="fullname"
+                            control={control}
+                            defaultValue=""
+                            render={({ field: { onChange, value } }) => (
+                                <Input
+                                    label="Full Name"
+                                    onChange={onChange}
+                                    value={value}
+                                    messageError={errors.fullname?.message}
+                                    isError={errors.fullname != undefined}
+                                    required
+                                    sx={{ mb: '12px' }}
+                                ></Input>
+                            )}
+                        ></Controller>
 
-                    <FormControlLabel control={<Checkbox/>} sx={{mb:pxToRem(20)}} label='Allow remote shopping assistance'></FormControlLabel>
+                        <FormControlLabel
+                            control={<Checkbox />}
+                            sx={{ mb: pxToRem(20), display: 'block' }}
+                            label="Sign Up for Newsletter"
+                        ></FormControlLabel>
 
-                        </Box>
+                        <FormControlLabel
+                            control={<Checkbox />}
+                            sx={{ mb: pxToRem(20) }}
+                            label="Allow remote shopping assistance"
+                        ></FormControlLabel>
+                    </Box>
                 </Box>
-        
-                <Box  className="SignInInfo"  >
-                        <Typography variant="h5" sx={{fontWeight:'600',mb:pxToRem(15),lineHeight:pxToRem(42),color:'#000'}}>Sign-in Information</Typography>
-                            <Box component='div'>
-                                <Controller name="email" control={control} defaultValue='' render={({field:{onChange,value}})=>
-                                    <Input label="Email"  onChange={onChange} value={value}  messageError={errors.email?.message} isError={errors.email!=undefined} required sx={{mb:'12px'}} ></Input>  
-                                }></Controller>
 
-                                <Controller name="password" control={control} defaultValue='' render={({field:{onChange,value}})=>
-                                    <Input label="Password"  onChange={onChange} value={value} type={showPassword ? 'text' :'password'}  messageError={errors.password?.message} isError={errors.password!=undefined} required sx={{mb:'12px'}} ></Input>  
-                                }></Controller>
+                <Box className="SignInInfo">
+                    <Typography
+                        variant="h5"
+                        sx={{
+                            fontWeight: '600',
+                            mb: pxToRem(15),
+                            lineHeight: pxToRem(42),
+                            color: '#000',
+                        }}
+                    >
+                        Sign-in Information
+                    </Typography>
+                    <Box component="div">
+                        <Controller
+                            name="email"
+                            control={control}
+                            defaultValue=""
+                            render={({ field: { onChange, value } }) => (
+                                <Input
+                                    label="Email"
+                                    onChange={onChange}
+                                    value={value}
+                                    messageError={errors.email?.message}
+                                    isError={errors.email != undefined}
+                                    required
+                                    sx={{ mb: '12px' }}
+                                ></Input>
+                            )}
+                        ></Controller>
 
-                                {/* <Typography variant="body1" fontWeight='500' margin={`0 0 ${pxToRem(15)} ${pxToRem(12)}`} lineHeight='42px' color={'#666666'}  >Password Strength: No Password</Typography> */}
-                                
-                                <Controller name="confirmpassword" control={control} defaultValue='' render={({field:{onChange,value}})=>
-                                    <Input label="Confirm Password" onChange={onChange} value={value} type={showPassword ? 'text' :'password'}  messageError={errors.confirmpassword?.message} isError={errors.confirmpassword!=undefined} required sx={{mb:'12px'}} ></Input>  
-                                }></Controller>
-    
-                        <FormControlLabel control={<Checkbox/>} sx={{mb:`${pxToRem(20)}`}} label='Show Password' onChange={handleTogglePassword}></FormControlLabel>
+                        <Controller
+                            name="password"
+                            control={control}
+                            defaultValue=""
+                            render={({ field: { onChange, value } }) => (
+                                <Input
+                                    label="Password"
+                                    onChange={onChange}
+                                    value={value}
+                                    type={showPassword ? 'text' : 'password'}
+                                    messageError={errors.password?.message}
+                                    isError={errors.password != undefined}
+                                    required
+                                    sx={{ mb: '12px' }}
+                                ></Input>
+                            )}
+                        ></Controller>
 
-    
-                        <Button typeButton="primary" className="btn-create" type="submit">Create an Account</Button>
-                        
-                            </Box>
+                        {/* <Typography variant="body1" fontWeight='500' margin={`0 0 ${pxToRem(15)} ${pxToRem(12)}`} lineHeight='42px' color={'#666666'}  >Password Strength: No Password</Typography> */}
+
+                        <Controller
+                            name="confirmpassword"
+                            control={control}
+                            defaultValue=""
+                            render={({ field: { onChange, value } }) => (
+                                <Input
+                                    label="Confirm Password"
+                                    onChange={onChange}
+                                    value={value}
+                                    type={showPassword ? 'text' : 'password'}
+                                    messageError={
+                                        errors.confirmpassword?.message
+                                    }
+                                    isError={
+                                        errors.confirmpassword != undefined
+                                    }
+                                    required
+                                    sx={{ mb: '12px' }}
+                                ></Input>
+                            )}
+                        ></Controller>
+
+                        <FormControlLabel
+                            control={<Checkbox />}
+                            sx={{ mb: `${pxToRem(20)}` }}
+                            label="Show Password"
+                            onChange={handleTogglePassword}
+                        ></FormControlLabel>
+
+                        <Button
+                            typeButton="primary"
+                            className="btn-create"
+                            type="submit"
+                        >
+                            Create an Account
+                        </Button>
+                    </Box>
                 </Box>
             </RegisterContainerr>
-                </form> 
-        
+        </form>
+    );
 }
 
 const RegisterContainerr = styled('div')`
@@ -183,8 +293,6 @@ const RegisterContainerr = styled('div')`
     }
    
 
-`
+`;
 
-
-
-export default RegisterContainer
+export default RegisterContainer;

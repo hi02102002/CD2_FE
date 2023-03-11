@@ -1,5 +1,9 @@
 import React from 'react';
 
+import { Box, styled } from '@mui/material';
+
+import { DEVICE } from '@/constants';
+
 import Sidebar from './Sidebar';
 
 type Props = {
@@ -8,11 +12,20 @@ type Props = {
 
 const MainLayout = ({ children }: Props) => {
     return (
-        <div>
+        <LayoutMain className="container-app">
             <Sidebar />
             {children}
-        </div>
+        </LayoutMain>
     );
 };
+
+const LayoutMain = styled(Box)`
+    display: flex;
+    flex-direction: column-reverse;
+
+    @media screen and (${DEVICE.laptopM}) {
+        flex-direction: row;
+    }
+`;
 
 export default MainLayout;

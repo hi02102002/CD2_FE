@@ -8,21 +8,19 @@ import { NextPageWithLayout } from '@/types/shared';
 
 type Props = {};
 
-const Wishlist: NextPageWithLayout = (props: Props) => {
+const Orders: NextPageWithLayout = (props: Props) => {
     return (
         <Box className="container-app" sx={{ padding: 0, marginBottom: 24 }}>
-            <Alert severity="warning">
-                You have no items in your wish list.
-            </Alert>
+            <Alert severity="warning">You have placed no orders.</Alert>
         </Box>
     );
 };
 
-Wishlist.getLayout = (page) => {
+Orders.getLayout = (page) => {
     return (
         <ClientLayout>
             <PageTop
-                title="My Wish List"
+                title="My Orders"
                 breadcrumbItems={[
                     {
                         href: ROUTES.HOME,
@@ -34,7 +32,7 @@ Wishlist.getLayout = (page) => {
                     },
                     {
                         href: ROUTES.LOGIN,
-                        name: 'Wishlist',
+                        name: 'Orders',
                     },
                 ]}
             />
@@ -43,4 +41,4 @@ Wishlist.getLayout = (page) => {
     );
 };
 
-export default Wishlist;
+export default Orders;

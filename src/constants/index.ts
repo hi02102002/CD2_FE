@@ -13,6 +13,7 @@ export const ROUTES = {
     CHECKOUT: '/checkout',
     FORGOT_PASS: '/forgot-password',
     RESET_PASS: '/reset-password',
+    ACCOUNT: '/account',
 };
 
 export const SIZE_MEDIA = {

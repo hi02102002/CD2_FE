@@ -8,21 +8,21 @@ import { NextPageWithLayout } from '@/types/shared';
 
 type Props = {};
 
-const Wishlist: NextPageWithLayout = (props: Props) => {
+const storePayMet: NextPageWithLayout = (props: Props) => {
     return (
         <Box className="container-app" sx={{ padding: 0, marginBottom: 24 }}>
             <Alert severity="warning">
-                You have no items in your wish list.
+                You have no stored payment methods.
             </Alert>
         </Box>
     );
 };
 
-Wishlist.getLayout = (page) => {
+storePayMet.getLayout = (page) => {
     return (
         <ClientLayout>
             <PageTop
-                title="My Wish List"
+                title="Store Payment Methods"
                 breadcrumbItems={[
                     {
                         href: ROUTES.HOME,
@@ -34,7 +34,7 @@ Wishlist.getLayout = (page) => {
                     },
                     {
                         href: ROUTES.LOGIN,
-                        name: 'Wishlist',
+                        name: 'Stored Payment Methods',
                     },
                 ]}
             />
@@ -43,4 +43,4 @@ Wishlist.getLayout = (page) => {
     );
 };
 
-export default Wishlist;
+export default storePayMet;
