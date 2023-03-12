@@ -630,11 +630,7 @@ const StyledProductInfo = styled(Grid)`
 
         }
     }
-
-
-
 `
-
 const StyledAttribute = styled(Typography)`
   
      margin: 0 ${pxToRem(16)} ${pxToRem(8)} 0 ;
