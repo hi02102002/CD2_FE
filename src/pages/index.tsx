@@ -6,13 +6,20 @@ import {
     SectionProducts,
 } from '@/components/pages/home';
 import { ClientLayout } from '@/layouts/client';
+import categoryService from '@/services/category.service';
+import { Category } from '@/types/category';
 import { NextPageWithLayout } from '@/types/shared';
+import { withProtect } from '@/utils/withProtect';
 
-const Home: NextPageWithLayout = () => {
+type Props = {
+    categories: Category[];
+};
+
+const Home: NextPageWithLayout<Props> = ({ categories }) => {
     return (
         <Box>
             <Banner />
-            <SectionCategories />
+            <SectionCategories categories={categories} />
             <SectionProducts />
         </Box>
     );
@@ -21,5 +28,21 @@ const Home: NextPageWithLayout = () => {
 Home.getLayout = (page) => {
     return <ClientLayout>{page}</ClientLayout>;
 };
+
+export const getServerSideProps = withProtect({
+    isAdmin: false,
+    isProtect: false,
+})(async () => {
+    const categories = await categoryService
+        .getAllCategory()
+        .then((d) => d.data.categories.content)
+        .catch((e) => console.log(e));
+
+    return {
+        props: {
+            categories,
+        },
+    };
+});
 
 export default Home;

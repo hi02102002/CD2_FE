@@ -1,7 +1,6 @@
 import {
-    GetServerSideProps,
     GetServerSidePropsContext,
-    GetServerSidePropsResult,
+    GetServerSidePropsResult
 } from 'next';
 
 import { getCookies } from 'cookies-next';
@@ -26,7 +25,7 @@ type WithProtect = <
 >(
     options: Options,
 ) => (
-    gssp?: (ctx: GetServerSidePropsContext) => GetServerSideProps<P>,
+    gssp?: (ctx: GetServerSidePropsContext) =>Promise<GetServerSidePropsResult<P>>,
 ) => (ctx: GetServerSidePropsContext) => Promise<GetServerSidePropsResult<P>>;
 
 export const withProtect: WithProtect = (options) => (gssp) => async (ctx) => {

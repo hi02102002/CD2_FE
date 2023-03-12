@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { LoadingButton, LoadingButtonProps } from '@mui/lab';
 import {
     Box,
     BoxProps,
@@ -22,7 +23,7 @@ type HeaderProps = {
 } & StackProps;
 
 type FooterProps = {
-    ButtonOkProps?: ButtonProps;
+    ButtonOkProps?: LoadingButtonProps;
     ButtonCancelProps?: ButtonProps;
     textCancel?: string;
     textOke?: string;
@@ -53,9 +54,9 @@ const Footer: React.FC<FooterProps> = ({
             <Button variant="outlined" {...ButtonCancelProps}>
                 {textCancel}
             </Button>
-            <Button variant="contained" {...ButtonOkProps}>
+            <LoadingButton variant="contained" {...ButtonOkProps}>
                 {textOke}
-            </Button>
+            </LoadingButton>
         </StyledFooter>
     );
 };

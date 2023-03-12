@@ -26,4 +26,5 @@ export type Category = {
     imageUrl: string;
     code: string;
     name: string;
+    createdDate: string;
 };

@@ -1,12 +1,30 @@
-import { Box, Modal, styled } from '@mui/material';
+import { useEffect, useMemo, useState } from 'react';
+
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Modal, Stack, styled } from '@mui/material';
 
 import { Breadcrumbs, CategoryAction, MainContent } from '@/components/admin';
 import { ROUTES } from '@/constants';
 import { useDisclosure } from '@/hooks/useDisclosure';
 import { AdminLayout } from '@/layouts/admin';
+import useCategoryStore from '@/store/category';
+import { Category, FormInputs as CategoryInput } from '@/types/category';
 import { NextPageWithLayout } from '@/types/shared';
+import { withProtect } from '@/utils/withProtect';
+import { LoadingButton } from '@mui/lab';
+import { GridColDef } from '@mui/x-data-grid';
+import { IconEdit, IconTrash } from '@tabler/icons-react';
+import Image from 'next/image';
+import { toast } from 'react-hot-toast';
+
+
 
 const Category: NextPageWithLayout = () => {
+    const { categories, fetchCategories,total ,removeCategory} = useCategoryStore();
+    const [isLoading, setIsLoading] = useState(false)
+    const [page,setPage]= useState<number>(0)
+    const [limit,setLimit]=useState<number>(5)
+    const [isLoadingRemove,setIsLoadingRemove]=useState(false)
+
     const {
         isOpen: isOpenModalAdd,
         onClose: onCloseModalAdd,
@@ -14,10 +32,122 @@ const Category: NextPageWithLayout = () => {
     } = useDisclosure();
 
     const {
-        isOpen: isOpenModalEdit,
-        onClose: onCloseModalEdit,
-        onOpen: onOpenModalEdit,
+        isOpen: isOpenModalConfirmRemove,
+        onClose: onCloseModalConfirmRemove,
+        onOpen: onOpenModalConfirmRemove,
     } = useDisclosure();
+
+    const [removeIds,setRemoveIds] = useState<number[]>([])
+
+    const [categoryEdit, setCategoryEdit] = useState<CategoryInput & {
+    id:number} |null>(null)
+
+    
+
+
+    const columns: GridColDef<Category>[] = useMemo(()=>[
+        {
+            field: 'id', headerName: 'ID', width: 90, disableColumnMenu: true,
+            sortable: false,
+    
+        },
+         
+        {
+            field: 'imageUrl',
+            headerName: 'Image',
+            sortable: false,
+            disableColumnMenu: true,
+            flex: 1
+            , renderCell(params) {
+                return <Box>
+                    <Image src={ params.value.replace(',','').trim() || '/noimage.jpg'} alt={params.row.name} width={50} height={40} style={{
+                        objectFit: 'contain'
+                    }}  />
+                </Box>
+            },
+    
+            
+        },
+        {
+            field: 'name',
+            headerName: 'Name',
+            sortable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            flex: 1
+            
+            
+        },
+        {
+            field: 'code',
+            headerName: 'Code',
+            sortable: false,
+            disableColumnMenu: true,
+            flex: 1
+        },
+        {
+            field: 'action',
+            headerName: 'Action',
+            renderCell(params) {
+                return <Stack direction='row'>
+                    <IconButton disableRipple onClick={(e) => {
+                        e.stopPropagation()
+                        setCategoryEdit({
+                            code: params.row.code,
+                            name: params.row.name,
+                            file: [params.row.imageUrl],
+                            id:params.row.id
+                        })
+                    }}>
+                        <IconEdit/>
+                    </IconButton>
+                    <IconButton disableRipple color='error' onClick={(e) => {
+                        e.stopPropagation()
+                        setRemoveIds([params.row.id])
+                        onOpenModalConfirmRemove()
+                    }}>
+                        <IconTrash/>
+                    </IconButton>
+                   
+                </Stack>
+            },
+            sortable: false,
+            disableColumnMenu: true,
+        }
+    ], [onOpenModalConfirmRemove])
+    
+    const handelRemoveCategory = async () => {
+        try {
+            setIsLoadingRemove(true)
+            await removeCategory(removeIds)
+
+            if (removeIds.length === categories.length) {
+               setPage(page+1)
+            }
+
+            setIsLoadingRemove(false)
+            toast.success('Remove successfully')
+            onCloseModalConfirmRemove()
+            setRemoveIds([])
+        } catch (error) {
+            setIsLoadingRemove(false)
+
+            
+        }
+    }
+
+    useEffect(() => {
+        setIsLoading(true)
+        fetchCategories({
+            limit,
+            offset:page
+        }).then(() => {
+            setIsLoading(false)
+        }).catch((e) => {
+            setIsLoading(false)
+        });
+    }, [fetchCategories, page,limit]);
+
 
     return (
         <Box padding={16}>
@@ -36,29 +166,80 @@ const Category: NextPageWithLayout = () => {
             <Box marginTop={16}>
                 <MainContent
                     TableProps={{
-                        columns: [],
-                        rows: [],
+                        columns: columns,
+                        rows: categories,
+                        loading: isLoading,
+                        checkboxSelection: true,
+                        onSelectionModelChange(selectionModel) {
+                           setRemoveIds(selectionModel as Array<number>)
+                        },
+                       
                     }}
                     ButtonAddProps={{
                         textButton: 'Add category',
                         onClick: onOpenModalAdd,
+                        sx: {
+                            ml:'auto'
+                        }
+                    }}
+                    SearchProps={{
+                        sx: {
+                            display:'none !important'
+                        }
+                    }}
+                    TablePaginationProps={{
+                        count: total,
+                        page: page,
+                        onPageChange(event, page) {
+                            console.log(page)
+                            setPage(page)
+                        },
+                        rowsPerPage: limit,
+                        rowsPerPageOptions: [5, 10, 15],
+                        onRowsPerPageChange(e) {
+                           setLimit(Number(e.target.value))
+                        }                        
+                    }}
+                    RemoveProps={{
+                        rowSelected: removeIds,
+                        ButtonRemoveProps: {
+                            loading: isLoadingRemove,
+                            onClick:handelRemoveCategory
+                        }
                     }}
                 />
             </Box>
             <StyledModal open={isOpenModalAdd} onClose={onCloseModalAdd}>
                 <CategoryAction onClose={onCloseModalAdd} />
             </StyledModal>
-            <StyledModal open={isOpenModalEdit} onClose={onCloseModalEdit}>
+            <StyledModal open={Boolean(categoryEdit)} onClose={() => {
+                setCategoryEdit(null)
+            }}>
                 <CategoryAction
-                    onClose={onCloseModalEdit}
-                    type="EDIT"
-                    dataEdit={{
-                        code: 'category',
-                        name: 'Category',
-                        file: [],
+                    onClose={() => {
+                        setCategoryEdit(null)
                     }}
+                    type="EDIT"
+                    dataEdit={categoryEdit}
+
                 />
             </StyledModal>
+            <Dialog open={isOpenModalConfirmRemove} onClose={onCloseModalConfirmRemove}>
+            <DialogTitle id="alert-dialog-title">
+                    Remove category? 
+                </DialogTitle>
+                <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            This action will remove this category. Are you sure?
+                    </DialogContentText>
+                    <DialogActions>
+          <Button onClick={onCloseModalConfirmRemove}>Disagree</Button>
+          <LoadingButton loading={isLoadingRemove} variant='contained' onClick={handelRemoveCategory} autoFocus>
+            Agree
+          </LoadingButton>
+        </DialogActions>
+        </DialogContent>
+</Dialog>
         </Box>
     );
 };
@@ -72,5 +253,10 @@ const StyledModal = styled(Modal)`
     align-items: center;
     justify-content: center;
 `;
+
+export const getServerSideProps = withProtect({
+    isAdmin: true,
+    isProtect: true,
+})();
 
 export default Category;

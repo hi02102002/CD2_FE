@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import {
     Box,
@@ -17,26 +18,50 @@ import { common, grey } from '@mui/material/colors';
 import { Stack } from '@mui/system';
 import {
     IconHeart,
+    IconLayoutDashboard,
+    IconLogin,
+    IconLogout,
     IconMenu2,
     IconSearch,
     IconShoppingCart,
+    IconUser,
+    IconUserPlus,
 } from '@tabler/icons-react';
 
 import { DrawerCart } from '@/components/client';
-import { Badge, Tooltip } from '@/components/common';
+import { Badge, Menu, MenuItem, Tooltip } from '@/components/common';
 import { DEVICE, ROUTES } from '@/constants';
 import { useDisclosure } from '@/hooks/useDisclosure';
+import authService from '@/services/auth.service';
+import useAuthStore from '@/store/auth';
+import { ROLE } from '@/types/user';
 import { pxToRem } from '@/utils/pxToRem';
 
 const Header = () => {
     const theme = useTheme();
+    const router = useRouter();
+    const { user, setAuth } = useAuthStore();
     const headerRef = useRef<HTMLElement | null>(null);
+    const [anchorElMenuUser, setAnchorElMenuUser] =
+        useState<null | HTMLElement>(null);
+    const handelOpenMenuUser = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorElMenuUser(event.currentTarget);
+    };
+
+    const handleCloseMenuUser = () => {
+        setAnchorElMenuUser(null);
+    };
 
     const {
         isOpen: isOpenCart,
         onOpen: onOpenCart,
         onClose: onCloseCart,
     } = useDisclosure();
+
+    const handleNavigate = (route: string) => {
+        router.push(route);
+        setAnchorElMenuUser(null);
+    };
 
     useEffect(() => {
         const handelScroll = () => {
@@ -96,6 +121,102 @@ const Header = () => {
                                 <IconSearch color={theme.themeColor.primary} />
                             </IconButton>
                         </Tooltip>
+                        <IconButton
+                            disableTouchRipple
+                            className="user"
+                            onClick={handelOpenMenuUser}
+                        >
+                            <IconUser color={theme.themeColor.primary} />
+                        </IconButton>
+                        <Menu
+                            anchorEl={anchorElMenuUser}
+                            open={Boolean(anchorElMenuUser)}
+                            onClose={handleCloseMenuUser}
+                            anchorOrigin={{
+                                horizontal: 'center',
+                                vertical: 'bottom',
+                            }}
+                            transformOrigin={{
+                                horizontal: 'center',
+                                vertical: 'top',
+                            }}
+                            PaperProps={{
+                                sx: {
+                                    width: 200,
+                                },
+                            }}
+                        >
+                            {user ? (
+                                <>
+                                    <MenuItem
+                                        disableRipple
+                                        onClick={() =>
+                                            handleNavigate('/account')
+                                        }
+                                    >
+                                        <IconUser />
+                                        <Typography>Account</Typography>
+                                    </MenuItem>
+                                    {user.roles.includes(ROLE.ADMIN) && (
+                                        <MenuItem
+                                            disableRipple
+                                            onClick={() =>
+                                                handleNavigate(ROUTES.ADMIN)
+                                            }
+                                        >
+                                            <IconLayoutDashboard />
+                                            <Typography>
+                                                Admin Dashboard
+                                            </Typography>
+                                        </MenuItem>
+                                    )}
+                                    <MenuItem
+                                        disableRipple
+                                        onClick={() =>
+                                            handleNavigate('/wishlist')
+                                        }
+                                    >
+                                        <IconHeart />
+                                        <Typography>Wishlist</Typography>
+                                    </MenuItem>
+
+                                    <MenuItem
+                                        disableRipple
+                                        onClick={() => {
+                                            authService.logout();
+                                            setAuth({
+                                                accessToken: null,
+                                                user: null,
+                                            });
+                                        }}
+                                    >
+                                        <IconLogout />
+                                        <Typography>Logout</Typography>
+                                    </MenuItem>
+                                </>
+                            ) : (
+                                <>
+                                    <MenuItem
+                                        disableRipple
+                                        onClick={() =>
+                                            handleNavigate(ROUTES.LOGIN)
+                                        }
+                                    >
+                                        <IconLogin />
+                                        <Typography>Login</Typography>
+                                    </MenuItem>
+                                    <MenuItem
+                                        disableRipple
+                                        onClick={() =>
+                                            handleNavigate(ROUTES.REGISTER)
+                                        }
+                                    >
+                                        <IconUserPlus />
+                                        <Typography>Register</Typography>
+                                    </MenuItem>
+                                </>
+                            )}
+                        </Menu>
                         <Tooltip
                             title="Wishlist"
                             arrow

@@ -4,16 +4,10 @@ import { Breadcrumbs, MainContent } from '@/components/admin';
 import { ROUTES } from '@/constants';
 import { AdminLayout } from '@/layouts/admin';
 import { NextPageWithLayout } from '@/types/shared';
-import { pxToRem } from '@/utils/pxToRem';
 
 const Customer: NextPageWithLayout = () => {
     return (
-        <Box
-            component="div"
-            sx={{
-                padding: pxToRem(16),
-            }}
-        >
+        <Box component="div" padding={16}>
             <Breadcrumbs
                 breadcrumbs={[
                     {
@@ -26,11 +20,7 @@ const Customer: NextPageWithLayout = () => {
                     },
                 ]}
             />
-            <Box
-                sx={{
-                    marginTop: pxToRem(16),
-                }}
-            >
+            <Box marginTop={16}>
                 <MainContent
                     TableProps={{
                         columns: [],
@@ -38,6 +28,9 @@ const Customer: NextPageWithLayout = () => {
                     }}
                     ButtonAddProps={{
                         textButton: 'Add Customer',
+                        sx: {
+                            display: 'none',
+                        },
                     }}
                 />
             </Box>
