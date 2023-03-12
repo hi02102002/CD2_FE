@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Box, Typography, styled } from '@mui/material';
 
 import { Button } from '@/components/common';
-import { DEVICE } from '@/constants';
+import { DEVICE, ROUTES } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
 
 import LoginForm from '../LoginForm';
@@ -46,7 +46,7 @@ function LoginContainer() {
                     trends and promotions. To opt out, click unsubscribe in our
                     emails.
                 </Text>
-                <Link href={'/register'}>
+                <Link href={ROUTES.REGISTER}>
                     <Button typeButton="primary" className="btn-create">
                         Create an Account
                     </Button>

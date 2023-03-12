@@ -14,6 +14,7 @@ export const ROUTES = {
     FORGOT_PASS: '/forgot-password',
     RESET_PASS: '/reset-password',
     LAYOUT: '/layout',
+    NOT_ALLOW: '/not-allow',
 };
 
 export const SIZE_MEDIA = {
@@ -49,3 +50,5 @@ export const DEVICE = {
     desktop: `(min-width: ${SIZE_MEDIA.desktop})`,
     desktopL: `(min-width: ${SIZE_MEDIA.desktop})`,
 };
+
+export const API_URL = 'https://shopping-cart-demo.herokuapp.com';

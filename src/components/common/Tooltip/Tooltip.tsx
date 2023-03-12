@@ -18,7 +18,7 @@ const Tooltip = ({ children, title, ...rest }: Props) => {
 
 const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
     <MTooltip {...props} classes={{ popper: className }} disableInteractive />
-))((p) => ({
+))(() => ({
     [`& .${tooltipClasses.arrow}`]: {
         color: common.black,
     },

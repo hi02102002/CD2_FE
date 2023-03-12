@@ -1,152 +1,288 @@
-import {  Box, Checkbox, FormControlLabel, styled, Typography } from "@mui/material"
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { pxToRem } from "@/utils/pxToRem";
-import { Controller, useForm } from "react-hook-form";
+import { useState } from 'react';
 
-import { Button } from "@/components/common"
-import { DEVICE } from '@/constants';
-import Input from "@/components/common/Input";
-import { useState } from "react";
+import { useRouter } from 'next/router';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import {
+    Box,
+    Checkbox,
+    FormControlLabel,
+    Typography,
+    styled,
+} from '@mui/material';
+import { AxiosError } from 'axios';
+import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import * as yup from 'yup';
+
+import { Button, Input } from '@/components/common';
+import { DEVICE, ROUTES } from '@/constants';
+import authService from '@/services/auth.service';
+import { pxToRem } from '@/utils/pxToRem';
 
 interface IFormInputs {
-    fullname: string;
-    email:string;
-    password:string;
-    confirmpassword:string,
+    fullName: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
 }
 
 
   
 
 const SignupSChema=yup.object().shape({
-        fullname:yup.string().required().min(6),
-        email:yup.string().required().email(),
+        fullname:yup.string().required('Vui lòng nhập đầy đủ họ và tên').min(6,'Tối thiểu 6 kí tự'),
+        email:yup.string().required('Vui lòng nhập email').email('Vui lòng nhập đúng địa chỉ email'),
         password:yup.string()
-        .required()
-        .min(8)
-        .matches(/\d+/, "password must be at least one number" )
-        .matches(/[a-z]+/,"password must be at least one lowercase character" )
-        .matches(/[A-Z]+/,"password must be at least one uppercase character" )
-        .matches(/[!@#$%^&*()-+]+/,  "password must be at least one Special character" )
+        .required('Vui lòng nhập mật khẩu')
+        .min(8,"Mật khẩu quá ngắn" )
+        .matches(/\d+/, "Mật khẩu cần ít nhất 1 số" )
+        .matches(/[a-z]+/,"Mật khẩu cần ít nhất 1 kí tự thường" )
+        .matches(/[A-Z]+/,"Mật khẩu cần ít nhất 1 kí tự in hoa" )
+        .matches(/[!@#$%^&*()-+]+/,  "Mật khẩu cần ít nhất 1 kí tự đặc biệt" )
         // .matches(/ ![a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêếìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\ ]+$/,  "Mật khdsadsẩu cần ít nhất 1 kí tự đặc biệt" )
   .test(
-    "Password must not contain spaces",
-    "Password must not contain spaces" ,
+    "Mật khẩu không chứa khoảng trắng",
+    "Mật khẩu không chứa khoảng trắng" ,
     value => !/\s+/.test(value)
   ),
-        confirmpassword:yup.string().required().oneOf([yup.ref('password')], 'Re-entered password is incorrect'),
+        confirmpassword:yup.string().required('Vui lòng nhập lại mật khẩu').oneOf([yup.ref('password')], 'Mật khẩu nhập lại không chính xác'),
     })
 
-function RegisterContainer(){
-
-    const {control,handleSubmit,formState:{errors}}=useForm<IFormInputs>({resolver:yupResolver(SignupSChema)});
+function RegisterContainer() {
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<IFormInputs>({ resolver: yupResolver(SignUpSChema) });
     const [showPassword, setShowPassword] = useState(false);
+    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
+    const onSubmit = async (data: IFormInputs) => {
+        try {
+            setIsLoading(true);
+            await authService.register({
+                email: data.email,
+                fullName: data.fullName,
+                password: data.password,
+            });
+            setIsLoading(false);
+            toast.success('Register successfully!');
+            router.push(ROUTES.LOGIN);
+            setIsLoading(false);
+        } catch (error) {
+            setIsLoading(false);
+            if (error instanceof AxiosError) {
+                toast.error(error.response?.data.message);
+            } else {
+                toast.error('Something went wrong. Try again');
+            }
+        }
+    };
 
+    const handleTogglePassword = () => {
+        setShowPassword(!showPassword);
+    };
 
-    const onSubmit = (data: IFormInputs) => {
-        console.log(data);
-      };
+    return (
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <StyledRegisterContainer>
+                <Box className="PersonalInfo">
+                    <Typography
+                        variant="h5"
+                        sx={{
+                            fontWeight: '600',
+                            mb: pxToRem(15),
+                            lineHeight: pxToRem(42),
+                            color: '#000',
+                        }}
+                    >
+                        Personal Information
+                    </Typography>
+                    <Box component="div">
+                        <Controller
+                            name="fullName"
+                            control={control}
+                            defaultValue=""
+                            render={({
+                                field: { onChange, value, name, onBlur },
+                            }) => (
+                                <Input
+                                    label="Full Name"
+                                    onChange={onChange}
+                                    value={value}
+                                    messageError={errors.fullName?.message}
+                                    isError={errors.fullName !== undefined}
+                                    required
+                                    sx={{ mb: '12px' }}
+                                    name={name}
+                                    onBlur={onBlur}
+                                />
+                            )}
+                        />
 
-      const handleTogglePassword =()=>{
-        setShowPassword(!showPassword)
-  }
+                        <FormControlLabel
+                            control={<Checkbox />}
+                            sx={{ mb: pxToRem(20), display: 'block' }}
+                            label="Sign Up for Newsletter"
+                        />
 
-    return  <form onSubmit={handleSubmit(onSubmit)} >
-            <RegisterContainerr>
-                <Box  className="PersonalInfor"  >
-                    <Typography variant="h5" sx={{fontWeight:'600',mb:pxToRem(15),lineHeight:pxToRem(42),color:'#000'}} >Personal Information</Typography>
-                        <Box component='div'>
-                                <Controller name='fullname' control={control} defaultValue='' render={({field:{onChange,value}})=>
-                                    <Input label="Full Name"  onChange={onChange} value={value}   messageError={errors.fullname?.message} isError={errors.fullname!=undefined} required sx={{mb:'12px'}} ></Input>  
-                                }></Controller>
-    
-                    <FormControlLabel control={<Checkbox/>} sx={{mb:pxToRem(20),display:'block'}} label='Sign Up for Newsletter' ></FormControlLabel>
-
-                    <FormControlLabel control={<Checkbox/>} sx={{mb:pxToRem(20)}} label='Allow remote shopping assistance'></FormControlLabel>
-
-                        </Box>
+                        <FormControlLabel
+                            control={<Checkbox />}
+                            sx={{ mb: pxToRem(20) }}
+                            label="Allow remote shopping assistance"
+                        />
+                    </Box>
                 </Box>
-        
-                <Box  className="SignInInfo"  >
-                        <Typography variant="h5" sx={{fontWeight:'600',mb:pxToRem(15),lineHeight:pxToRem(42),color:'#000'}}>Sign-in Information</Typography>
-                            <Box component='div'>
-                                <Controller name="email" control={control} defaultValue='' render={({field:{onChange,value}})=>
-                                    <Input label="Email"  onChange={onChange} value={value}  messageError={errors.email?.message} isError={errors.email!=undefined} required sx={{mb:'12px'}} ></Input>  
-                                }></Controller>
 
-                                <Controller name="password" control={control} defaultValue='' render={({field:{onChange,value}})=>
-                                    <Input label="Password"  onChange={onChange} value={value} type={showPassword ? 'text' :'password'}  messageError={errors.password?.message} isError={errors.password!=undefined} required sx={{mb:'12px'}} ></Input>  
-                                }></Controller>
+                <Box className="SignInInfo">
+                    <Typography
+                        variant="h5"
+                        sx={{
+                            fontWeight: '600',
+                            mb: pxToRem(15),
+                            lineHeight: pxToRem(42),
+                            color: '#000',
+                        }}
+                    >
+                        Sign-in Information
+                    </Typography>
+                    <Box component="div">
+                        <Controller
+                            name="email"
+                            control={control}
+                            defaultValue=""
+                            render={({
+                                field: { onChange, value, name, onBlur },
+                            }) => (
+                                <Input
+                                    label="Email"
+                                    onChange={onChange}
+                                    value={value}
+                                    messageError={errors.email?.message}
+                                    isError={errors.email !== undefined}
+                                    required
+                                    sx={{ mb: '12px' }}
+                                    name={name}
+                                    onBlur={onBlur}
+                                />
+                            )}
+                        />
 
-                                {/* <Typography variant="body1" fontWeight='500' margin={`0 0 ${pxToRem(15)} ${pxToRem(12)}`} lineHeight='42px' color={'#666666'}  >Password Strength: No Password</Typography> */}
-                                
-                                <Controller name="confirmpassword" control={control} defaultValue='' render={({field:{onChange,value}})=>
-                                    <Input label="Confirm Password" onChange={onChange} value={value} type={showPassword ? 'text' :'password'}  messageError={errors.confirmpassword?.message} isError={errors.confirmpassword!=undefined} required sx={{mb:'12px'}} ></Input>  
-                                }></Controller>
-    
-                        <FormControlLabel control={<Checkbox/>} sx={{mb:`${pxToRem(20)}`}} label='Show Password' onChange={handleTogglePassword}></FormControlLabel>
+                        <Controller
+                            name="password"
+                            control={control}
+                            defaultValue=""
+                            render={({
+                                field: { onChange, value, name, onBlur },
+                            }) => (
+                                <Input
+                                    label="Password"
+                                    onChange={onChange}
+                                    value={value}
+                                    type={showPassword ? 'text' : 'password'}
+                                    messageError={errors.password?.message}
+                                    isError={errors.password != undefined}
+                                    required
+                                    sx={{ mb: '12px' }}
+                                    name={name}
+                                    onBlur={onBlur}
+                                />
+                            )}
+                        />
 
-    
-                        <Button typeButton="primary" className="btn-create" type="submit">Create an Account</Button>
-                        
-                            </Box>
+                        <Controller
+                            name="confirmPassword"
+                            control={control}
+                            defaultValue=""
+                            render={({
+                                field: { onChange, value, name, onBlur },
+                            }) => (
+                                <Input
+                                    label="Confirm Password"
+                                    onChange={onChange}
+                                    value={value}
+                                    type={showPassword ? 'text' : 'password'}
+                                    messageError={
+                                        errors.confirmPassword?.message
+                                    }
+                                    isError={
+                                        errors.confirmPassword !== undefined
+                                    }
+                                    name={name}
+                                    onBlur={onBlur}
+                                    required
+                                    sx={{ mb: '12px' }}
+                                />
+                            )}
+                        />
+
+                        <FormControlLabel
+                            control={<Checkbox />}
+                            sx={{ mb: `${pxToRem(20)}` }}
+                            label="Show Password"
+                            onChange={handleTogglePassword}
+                        />
+
+                        <Button
+                            typeButton="primary"
+                            className="btn-create"
+                            type="submit"
+                            isLoading={isLoading}
+                        >
+                            Create an Account
+                        </Button>
+                    </Box>
                 </Box>
-            </RegisterContainerr>
-                </form> 
-        
+            </StyledRegisterContainer>
+        </form>
+    );
 }
 
-const RegisterContainerr = styled('div')`
+const StyledRegisterContainer = styled('div')`
     max-width: 60rem;
     margin: auto;
-    display:flex;
-    
+    display: flex;
+
     @media ${DEVICE.mobileS} {
-           margin: ${pxToRem(15)};
-           /* justify-content: center; */
-           flex-direction: column;
-        }
-
-    @media ${DEVICE.tablet} {
-            margin: ${pxToRem(20)};
-           /* justify-content: center; */
-           flex-direction: row;
-        }
-
-        @media ${DEVICE.laptop} {
-            margin: auto;
-           /* justify-content: center; */
-           flex-direction: row;
-        }
-    
-        
-        
-        @media ${DEVICE.tablet} {
-            padding-left: 1rem;
-            padding-right: 1rem;
-        }
+        margin: ${pxToRem(15)};
+        /* justify-content: center; */
+        flex-direction: column;
     }
 
-    .PersonalInfor{
+    @media ${DEVICE.tablet} {
+        margin: ${pxToRem(20)};
+        /* justify-content: center; */
+        flex-direction: row;
+    }
+
+    @media ${DEVICE.laptop} {
+        margin: auto;
+        /* justify-content: center; */
+        flex-direction: row;
+    }
+
+    @media ${DEVICE.tablet} {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .PersonalInfo {
         padding: ${pxToRem(0)} ${pxToRem(30)} ${pxToRem(0)} ${pxToRem(0)};
         margin-bottom: ${pxToRem(30)};
         flex: 1;
         @media ${DEVICE.mobileS} {
-           padding: 0;
-           width: 100%;
-
+            padding: 0;
+            width: 100%;
         }
 
         @media ${DEVICE.tablet} {
-           padding-right: ${pxToRem(30)};
-           /* width: 100%; */
-
+            padding-right: ${pxToRem(30)};
+            /* width: 100%; */
         }
     }
 
-    .SignInInfo{
+    .SignInInfo {
         padding: ${pxToRem(0)} ${pxToRem(0)} ${pxToRem(0)} ${pxToRem(30)};
         flex: 1;
         @media ${DEVICE.mobileS} {
@@ -154,37 +290,31 @@ const RegisterContainerr = styled('div')`
         }
 
         @media ${DEVICE.tablet} {
-           padding-left: ${pxToRem(30)};
-           /* width: 100%; */
-
+            padding-left: ${pxToRem(30)};
+            /* width: 100%; */
         }
 
-        .btn-create{
+        .btn-create {
+            width: 100%;
             @media ${DEVICE.mobileS} {
                 padding-left: ${pxToRem(2)};
                 padding-right: ${pxToRem(2)};
                 margin: auto;
-                width: 60%;
-        }
-        @media ${DEVICE.mobileM} {
+            }
+            @media ${DEVICE.mobileM} {
                 padding-left: ${pxToRem(4)};
                 padding-right: ${pxToRem(4)};
                 margin: auto;
-                width: 50%;
-        }
+            }
 
-      
-        @media ${DEVICE.tablet} {
+            @media ${DEVICE.tablet} {
                 padding-left: ${pxToRem(10.5)};
                 padding-right: ${pxToRem(16)};
                 margin: 0;
                 width: 60%;
+            }
         }
     }
-   
+`;
 
-`
-
-
-
-export default RegisterContainer
+export default RegisterContainer;

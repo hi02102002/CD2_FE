@@ -9,9 +9,7 @@ import { Button, TextLink, Tooltip } from '@/components/common';
 import { DEVICE } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
 
-type Props = {};
-
-const ProductItem = (props: Props) => {
+const ProductItem = () => {
     return (
         <StyledProductItem>
             <StyledProductTop>

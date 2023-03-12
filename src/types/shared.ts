@@ -18,3 +18,9 @@ export type Breadcrumb = {
     href: string;
     name: string;
 };
+
+export type BaseResponse<T> = {
+    message: string;
+    status: string;
+    data: T;
+};
