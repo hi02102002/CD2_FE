@@ -45,7 +45,7 @@ const Breadcrumbs = ({
                             <Typography
                                 key={item.href}
                                 sx={{
-                                    fontWeight: 600,
+                                    fontWeight: 500,
                                 }}
                             >
                                 {item.name}

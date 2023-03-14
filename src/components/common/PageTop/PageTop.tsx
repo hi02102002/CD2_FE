@@ -1,6 +1,12 @@
 import Link from 'next/link';
 
-import { Box, Breadcrumbs, Link as MuiLink, Typography } from '@mui/material';
+import {
+    Box,
+    Breadcrumbs,
+    Link as MuiLink,
+    Typography,
+    styled,
+} from '@mui/material';
 
 import { Breadcrumb } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
@@ -12,19 +18,14 @@ type Props = {
 
 const PageTop = ({ title = 'Title', breadcrumbItems }: Props) => {
     return (
-        <Box
-            component="div"
-            sx={{
-                height: pxToRem(150),
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'column',
-                gap: pxToRem(16),
-            }}
-            className="page-top"
-        >
-            <Typography className="title" textAlign='center' component="h2" variant="h2">
+        <StyledPageTop component="div" className="page-top container-app">
+            <Typography
+                className="title"
+                textAlign="center"
+                component="h2"
+                variant="h2"
+                fontWeight={500}
+            >
                 {title}
             </Typography>
             {breadcrumbItems && (
@@ -63,8 +64,17 @@ const PageTop = ({ title = 'Title', breadcrumbItems }: Props) => {
                     })}
                 </Breadcrumbs>
             )}
-        </Box>
+        </StyledPageTop>
     );
 };
+
+const StyledPageTop = styled(Box)`
+    height: ${pxToRem(150)};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: ${pxToRem(16)};
+`;
 
 export default PageTop;

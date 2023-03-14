@@ -6,10 +6,9 @@ import { DEVICE, ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
+import { withProtect } from '@/utils/withProtect';
 
-type Props = {};
-
-const Login: NextPageWithLayout<Props> = () => {
+const Login: NextPageWithLayout = () => {
     return (
         <>
             <PageTop
@@ -36,10 +35,6 @@ const Login: NextPageWithLayout<Props> = () => {
     );
 };
 
-Login.getLayout = (page) => {
-    return <ClientLayout>{page}</ClientLayout>;
-};
-
 const LoginSocial = styled('div')`
     display: flex;
     justify-content: center;
@@ -55,5 +50,14 @@ const LoginSocial = styled('div')`
         /* align-items: center; */
     }
 `;
+
+Login.getLayout = (page) => {
+    return <ClientLayout>{page}</ClientLayout>;
+};
+
+export const getServerSideProps = withProtect({
+    isAdmin: false,
+    isProtect: false,
+})();
 
 export default Login;

@@ -4,6 +4,7 @@ import { EmotionCache } from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import NextNProgress from 'nextjs-progressbar';
+import { Toaster } from 'react-hot-toast';
 
 import { GlobalCSS } from '@/components/common';
 import '@/styles/globals.css';
@@ -18,11 +19,11 @@ interface MyAppProps extends AppProps {
 
 const clientSideEmotionCache = createEmotionCache();
 
-export default function App({
+const App = ({
     Component,
     emotionCache = clientSideEmotionCache,
     pageProps,
-}: MyAppProps) {
+}: MyAppProps) => {
     const getLayout = Component.getLayout ?? ((page) => page);
 
     return (
@@ -44,9 +45,12 @@ export default function App({
                             showSpinner: false,
                         }}
                     />
+                    <Toaster />
                     {getLayout(<Component {...pageProps} />)}
                 </ThemeProvider>
             </CacheProvider>
         </>
     );
-}
+};
+
+export default App;

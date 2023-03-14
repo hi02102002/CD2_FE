@@ -6,6 +6,7 @@ import { DEVICE, ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
+import { withProtect } from '@/utils/withProtect';
 
 type Props = {};
 
@@ -55,5 +56,10 @@ const LoginSocial = styled('div')`
         /* align-items: center; */
     }
 `;
+
+export const getServerSideProps = withProtect({
+    isAdmin: false,
+    isProtect: false,
+})();
 
 export default Register;

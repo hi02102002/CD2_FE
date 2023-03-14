@@ -6,9 +6,9 @@ import { Button, TextHover, Tooltip } from '@/components/common';
 import { DEVICE } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
 
-export type FilterProps = {
-    onFilter?: () => void;
-};
+// export type FilterProps = {
+//     onFilter?: () => void;
+// };
 
 const SIZES = ['S', 'M', 'L', 'XL', '2XL', '3XL'];
 
@@ -28,7 +28,7 @@ const marks = [
     },
 ];
 
-const Filter = (props: FilterProps) => {
+const Filter = () => {
     return (
         <StyledFilter container rowSpacing={16} columnSpacing={16}>
             <Grid item xs={12} lg={3}>

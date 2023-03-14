@@ -12,6 +12,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { Button } from '@/components/common';
 import { DEVICE } from '@/constants';
+import authService from '@/services/auth.service';
+import useAuthStore from '@/store/auth';
 import { pxToRem } from '@/utils/pxToRem';
 
 type Slide = {
@@ -68,6 +70,7 @@ const textContentItemVariant = (startY: number, endY: number): Variants => {
 
 const Banner = () => {
     const router = useRouter();
+    const { setAuth } = useAuthStore();
 
     return (
         <StyledBanner>
@@ -137,9 +140,12 @@ const Banner = () => {
                                                             typeButton="secondary"
                                                             className="btn-shop"
                                                             onClick={() => {
-                                                                router.push(
-                                                                    '/products',
-                                                                );
+                                                                setAuth({
+                                                                    accessToken:
+                                                                        null,
+                                                                    user: null,
+                                                                });
+                                                                authService.logout();
                                                             }}
                                                         >
                                                             Shop Now

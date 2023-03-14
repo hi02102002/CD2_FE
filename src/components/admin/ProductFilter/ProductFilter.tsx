@@ -16,9 +16,7 @@ import { common } from '@mui/material/colors';
 
 import { pxToRem } from '@/utils/pxToRem';
 
-type Props = {};
-
-const ProductFilter = (props: Props) => {
+const ProductFilter = () => {
     const [value, setValue] = React.useState<number[]>([20, 37]);
 
     const handleChange = (event: Event, newValue: number | number[]) => {

@@ -4,11 +4,16 @@ import { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { DEVICE } from '@/constants';
+import { Category } from '@/types/category';
 import { pxToRem } from '@/utils/pxToRem';
 
 import CategoryItem from '../CategoryItem';
 
-const SectionCategories = () => {
+type Props = {
+    categories: Category[];
+};
+
+const SectionCategories = ({ categories }: Props) => {
     return (
         <StyledSectionCategories className="container-app">
             <Stack
@@ -50,30 +55,13 @@ const SectionCategories = () => {
                 }}
                 modules={[Navigation]}
             >
-                <SwiperSlide>
-                    <CategoryItem />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <CategoryItem />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <CategoryItem />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <CategoryItem />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <CategoryItem />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <CategoryItem />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <CategoryItem />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <CategoryItem />
-                </SwiperSlide>
+                {categories?.map((category) => {
+                    return (
+                        <SwiperSlide key={category.id}>
+                            <CategoryItem category={category} />
+                        </SwiperSlide>
+                    );
+                })}
             </Swiper>
         </StyledSectionCategories>
     );

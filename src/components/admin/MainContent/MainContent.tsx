@@ -1,9 +1,14 @@
+import { LoadingButton, LoadingButtonProps } from '@mui/lab';
 import {
     Box,
     BoxProps,
     Button,
     ButtonProps,
     Input,
+    Stack,
+    TablePagination,
+    TablePaginationProps,
+    Typography,
     styled,
 } from '@mui/material';
 import { common } from '@mui/material/colors';
@@ -24,14 +29,32 @@ type Props = {
         placeholder?: string;
         textButtonSearch?: string;
         nameInput?: string;
+        sx?: ButtonProps['sx'];
+    };
+    TablePaginationProps: TablePaginationProps;
+    RemoveProps?: {
+        rowSelected: any[];
+        ButtonRemoveProps?: LoadingButtonProps;
     };
 };
 
-const MainContent = ({ ButtonAddProps, SearchProps, TableProps }: Props) => {
+const MainContent = ({
+    ButtonAddProps,
+    SearchProps,
+    TableProps,
+    TablePaginationProps,
+    RemoveProps,
+}: Props) => {
     return (
         <StyledMainContent>
             <StyledMainContentHeader>
-                <Box component="div" className="search-container">
+                <Box
+                    component="div"
+                    className="search-container"
+                    sx={{
+                        ...SearchProps?.sx,
+                    }}
+                >
                     <Input
                         placeholder={SearchProps?.placeholder || 'Search'}
                         name={SearchProps?.nameInput || 'name'}
@@ -59,7 +82,33 @@ const MainContent = ({ ButtonAddProps, SearchProps, TableProps }: Props) => {
                     {ButtonAddProps?.textButton || 'Add'}
                 </Button>
             </StyledMainContentHeader>
-            <Table {...TableProps} />
+            <Table {...TableProps} hideFooter />
+            <Stack
+                direction="row"
+                sx={{ background: '#fff' }}
+                px={16}
+                justifyContent="space-between"
+            >
+                {RemoveProps?.rowSelected && (
+                    <Stack direction="row" alignItems="center" gap={16}>
+                        {RemoveProps.rowSelected.length > 0 && (
+                            <>
+                                <Typography>
+                                    {RemoveProps?.rowSelected.length} rows
+                                    Selected
+                                </Typography>
+                                <LoadingButton
+                                    {...RemoveProps?.ButtonRemoveProps}
+                                    variant="contained"
+                                >
+                                    Remove
+                                </LoadingButton>
+                            </>
+                        )}
+                    </Stack>
+                )}
+                <TablePagination {...TablePaginationProps} />
+            </Stack>
         </StyledMainContent>
     );
 };

@@ -8,9 +8,7 @@ import { Button, InputChangeAmount } from '@/components/common';
 import { DEVICE } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
 
-type Props = {};
-
-export const TableCart = (props: Props) => {
+export const TableCart = () => {
     return (
         <StyledTable>
             <StyledTHead component="thead">

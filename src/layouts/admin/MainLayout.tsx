@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, styled } from '@mui/material';
+import { Box, Stack, styled } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { BoxProps } from '@mui/system';
 
@@ -21,14 +21,7 @@ const MainLayout = ({ children }: Props) => {
     };
 
     return (
-        <Box
-            component="div"
-            sx={{
-                minHeight: '100vh',
-                display: 'flex',
-                flexDirection: 'column',
-            }}
-        >
+        <Stack component="div" minHeight="100vh">
             <Header
                 onToggleSidebar={handleToggleSidebar}
                 isOpenSidebar={isOpenSidebar}
@@ -48,7 +41,7 @@ const MainLayout = ({ children }: Props) => {
                 />
                 <StyledMain component="main">{children}</StyledMain>
             </Box>
-        </Box>
+        </Stack>
     );
 };
 
