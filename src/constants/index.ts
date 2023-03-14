@@ -13,7 +13,7 @@ export const ROUTES = {
     CHECKOUT: '/checkout',
     FORGOT_PASS: '/forgot-password',
     RESET_PASS: '/reset-password',
-    LAYOUT: '/layout',
+    PRODUCT_DETAIL: '/product-detail',
     NOT_ALLOW: '/not-allow',
 };
 
