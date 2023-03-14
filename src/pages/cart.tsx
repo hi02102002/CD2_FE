@@ -9,9 +9,7 @@ import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
 
-type Props = {};
-
-const Cart: NextPageWithLayout = (props: Props) => {
+const Cart: NextPageWithLayout = () => {
     const router = useRouter();
 
     return (
