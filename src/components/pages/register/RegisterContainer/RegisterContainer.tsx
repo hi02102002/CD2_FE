@@ -6,9 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import {
     Box,
     Checkbox,
-    FormControlLabel,
-    Typography,
-    styled,
+    FormControlLabel, styled, Typography
 } from '@mui/material';
 import { AxiosError } from 'axios';
 import { Controller, useForm } from 'react-hook-form';
@@ -27,40 +25,34 @@ interface IFormInputs {
     confirmPassword: string;
 }
 
-const SignUpSChema = yup.object().shape({
-    fullName: yup
-        .string()
-        .required('Vui lòng nhập đầy đủ họ và tên')
-        .min(6, 'Tối thiểu 6 kí tự'),
-    email: yup
-        .string()
-        .required('Vui lòng nhập email')
-        .email('Vui lòng nhập đúng địa chỉ email'),
-    password: yup
-        .string()
-        .required('Vui lòng nhập mật khẩu')
-        .min(8, 'Mật khẩu quá ngắn')
-        .matches(/\d+/, 'Mật khẩu cần ít nhất 1 số')
-        .matches(/[a-z]+/, 'Mật khẩu cần ít nhất 1 kí tự thường')
-        .matches(/[A-Z]+/, 'Mật khẩu cần ít nhất 1 kí tự in hoa')
-        .matches(/[!@#$%^&*()-+]+/, 'Mật khẩu cần ít nhất 1 kí tự đặc biệt')
-        .test(
-            'Mật khẩu không chứa khoảng trắng',
-            'Mật khẩu không chứa khoảng trắng',
-            (value) => !/\s+/.test(value),
-        ),
-    confirmPassword: yup
-        .string()
-        .required('Vui lòng nhập lại mật khẩu')
-        .oneOf([yup.ref('password')], 'Mật khẩu nhập lại không chính xác'),
-});
+
+  
+
+const SignupSChema=yup.object().shape({
+        fullname:yup.string().required().min(6),
+        email:yup.string().required().email(),
+        password:yup.string()
+        .required()
+        .min(8)
+        .matches(/\d+/, "password must be at least one number" )
+        .matches(/[a-z]+/,"password must be at least one lowercase character" )
+        .matches(/[A-Z]+/,"password must be at least one uppercase character" )
+        .matches(/[!@#$%^&*()-+]+/,  "password must be at least one Special character" )
+        // .matches(/ ![a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêếìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\ ]+$/,  "Mật khdsadsẩu cần ít nhất 1 kí tự đặc biệt" )
+  .test(
+    "Password must not contain spaces",
+    "Password must not contain spaces" ,
+    value => !/\s+/.test(value)
+  ),
+        confirmpassword:yup.string().required().oneOf([yup.ref('password')], 'Re-entered password is incorrect'),
+    })
 
 function RegisterContainer() {
     const {
         control,
         handleSubmit,
         formState: { errors },
-    } = useForm<IFormInputs>({ resolver: yupResolver(SignUpSChema) });
+    } = useForm<IFormInputs>({ resolver: yupResolver(SignupSChema) });
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
