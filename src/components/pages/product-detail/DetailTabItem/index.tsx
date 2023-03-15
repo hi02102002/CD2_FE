@@ -1,1 +1,1 @@
-export {default} from './DetailTabItem'
+export { default } from './DetailTabItem';

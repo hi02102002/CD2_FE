@@ -10,7 +10,6 @@ import { IconMenu2 } from '@tabler/icons-react';
 
 import { HeaderToolbar } from '@/components/client';
 import { DEVICE, ROUTES } from '@/constants';
-import { useDisclosure } from '@/hooks/useDisclosure';
 import { pxToRem } from '@/utils/pxToRem';
 
 const Header = () => {

@@ -1,1 +1,1 @@
-export {default } from './AboutBrandTab'
+export { default } from './AboutBrandTab';

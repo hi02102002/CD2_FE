@@ -6,7 +6,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import {
     Box,
     Checkbox,
-    FormControlLabel, styled, Typography
+    FormControlLabel,
+    Typography,
+    styled,
 } from '@mui/material';
 import { AxiosError } from 'axios';
 import { Controller, useForm } from 'react-hook-form';
@@ -25,27 +27,31 @@ interface IFormInputs {
     confirmPassword: string;
 }
 
-
-  
-
-const SignupSChema=yup.object().shape({
-        fullname:yup.string().required().min(6),
-        email:yup.string().required().email(),
-        password:yup.string()
+const SignupSChema = yup.object().shape({
+    fullname: yup.string().required().min(6),
+    email: yup.string().required().email(),
+    password: yup
+        .string()
         .required()
         .min(8)
-        .matches(/\d+/, "password must be at least one number" )
-        .matches(/[a-z]+/,"password must be at least one lowercase character" )
-        .matches(/[A-Z]+/,"password must be at least one uppercase character" )
-        .matches(/[!@#$%^&*()-+]+/,  "password must be at least one Special character" )
+        .matches(/\d+/, 'password must be at least one number')
+        .matches(/[a-z]+/, 'password must be at least one lowercase character')
+        .matches(/[A-Z]+/, 'password must be at least one uppercase character')
+        .matches(
+            /[!@#$%^&*()-+]+/,
+            'password must be at least one Special character',
+        )
         // .matches(/ ![a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêếìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\ ]+$/,  "Mật khdsadsẩu cần ít nhất 1 kí tự đặc biệt" )
-  .test(
-    "Password must not contain spaces",
-    "Password must not contain spaces" ,
-    value => !/\s+/.test(value)
-  ),
-        confirmpassword:yup.string().required().oneOf([yup.ref('password')], 'Re-entered password is incorrect'),
-    })
+        .test(
+            'Password must not contain spaces',
+            'Password must not contain spaces',
+            (value) => !/\s+/.test(value),
+        ),
+    confirmpassword: yup
+        .string()
+        .required()
+        .oneOf([yup.ref('password')], 'Re-entered password is incorrect'),
+});
 
 function RegisterContainer() {
     const {

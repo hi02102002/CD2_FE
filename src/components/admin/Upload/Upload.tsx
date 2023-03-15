@@ -32,7 +32,7 @@ const Upload = ({
                 'image/*': [],
             }}
         >
-            {({ getRootProps, getInputProps, isDragActive, acceptedFiles }) => (
+            {({ getRootProps, getInputProps,  }) => (
                 <StyledUploadWrapper>
                     <Typography
                         color={(theme) => theme.themeColor.primary}

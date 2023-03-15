@@ -1,8 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-
-
 import { Box, Stack, Typography, styled } from '@mui/material';
 import { IconArrowRight } from '@tabler/icons-react';
 
