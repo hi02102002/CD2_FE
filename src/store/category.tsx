@@ -9,12 +9,17 @@ type CategoryState = {
     categories: Category[];
     addCategory: (data: DataInputCategory) => Promise<void>;
     removeCategory: (ids: Array<Category['id']>) => Promise<void>;
-    fetchCategories: (q?: { offset?: number; limit?: number }) => Promise<void>;
+    fetchCategories: (q?: {
+        offset?: number;
+        limit?: number;
+        name?: string;
+    }) => Promise<void>;
     updateCategory: (
         id: Category['id'],
         data: DataInputCategory,
     ) => Promise<void>;
     total: number;
+    isLoadingFetch: boolean;
 };
 
 const useCategoryStore = create<CategoryState>()(
@@ -56,14 +61,17 @@ const useCategoryStore = create<CategoryState>()(
                     });
                 },
                 fetchCategories: async (q) => {
-                    const res = await categoryService
-                        .getAllCategory(q)
-                        .then((v) => v.data);
-                    set((state) => {
-                        state.categories = res.categories.content;
-                        state.total = res.totalItems;
-                    });
+                    try {
+                        const res = await categoryService
+                            .getAllCategory(q)
+                            .then((v) => v.data);
+                        set((state) => {
+                            state.categories = res.categories.content;
+                            state.total = res.totalItems;
+                        });
+                    } catch (error) {}
                 },
+                isLoadingFetch: false,
             };
         }),
         {

@@ -1,14 +1,15 @@
+import { useState } from 'react';
+
 import { Box, Grid, Slider, Stack, Typography, styled } from '@mui/material';
 import { common, grey } from '@mui/material/colors';
 import { motion } from 'framer-motion';
 
 import { Button, TextHover, Tooltip } from '@/components/common';
 import { DEVICE } from '@/constants';
+import { Category } from '@/types/category';
 import { pxToRem } from '@/utils/pxToRem';
 
-// export type FilterProps = {
-//     onFilter?: () => void;
-// };
+import { useFilter } from '../FilterContext';
 
 const SIZES = ['S', 'M', 'L', 'XL', '2XL', '3XL'];
 
@@ -28,73 +29,45 @@ const marks = [
     },
 ];
 
-const Filter = () => {
+type Props = {
+    categories: Category[];
+};
+
+const Filter = ({ categories }: Props) => {
+    const { handelFilter, options } = useFilter();
+    const [price, setPrice] = useState<number[]>([
+        options.minPrice || 0,
+        options.maxPrice || 100,
+    ]);
+
     return (
         <StyledFilter container rowSpacing={16} columnSpacing={16}>
             <Grid item xs={12} lg={3}>
                 <StyledTitle variant="h4">Category</StyledTitle>
                 <StyledListCategory component="ul">
-                    <Box component="li" className="category-item">
-                        <TextHover>Sneaker</TextHover>
-                        <span className="amount">(19)</span>
-                    </Box>
-                    <Box component="li" className="category-item">
-                        <TextHover>Sneaker</TextHover>
-                        <span className="amount">(19)</span>
-                    </Box>
-                    <Box component="li" className="category-item">
-                        <TextHover>Sneaker</TextHover>
-                        <span className="amount">(19)</span>
-                    </Box>
-                    <Box component="li" className="category-item">
-                        <TextHover>Sneaker</TextHover>
-                        <span className="amount">(19)</span>
-                    </Box>
-                    <Box component="li" className="category-item">
-                        <TextHover>Sneaker</TextHover>
-                        <span className="amount">(19)</span>
-                    </Box>
-
-                    <Box component="li" className="category-item">
-                        <TextHover>Sneaker</TextHover>
-                        <span className="amount">(19)</span>
-                    </Box>
-                    <Box component="li" className="category-item">
-                        <TextHover>Sneaker</TextHover>
-                        <span className="amount">(19)</span>
-                    </Box>
-                    <Box component="li" className="category-item">
-                        <TextHover>Sneaker</TextHover>
-                        <span className="amount">(19)</span>
-                    </Box>
-                    <Box component="li" className="category-item">
-                        <TextHover>Sneaker</TextHover>
-                        <span className="amount">(19)</span>
-                    </Box>
-                    <Box component="li" className="category-item">
-                        <TextHover>Sneaker</TextHover>
-                        <span className="amount">(19)</span>
-                    </Box>
-                    <Box component="li" className="category-item">
-                        <TextHover>Sneaker</TextHover>
-                        <span className="amount">(19)</span>
-                    </Box>
-                    <Box component="li" className="category-item">
-                        <TextHover>Sneaker</TextHover>
-                        <span className="amount">(19)</span>
-                    </Box>
-                    <Box component="li" className="category-item">
-                        <TextHover>Sneaker</TextHover>
-                        <span className="amount">(19)</span>
-                    </Box>
-                    <Box component="li" className="category-item">
-                        <TextHover>Sneaker</TextHover>
-                        <span className="amount">(19)</span>
-                    </Box>
-                    <Box component="li" className="category-item">
-                        <TextHover>Sneaker</TextHover>
-                        <span className="amount">(19)</span>
-                    </Box>
+                    {categories.map((category) => {
+                        return (
+                            <Box
+                                component="li"
+                                className="category-item"
+                                key={category.id}
+                                onClick={() => {
+                                    handelFilter({ categoryId: category.id });
+                                }}
+                            >
+                                <TextHover
+                                    fontWeight={
+                                        category.id === options.categoryId
+                                            ? 600
+                                            : undefined
+                                    }
+                                >
+                                    {category.name}
+                                </TextHover>
+                                <span className="amount">(19)</span>
+                            </Box>
+                        );
+                    })}
                 </StyledListCategory>
             </Grid>
             <Grid item xs={12} lg={3}>
@@ -115,6 +88,11 @@ const Filter = () => {
                                 <Button
                                     className="btn-select-size"
                                     typeButton="secondary"
+                                    onClick={() => {
+                                        handelFilter({
+                                            size,
+                                        });
+                                    }}
                                 >
                                     {size}
                                 </Button>
@@ -131,6 +109,9 @@ const Filter = () => {
                         className="color-item"
                         sx={{
                             backgroundColor: 'ButtonFace',
+                        }}
+                        onClick={() => {
+                            handelFilter({ color: 'black' });
                         }}
                     />
                     <Box
@@ -178,9 +159,32 @@ const Filter = () => {
                             return `$${value}`;
                         }}
                         valueLabelDisplay="auto"
-                        defaultValue={[20, 37]}
+                        defaultValue={[
+                            options.minPrice || 0,
+                            options.maxPrice || 100,
+                        ]}
+                        value={price}
                         marks={marks}
+                        onChange={(e, value) => {
+                            setPrice(value as number[]);
+                        }}
                     />
+                    <Button
+                        sx={{
+                            py: 0,
+                            transform: 'none !important',
+                            height: 34,
+                            mt: 16,
+                        }}
+                        onClick={() => {
+                            handelFilter({
+                                minPrice: price[0],
+                                maxPrice: price[1],
+                            });
+                        }}
+                    >
+                        Filter price
+                    </Button>
                 </Stack>
             </Grid>
         </StyledFilter>

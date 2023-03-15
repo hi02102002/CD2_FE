@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { Box, BoxProps, styled, Typography } from '@mui/material';
+import { Box, BoxProps, Typography, styled } from '@mui/material';
 
 import { Button } from '@/components/common';
 import { DEVICE, ROUTES } from '@/constants';
