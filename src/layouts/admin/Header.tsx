@@ -147,6 +147,7 @@ const StyledHeader = styled(Box)<BoxProps & Omit<Props, 'onToggleSidebar'>>`
     padding: 0 ${pxToRem(16)};
     border-bottom: 2px solid ${grey[300]};
     background-color: ${common.white};
+    z-index: 100;
 
     @media ${DEVICE.tablet} {
         left: ${({ theme }) => theme.size.width.sidebar};

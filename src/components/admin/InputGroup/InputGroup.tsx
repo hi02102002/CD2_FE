@@ -2,10 +2,8 @@ import {
     Box,
     BoxProps,
     Input,
-    InputProps,
-    Typography,
-    TypographyProps,
-    styled,
+    InputProps, styled, Typography,
+    TypographyProps
 } from '@mui/material';
 import { red } from '@mui/material/colors';
 
@@ -41,12 +39,7 @@ const InputGroup = ({
             >
                 {label}
             </Typography>
-            <Input
-                fullWidth
-                {...InputProps}
-                required={required}
-                error={!!messageError}
-            />
+            <Input fullWidth {...InputProps} error={!!messageError} />
             {messageError && (
                 <Typography
                     {...ErrorMessageProps}

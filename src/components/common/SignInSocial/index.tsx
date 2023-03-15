@@ -1,1 +1,1 @@
-export {default} from './SignInSocial' 
+export { default } from './SignInSocial';

@@ -55,6 +55,14 @@ const Products: NextPageWithLayout = () => {
                                     router.push(ROUTES.ADMIN_ADD_PRODUCT);
                                 },
                             }}
+                            TablePaginationProps={{
+                                count: 10,
+                                onPageChange() {
+                                    //
+                                },
+                                page: 1,
+                                rowsPerPage: 10,
+                            }}
                         />
                     </Grid>
                 </Grid>

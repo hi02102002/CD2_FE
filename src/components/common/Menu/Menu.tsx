@@ -1,5 +1,7 @@
 import { Menu, MenuItem, styled } from '@mui/material';
 
+import { pxToRem } from '@/utils/pxToRem';
+
 export const StyledMenu = styled(Menu)`
     .MuiPaper-root {
         border-radius: 4px;
@@ -7,4 +9,8 @@ export const StyledMenu = styled(Menu)`
     }
 `;
 
-export const StyledMenuItem = styled(MenuItem)``;
+export const StyledMenuItem = styled(MenuItem)`
+    display: flex;
+    align-items: center;
+    gap: ${pxToRem(16)};
+`;

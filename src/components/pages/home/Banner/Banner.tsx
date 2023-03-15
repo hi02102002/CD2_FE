@@ -1,9 +1,9 @@
 import Image, { StaticImageData } from 'next/image';
 import { useRouter } from 'next/router';
 
-import { Box, Typography, styled } from '@mui/material';
+import { Box, styled, Typography } from '@mui/material';
 import { common } from '@mui/material/colors';
-import { Variants, motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { Autoplay, EffectFade, Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
@@ -11,7 +11,7 @@ import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { Button } from '@/components/common';
-import { DEVICE } from '@/constants';
+import { DEVICE, ROUTES } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
 
 type Slide = {
@@ -138,7 +138,7 @@ const Banner = () => {
                                                             className="btn-shop"
                                                             onClick={() => {
                                                                 router.push(
-                                                                    '/products',
+                                                                    ROUTES.PRODUCTS,
                                                                 );
                                                             }}
                                                         >

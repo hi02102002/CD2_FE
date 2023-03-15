@@ -7,6 +7,8 @@ import { v4 as uuid } from 'uuid';
 import { Button, Menu, MenuItem } from '@/components/common';
 import { pxToRem } from '@/utils/pxToRem';
 
+import { useFilter } from '../FilterContext';
+
 export type Props = {
     onSort?: (option: Option) => void;
 };
@@ -58,13 +60,21 @@ const OPTIONS_SORT: Array<Option> = [
 
 const Sort = ({ onSort }: Props) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [selected, setSelected] = useState<Option>(OPTIONS_SORT[0]);
+    const { handelFilter, options } = useFilter();
+    const [selected, setSelected] = useState<Option>(
+        OPTIONS_SORT.find((option) => option.value === options.sort) ||
+            OPTIONS_SORT[0],
+    );
     const open = Boolean(anchorEl);
 
     const handleSelectOption = (option: Option) => {
         if (!(option.id === selected.id)) {
             setSelected(option);
+            handelFilter({
+                sort: option.value,
+            });
             onSort?.(option);
+            setAnchorEl(null);
         }
         setAnchorEl(null);
     };
@@ -100,7 +110,7 @@ const Sort = ({ onSort }: Props) => {
                             disableRipple
                             sx={{
                                 backgroundColor:
-                                    option.id === selected.id
+                                    option.value === options.sort
                                         ? grey[100]
                                         : undefined,
                             }}

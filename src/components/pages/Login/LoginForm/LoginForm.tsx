@@ -13,15 +13,15 @@ import {
     Typography,
 } from '@mui/material';
 import { red } from '@mui/material/colors';
+import { setCookie } from 'cookies-next';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 
 import { Button, Input, TextHover } from '@/components/common';
 import { ROUTES } from '@/constants';
-import { setState } from '@/features/auth/auth.slice';
 import authService from '@/services/auth.service';
+import useAuthStore from '@/store/auth';
 import { pxToRem } from '@/utils/pxToRem';
 
 interface IFormInputs {
@@ -30,11 +30,8 @@ interface IFormInputs {
 }
 
 const SignupSChema = yup.object().shape({
-    email: yup
-        .string()
-        .required('Vui lòng nhập email ')
-        .email('Vui lòng nhập đúng địa chỉ email'),
-    password: yup.string().required('Vui lòng nhập mật khẩu'),
+    email: yup.string().required().email(),
+    password: yup.string().required(),
 });
 
 function LoginFrom() {
@@ -49,23 +46,28 @@ function LoginFrom() {
             password: '12345678',
         },
     });
-    const dispatch = useDispatch();
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
+    const { setAuth } = useAuthStore();
 
     const onSubmit = async (data: IFormInputs) => {
         try {
             setIsLoading(true);
             const res = await authService.login(data.email, data.password);
-            dispatch(
-                setState({
-                    user: res.data,
-                    accessToken: res.data.token,
-                }),
-            );
+            setAuth({
+                user: {
+                    email: res.data.email,
+                    id: res.data.id,
+                    fullName: res.data.fullName,
+                    roles: res.data.roles,
+                },
+                accessToken: res.data.token,
+            });
             setIsLoading(false);
             toast.success('Login successfully!');
+            setCookie('auth_token', res.data.token);
+            setCookie('roles', res.data.roles);
             router.push(ROUTES.HOME);
         } catch (error) {
             setIsLoading(false);
@@ -110,6 +112,7 @@ function LoginFrom() {
                             type={showPassword ? 'text' : 'password'}
                             name={name}
                             onBlur={onBlur}
+                            sx={{ mb: '12px' }}
                         />
                     )}
                 />
