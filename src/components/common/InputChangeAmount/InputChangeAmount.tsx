@@ -1,10 +1,15 @@
 import { useState } from 'react';
 
+
+
 import { Box, BoxProps, InputBase, styled } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { IconMinus, IconPlus } from '@tabler/icons-react';
 
+
+
 import { pxToRem } from '@/utils/pxToRem';
+
 
 type Props = {
     value?: number;
@@ -97,6 +102,7 @@ const StyledInputChangeAmount = styled(Box)`
     border-radius: 4px;
     max-width: max-content;
     overflow: hidden;
+    flex-shrink: 0;
 
     .sub,
     .add,

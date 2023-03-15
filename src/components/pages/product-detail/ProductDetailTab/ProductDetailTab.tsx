@@ -1,92 +1,122 @@
-import styled from "@emotion/styled"
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import { Box } from "@mui/system"
-import { Typography } from "@mui/material";
-import { useState } from "react";
-import { pxToRem } from "@/utils/pxToRem";
+import { useState } from 'react';
 
-import DetailTab from "../DetailTab";
-import ReviewTab from "../ReviewTab";
-import AboutBrandTab from "../AboutBrandTab";
-import ShippingTab from "../ShippingTab";
+import styled from '@emotion/styled';
+import { useTheme } from '@mui/material';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import { Box } from '@mui/system';
+
+import { DEVICE } from '@/constants';
+import { pxToRem } from '@/utils/pxToRem';
+
+import AboutBrandTab from '../AboutBrandTab';
+import DetailTab from '../DetailTab';
+import ReviewTab from '../ReviewTab';
+import ShippingTab from '../ShippingTab';
+
 interface TabPanelProps {
     children?: React.ReactNode;
     dir?: string;
     index: number;
     value: number;
-  }
-  
-  function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
-  
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`full-width-tabpanel-${index}`}
-        aria-labelledby={`full-width-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
-  }
-
-  function a11yProps(index: number) {
-    return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
-    };
-  }
-
-
-function ProductDetailTab(){
-    const [value, setValue] = useState(0);
-
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
-    };
-
-    return <StyledProductInfoItems component='div'>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs value={value} onChange={handleChange} aria-label="tabs" defaultValue={0} variant="scrollable" scrollButtons allowScrollButtonsMobile>
-                <Tab className="btn-changetab" label="Details" {...a11yProps(0)}/>
-                    <Tab className="btn-changetab" label={`Reviews ${(1)}`} {...a11yProps(1)}/>
-                <Tab className="btn-changetab" label="About Brand" {...a11yProps(2)}/>
-                <Tab className="btn-changetab" label="Shipping and Returns" {...a11yProps(3)}/>
-                
-            </Tabs>
-         </Box>
-         <TabPanel value={value} index={0}>
-            <DetailTab></DetailTab>
-        </TabPanel>
-
-        
-
-        <TabPanel value={value} index={1}>
-            <ReviewTab></ReviewTab>
-        </TabPanel>
-
-        <TabPanel value={value} index={2}>
-            <AboutBrandTab></AboutBrandTab>
-        </TabPanel>
-
-        <TabPanel value={value} index={3}>
-            <ShippingTab></ShippingTab>
-        </TabPanel>
-         
-    </StyledProductInfoItems>
-    
 }
 
-const StyledProductInfoItems = styled(Box)`
-        margin-bottom: ${pxToRem(70)};
-    .btn-changetab{
+function TabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <StyledTabPanel
+            role="tabpanel"
+            hidden={value !== index}
+            id={`full-width-tabpanel-${index}`}
+            aria-labelledby={`full-width-tab-${index}`}
+            {...other}
+        >
+            {value === index && <Box p={3}>{children}</Box>}
+        </StyledTabPanel>
+    );
+}
+
+function a11yProps(index: number) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
+
+function ProductDetailTab() {
+    const [tab, setTab] = useState(0);
+    const theme = useTheme();
+
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setTab(newValue);
+    };
+
+    return (
+        <StyledProductDetailTab component="div">
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs
+                    value={tab}
+                    onChange={handleChange}
+                    aria-label="tabs"
+                    defaultValue={0}
+                    variant="scrollable"
+                    scrollButtons
+                    allowScrollButtonsMobile
+                    TabIndicatorProps={{
+                        style: {
+                            backgroundColor: theme.themeColor.primary,
+                        },
+                    }}
+                >
+                    <Tab
+                        className="btn-changetab"
+                        label="Details"
+                        disableRipple
+                        {...a11yProps(0)}
+                    />
+                    <Tab
+                        className="btn-changetab"
+                        label={`Reviews ${1}`}
+                        disableRipple
+                        {...a11yProps(1)}
+                    />
+                    <Tab
+                        className="btn-changetab"
+                        label="About Brand"
+                        disableRipple
+                        {...a11yProps(2)}
+                    />
+                    <Tab
+                        className="btn-changetab"
+                        disableRipple
+                        label="Shipping and Returns"
+                        {...a11yProps(3)}
+                    />
+                </Tabs>
+            </Box>
+            <TabPanel value={tab} index={0}>
+                <DetailTab />
+            </TabPanel>
+
+            <TabPanel value={tab} index={1}>
+                <ReviewTab />
+            </TabPanel>
+
+            <TabPanel value={tab} index={2}>
+                <AboutBrandTab />
+            </TabPanel>
+
+            <TabPanel value={tab} index={3}>
+                <ShippingTab />
+            </TabPanel>
+        </StyledProductDetailTab>
+    );
+}
+
+const StyledProductDetailTab = styled(Box)`
+    margin-bottom: ${pxToRem(70)};
+    .btn-changetab {
         margin-right: ${pxToRem(64)};
         color: #b3b3c4;
         font-weight: 600;
@@ -94,10 +124,17 @@ const StyledProductInfoItems = styled(Box)`
         font-size: ${pxToRem(18)};
     }
 
-    .btn-changetab.Mui-selected{
+    .btn-changetab.Mui-selected {
         color: #000;
     }
+`;
 
-    
-`
-export default ProductDetailTab
+const StyledTabPanel = styled(Box)`
+    padding-top: ${pxToRem(30)};
+
+    @media screen and (${DEVICE.tablet}) {
+        padding-top: ${pxToRem(60)};
+    }
+`;
+
+export default ProductDetailTab;

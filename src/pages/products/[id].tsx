@@ -1,21 +1,20 @@
+import { Box, Grid, styled } from '@mui/material';
+
 import { PageTop } from '@/components/common';
+import {
+    ImageLibrary,
+    ProductDetailTab,
+    ProductInfo,
+    SlideRelated,
+} from '@/components/pages/product-detail';
 import { ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
-import { Box, Grid, styled } from '@mui/material';
-
-
-
-import { ImageLibrary, ProductInfo, SlideRelated } from "@/components/pages/product-detail";
-import ProductDetailTab from "@/components/pages/product-detail/ProductDetailTab";
-
+import { pxToRem } from '@/utils/pxToRem';
 
 type Props = {};
 
-
 const Product: NextPageWithLayout<Props> = () => {
-  
- 
     return (
         <>
             <PageTop
@@ -32,16 +31,24 @@ const Product: NextPageWithLayout<Props> = () => {
                 ]}
             />
             <Box className="container-app">
-                <ProductMainContent container className='product-main-content' sx={{padding:'0'}}>
-                    <ImageLibrary></ImageLibrary>
-                    
-                    <ProductInfo></ProductInfo>
+                <ProductMainContent
+                    container
+                    className="product-main-content"
+                    padding={0}
+                    spacing={16}
+                >
+                    <ImageLibrary />
+                    <ProductInfo />
                 </ProductMainContent>
-                <Box component='div' className='product-info-detailed' sx={{marginTop:'50px'}}>
-                    <ProductDetailTab></ProductDetailTab>
+                <Box
+                    component="div"
+                    className="product-info-detailed"
+                    marginTop={50}
+                >
+                    <ProductDetailTab />
                 </Box>
-                <Box component='div' className='products-related'>
-                    <SlideRelated></SlideRelated>
+                <Box component="div" className="products-related">
+                    <SlideRelated />
                 </Box>
             </Box>
         </>
@@ -53,7 +60,6 @@ Product.getLayout = (page) => {
 };
 
 const ProductMainContent = styled(Grid)`
-    padding: 0px 20px;
-   
-`
+    padding: 0 ${pxToRem(20)};
+`;
 export default Product;
