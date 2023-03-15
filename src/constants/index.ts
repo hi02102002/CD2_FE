@@ -14,6 +14,7 @@ export const ROUTES = {
     FORGOT_PASS: '/forgot-password',
     RESET_PASS: '/reset-password',
     NOT_ALLOW: '/not-allow',
+    PRODUCT_DETAIL: 'product/abc',
 };
 
 export const SIZE_MEDIA = {

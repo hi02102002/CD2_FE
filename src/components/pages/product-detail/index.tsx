@@ -1,11 +1,11 @@
-export {default as ImageLibrary} from './ImageLibrary'
-export {default as DetailTabItem} from './DetailTabItem'
-export {default as ProductInfo} from './ProductInfo'
-export {default as ProductDetailTab} from './ProductDetailTab'
-export {default as ReviewTab} from './ReviewTab'
-export {default as SlideRelated} from './SlideRelated'
-export {default as AboutBrandTab} from './AboutBrandTab'
-export {default as DetailTab} from './DetailTab'
-export {default as ShippingTab} from './ShippingTab'
-export {default as ListReviews} from './ListReviews'
-export {default as ReviewForm} from './ReviewForm'
+export { default as ImageLibrary } from './ImageLibrary';
+export { default as DetailTabItem } from './DetailTabItem';
+export { default as ProductInfo } from './ProductInfo';
+export { default as ProductDetailTab } from './ProductDetailTab';
+export { default as ReviewTab } from './ReviewTab';
+export { default as SlideRelated } from './SlideRelated';
+export { default as AboutBrandTab } from './AboutBrandTab';
+export { default as DetailTab } from './DetailTab';
+export { default as ShippingTab } from './ShippingTab';
+export { default as ListReviews } from './ListReviews';
+export { default as ReviewForm } from './ReviewForm';

@@ -44,7 +44,7 @@ function LoginFrom() {
         formState: { errors },
     } = useForm<IFormInputs>({
         resolver: yupResolver(SignupSChema),
-        defaultValues: {
+        defaultValues: { 
             email: 'admin@ut.edu.vn',
             password: '12345678',
         },

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-
-
 import { Box, styled } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { v4 as uuid } from 'uuid';
