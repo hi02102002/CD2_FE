@@ -1,24 +1,34 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+
+
 import { Box, Stack, Typography, styled } from '@mui/material';
 import { IconArrowRight } from '@tabler/icons-react';
 
 import { Button } from '@/components/common';
+import { ROUTES } from '@/constants';
+import { Category } from '@/types/category';
 import { pxToRem } from '@/utils/pxToRem';
 
-const CategoryItem = () => {
+type Props = {
+    category: Category;
+};
+
+const CategoryItem = ({ category }: Props) => {
+    const linkTo = `${ROUTES.PRODUCTS}?categoryId=${category.id}`;
+
     return (
         <StyledCategoryItem>
             <Box position="relative">
-                <Link href="/category/1">
+                <Link href={linkTo}>
                     <Box
                         paddingTop={`${1.35227272727 * 100}%`}
                         component="div"
                         className="img-wrap"
                     >
                         <Image
-                            src="https://blueskytechmage.com/minimog/media/catalog/category/thumbnail/cat_01.jpg"
+                            src={category.imageUrl.replace(',', '').trim()}
                             fill
                             alt="Category item"
                             style={{
@@ -34,16 +44,16 @@ const CategoryItem = () => {
                         justifyContent="space-between"
                     >
                         <Box>
-                            <Link href="/category/1">
+                            <Link href={linkTo}>
                                 <Typography variant="h4" className="name">
-                                    Sneakers
+                                    {category.name}
                                 </Typography>
                             </Link>
                             <Typography component="span" className="amount">
                                 8 Items
                             </Typography>
                         </Box>
-                        <Link href="/category/1">
+                        <Link href={linkTo}>
                             <Button
                                 className="btn-navigate"
                                 typeButton="secondary"

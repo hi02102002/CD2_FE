@@ -6,7 +6,8 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "next lint",
+        "format": "npx prettier --write ./src"
     },
     "dependencies": {
         "@emotion/cache": "latest",
@@ -14,9 +15,12 @@
         "@emotion/server": "latest",
         "@emotion/styled": "^11.10.5",
         "@hookform/resolvers": "^2.9.11",
+        "@mui/base": "^5.0.0-alpha.120",
+        "@mui/lab": "^5.0.0-alpha.122",
         "@mui/material": "^5.11.9",
         "@mui/x-data-grid": "^5.17.23",
         "@next/font": "13.1.6",
+        "@reduxjs/toolkit": "^1.9.3",
         "@tabler/icons-react": "^2.4.0",
         "@types/node": "18.13.0",
         "@types/react": "18.0.28",
@@ -28,6 +32,7 @@
         "framer-motion": "^9.0.7",
         "immer": "^9.0.19",
         "jwt-decode": "^3.1.2",
+        "material-react-table": "^1.8.5",
         "next": "13.1.6",
         "next-auth": "^4.20.1",
         "nextjs-progressbar": "^0.0.16",
@@ -48,6 +53,7 @@
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "^4.0.0",
         "@types/uuid": "^9.0.0",
+        "@types/yup": "^0.32.0",
         "@typescript-eslint/eslint-plugin": "^5.52.0",
         "eslint-config-prettier": "^8.6.0",
         "prettier": "^2.8.4"
