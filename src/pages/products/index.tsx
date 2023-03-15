@@ -1,22 +1,26 @@
-import { useState } from 'react';
-
 import { Stack } from '@mui/material';
 import { Box } from '@mui/system';
 
 import { ProductGrid } from '@/components/client';
 import { PageTop, Pagination } from '@/components/common';
-import { ToolBar } from '@/components/pages/products';
+import {
+    FilterProvider,
+    ToolBar,
+    useFilter,
+} from '@/components/pages/products';
 import { ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
+import axiosClient from '@/lib/axiosClient';
+import { Category } from '@/types/category';
 import { NextPageWithLayout } from '@/types/shared';
+import { withProtect } from '@/utils/withProtect';
 
-const LIST_GRID_MODE: Array<2 | 3 | 4 | 5> = [2, 3, 4, 5];
+type Props = {
+    categories: Category[];
+};
 
-const Products: NextPageWithLayout = () => {
-    const [chooseGridMode, setChooseGridMode] = useState(
-        LIST_GRID_MODE[LIST_GRID_MODE.length - 1],
-    );
-
+const Products: NextPageWithLayout<Props> = ({ categories }) => {
+    const { options, handelFilter } = useFilter();
     return (
         <>
             <PageTop
@@ -34,23 +38,23 @@ const Products: NextPageWithLayout = () => {
             />
             <Box marginY={35}>
                 <Box component="div" className="container-app">
-                    <ToolBar
-                        chooseMode={chooseGridMode}
-                        listGridMode={LIST_GRID_MODE}
-                        onChooseMode={(mode) => {
-                            setChooseGridMode(mode);
-                        }}
-                    />
+                    <ToolBar categories={categories} />
 
                     <Box marginTop={16}>
-                        <ProductGrid spacing={16} numCol={chooseGridMode} />
+                        <ProductGrid spacing={16} />
                     </Box>
                     <Stack
                         marginTop={30}
                         direction="row"
                         justifyContent="center"
                     >
-                        <Pagination count={5} />
+                        <Pagination
+                            count={5}
+                            page={options.page || 1}
+                            onChange={(e, page) => {
+                                handelFilter({ page });
+                            }}
+                        />
                     </Stack>
                 </Box>
             </Box>
@@ -59,7 +63,27 @@ const Products: NextPageWithLayout = () => {
 };
 
 Products.getLayout = (page) => {
-    return <ClientLayout>{page}</ClientLayout>;
+    return (
+        <ClientLayout>
+            <FilterProvider>{page}</FilterProvider>
+        </ClientLayout>
+    );
 };
+
+export const getServerSideProps = withProtect({
+    isAdmin: false,
+    isProtect: false,
+})(async () => {
+    const categories = await axiosClient
+        .get('/api/category/all')
+        .then((d) => d.data)
+        .catch((e) => console.log(e));
+
+    return {
+        props: {
+            categories,
+        },
+    };
+});
 
 export default Products;

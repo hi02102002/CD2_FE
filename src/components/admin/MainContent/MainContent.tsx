@@ -25,11 +25,14 @@ type Props = {
         textButton?: string;
     } & ButtonProps;
     SearchProps?: {
-        onSearch?: (valueInput: string) => void;
+        onSearch: () => void;
+        onClearSearch: () => void;
         placeholder?: string;
         textButtonSearch?: string;
         nameInput?: string;
         sx?: ButtonProps['sx'];
+        onChange: (value: string) => void;
+        value: string;
     };
     TablePaginationProps: TablePaginationProps;
     RemoveProps?: {
@@ -58,14 +61,26 @@ const MainContent = ({
                     <Input
                         placeholder={SearchProps?.placeholder || 'Search'}
                         name={SearchProps?.nameInput || 'name'}
+                        onChange={(e) => SearchProps?.onChange(e.target.value)}
+                        value={SearchProps?.value}
                     />
+                    <Button
+                        sx={{
+                            textTransform: 'none',
+                        }}
+                        onClick={() => {
+                            SearchProps?.onClearSearch?.();
+                        }}
+                    >
+                        Clear
+                    </Button>
                     <Button
                         variant="contained"
                         sx={{
                             textTransform: 'none',
                         }}
                         onClick={() => {
-                            SearchProps?.onSearch?.('');
+                            SearchProps?.onSearch?.();
                         }}
                     >
                         {SearchProps?.textButtonSearch || 'Search'}

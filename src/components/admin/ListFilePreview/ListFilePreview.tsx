@@ -18,7 +18,7 @@ const ListFilePreview = ({ files, onRemove }: Props) => {
                     return (
                         <StyledListFilePreviewItem key={file}>
                             <Image
-                                src={file}
+                                src={file.replace(',', '').trim()}
                                 alt=""
                                 width={50}
                                 height={50}

@@ -1,30 +1,29 @@
-import { Stack, Typography, styled } from '@mui/material';
-import { common, grey } from '@mui/material/colors';
-import { Box } from '@mui/system';
+import { Stack, styled } from '@mui/material';
+import { grey } from '@mui/material/colors';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { Button, Tooltip } from '@/components/common';
+import { Button } from '@/components/common';
 import { DEVICE } from '@/constants';
 import { useDisclosure } from '@/hooks/useDisclosure';
+import { Category } from '@/types/category';
 import { pxToRem } from '@/utils/pxToRem';
 
 import Filter from '../Filter';
+import { useFilter } from '../FilterContext';
 import Sort, { SortProps } from '../Sort';
 
 type Props = {
-    listGridMode: Array<2 | 3 | 4 | 5>;
-    onChooseMode: (mode: 2 | 3 | 4 | 5) => void;
-    chooseMode: number;
     SortProps?: SortProps;
+    categories: Category[];
 };
 
-const ToolBar = ({
-    chooseMode,
-    listGridMode,
-    onChooseMode,
-    SortProps,
-}: Props) => {
+const ToolBar = ({ SortProps, categories }: Props) => {
+    const { handelClear, options } = useFilter();
     const { isOpen: isOpenFilter, onToggle: onToggleFilter } = useDisclosure();
+
+    const isAllHaveValue = () => {
+        return Object.values(options).some((value) => value);
+    };
 
     return (
         <>
@@ -39,144 +38,17 @@ const ToolBar = ({
                     >
                         {isOpenFilter ? 'Close Filter' : 'Open Filter'}
                     </StyledButtonFilter>
-                    <Typography>Items 1-12 of 30</Typography>
+                    {isAllHaveValue() && (
+                        <StyledButtonFilter
+                            onClick={handelClear}
+                            typeButton="secondary"
+                        >
+                            Clear
+                        </StyledButtonFilter>
+                    )}
                 </Stack>
                 <Stack direction="row" alignItems="center" spacing={6}>
                     <Sort {...SortProps} />
-                    <Stack direction="row" spacing={6} alignItems="center">
-                        {listGridMode.map((item) => {
-                            return (
-                                <Tooltip
-                                    key={item}
-                                    title={`${item} column`}
-                                    arrow
-                                    placement="top"
-                                >
-                                    <Box>
-                                        <StyledButtonGridMode
-                                            onClick={() => {
-                                                onChooseMode(item);
-                                            }}
-                                            typeButton="secondary"
-                                            sx={{
-                                                backgroundColor: ({
-                                                    themeColor,
-                                                }) =>
-                                                    chooseMode === item
-                                                        ? `${themeColor.primary} !important`
-                                                        : undefined,
-                                                color:
-                                                    chooseMode === item
-                                                        ? `${common.white} !important`
-                                                        : undefined,
-                                            }}
-                                        >
-                                            <svg
-                                                width="18"
-                                                height="18"
-                                                viewBox="0 0 18 18"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <svg
-                                                    width="18"
-                                                    height="18"
-                                                    viewBox="0 0 18 18"
-                                                    fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    {item === 4 && (
-                                                        <>
-                                                            <rect
-                                                                x="2.25"
-                                                                y="2.75"
-                                                                width="1.5"
-                                                                height="12.5"
-                                                                rx="0.75"
-                                                                fill="currentColor"
-                                                            ></rect>
-                                                            <rect
-                                                                x="6.25"
-                                                                y="2.75"
-                                                                width="1.5"
-                                                                height="12.5"
-                                                                rx="0.75"
-                                                                fill="currentColor"
-                                                            ></rect>
-                                                            <rect
-                                                                x="10.25"
-                                                                y="2.75"
-                                                                width="1.5"
-                                                                height="12.5"
-                                                                rx="0.75"
-                                                                fill="currentColor"
-                                                            ></rect>
-                                                            <rect
-                                                                x="14.25"
-                                                                y="2.75"
-                                                                width="1.5"
-                                                                height="12.5"
-                                                                rx="0.75"
-                                                                fill="currentColor"
-                                                            ></rect>
-                                                        </>
-                                                    )}
-                                                    {item === 3 && (
-                                                        <>
-                                                            <rect
-                                                                x="4.25"
-                                                                y="2.75"
-                                                                width="1.5"
-                                                                height="12.5"
-                                                                rx="0.75"
-                                                                fill="currentColor"
-                                                            ></rect>
-                                                            <rect
-                                                                x="8.25"
-                                                                y="2.75"
-                                                                width="1.5"
-                                                                height="12.5"
-                                                                rx="0.75"
-                                                                fill="currentColor"
-                                                            ></rect>
-                                                            <rect
-                                                                x="12.25"
-                                                                y="2.75"
-                                                                width="1.5"
-                                                                height="12.5"
-                                                                rx="0.75"
-                                                                fill="currentColor"
-                                                            ></rect>
-                                                        </>
-                                                    )}
-                                                    {item === 2 && (
-                                                        <>
-                                                            <rect
-                                                                x="6.25"
-                                                                y="2.75"
-                                                                width="1.5"
-                                                                height="12.5"
-                                                                rx="0.75"
-                                                                fill="currentColor"
-                                                            ></rect>
-                                                            <rect
-                                                                x="10.25"
-                                                                y="2.75"
-                                                                width="1.5"
-                                                                height="12.5"
-                                                                rx="0.75"
-                                                                fill="currentColor"
-                                                            ></rect>
-                                                        </>
-                                                    )}
-                                                </svg>
-                                            </svg>
-                                        </StyledButtonGridMode>
-                                    </Box>
-                                </Tooltip>
-                            );
-                        })}
-                    </Stack>
                 </Stack>
             </StyledToolbar>
             <AnimatePresence>
@@ -195,7 +67,7 @@ const ToolBar = ({
                             height: 0,
                         }}
                     >
-                        <Filter />
+                        <Filter categories={categories} />
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -230,29 +102,6 @@ const StyledButtonFilter = styled(Button)`
 
     &:active {
         transform: none;
-    }
-`;
-
-const StyledButtonGridMode = styled(Button)`
-    width: ${pxToRem(34)};
-    height: ${pxToRem(34)};
-    border: 0 !important;
-    padding: 0;
-    &.secondary {
-        background-color: ${grey[100]};
-    }
-
-    &:hover {
-        box-shadow: none !important;
-    }
-
-    &:active {
-        transform: none;
-    }
-    svg {
-        display: flex;
-        align-items: center;
-        justify-content: center;
     }
 `;
 
