@@ -1,15 +1,45 @@
+import { MouseEvent, useState } from 'react';
+
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { Box, Typography, styled } from '@mui/material';
 import { Stack } from '@mui/system';
 import { IconEye, IconHeart } from '@tabler/icons-react';
+import { toast } from 'react-hot-toast';
+import { v4 } from 'uuid';
 
 import { Button, TextLink, Tooltip } from '@/components/common';
 import { DEVICE } from '@/constants';
+import { useWishlistStore } from '@/store/wishlist';
 import { pxToRem } from '@/utils/pxToRem';
 
 const ProductItem = () => {
+    const product = {
+        id: v4(),
+        name: v4(),
+        price: 10,
+        color: 'black',
+        size: 'S',
+    };
+    const { addToWishlist } = useWishlistStore();
+    const [isLoadingAddWishlist, setIsLoadingAddWishlist] =
+        useState<boolean>(false);
+
+    const handleAddToWishlist = async (
+        e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    ) => {
+        try {
+            setIsLoadingAddWishlist(true);
+            e.stopPropagation();
+            await addToWishlist(product);
+            setIsLoadingAddWishlist(false);
+            toast.success('Added product to your wishlist');
+        } catch (error) {
+            setIsLoadingAddWishlist(false);
+        }
+    };
+
     return (
         <StyledProductItem>
             <StyledProductTop>
@@ -41,8 +71,18 @@ const ProductItem = () => {
                     </Tooltip>
                     <Tooltip title="Add to wishlist" arrow placement="left">
                         <Box>
-                            <Button typeButton="secondary" className="btn-tool">
-                                <IconHeart />
+                            <Button
+                                typeButton="secondary"
+                                className="btn-tool"
+                                onClick={handleAddToWishlist}
+                                isLoading={isLoadingAddWishlist}
+                                propsIconLoading={{
+                                    sx: {
+                                        margin: 0,
+                                    },
+                                }}
+                            >
+                                {!isLoadingAddWishlist && <IconHeart />}
                             </Button>
                         </Box>
                     </Tooltip>

@@ -27,6 +27,7 @@ import { DEVICE, ROUTES } from '@/constants';
 import { useDisclosure } from '@/hooks/useDisclosure';
 import authService from '@/services/auth.service';
 import useAuthStore from '@/store/auth';
+import { useWishlistStore } from '@/store/wishlist';
 import { ROLE } from '@/types/user';
 import { pxToRem } from '@/utils/pxToRem';
 
@@ -43,6 +44,7 @@ const HeaderToolbar = ({ forSearch = false }: Props) => {
     const [anchorElMenuUser, setAnchorElMenuUser] =
         useState<null | HTMLElement>(null);
     const { user, setAuth } = useAuthStore();
+    const { wishlist } = useWishlistStore();
 
     const {
         isOpen: isOpenCart,
@@ -194,7 +196,7 @@ const HeaderToolbar = ({ forSearch = false }: Props) => {
                     }}
                 >
                     <IconButton disableTouchRipple className="wish-list">
-                        <Badge badgeContent={10}>
+                        <Badge badgeContent={wishlist.length} showZero>
                             <IconHeart color={theme.themeColor.primary} />
                         </Badge>
                     </IconButton>
