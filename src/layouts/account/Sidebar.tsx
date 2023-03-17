@@ -1,9 +1,20 @@
 import * as React from 'react';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Box, List, Typography, styled } from '@mui/material';
-import ListItem from '@mui/material/ListItem';
+
+import {
+    Box,
+    Divider,
+    List,
+    ListItem,
+    Typography,
+    styled,
+} from '@mui/material';
+import { IconX } from '@tabler/icons-react';
+
+import img from '@/assets/h1_slide_01.jpg';
 import { DEVICE } from '@/constants';
 
 type Props = {};
@@ -51,13 +62,31 @@ const LIST_ITEM = [
     },
 ];
 
+const ListWishList = [
+    {
+        name: 'Square Shoulder Bag',
+        picture: '/src/assets/h1_slide_01.jpg',
+        cost: '6.00',
+    },
+    {
+        name: 'Square Shoulder Bag',
+        picture: { img },
+        cost: '6.00',
+    },
+    {
+        name: 'Square Shoulder Bag',
+        picture: { img },
+        cost: '6.00',
+    },
+];
+
 const Sidebar = (props: Props) => {
     const router = useRouter();
     const emtyWishlist: boolean = true;
 
     return (
         <MainSidebar>
-            <Box sx={{ minWidth: 276, border: '1px solid #eee', padding: 24 }}>
+            <Box sx={{ border: '1px solid #eee', padding: 24 }}>
                 <nav>
                     <List className="list-account">
                         {LIST_ITEM.map((item) => {
@@ -103,11 +132,25 @@ const Sidebar = (props: Props) => {
 };
 
 const MainSidebar = styled('div')`
+    min-width: 276px;
     margin-right: 0;
     @media screen and (${DEVICE.laptopM}) {
         margin-right: 32px;
     }
 `;
+
+const WhishList = styled('div')`
+    max-height: 266px;
+    overflow-y: scroll;
+    ::-webkit-scrollbar {
+        width: 4px;
+        background-color: #f5f5f5;
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: #aba9a9;
+    }
+`;
+
 const ItemAccount = styled(Typography)`
     &.active {
         color: red;
