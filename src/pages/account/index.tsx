@@ -1,10 +1,11 @@
 import Link from 'next/link';
 
-import { Box, Typography, styled } from '@mui/material';
+
+
+import { Box, Stack, Typography, styled } from '@mui/material';
 
 import { PageTop } from '@/components/common';
-import { ROUTES } from '@/constants';
-import { DEVICE } from '@/constants';
+import { DEVICE, ROUTES } from '@/constants';
 import AccountLayout from '@/layouts/account';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
@@ -83,16 +84,9 @@ const ItemAccount = ({
 
 const Account: NextPageWithLayout = (props: Props) => {
     return (
-        <Box className="container-app" sx={{ padding: 0 }}>
+        <Box>
             <AccountInfor>
-                <Typography
-                    variant="h3"
-                    sx={{
-                        fontSize: 26,
-                        fontWeight: 300,
-                        margin: '20px 0',
-                    }}
-                >
+                <Typography variant="h3" fontSize={26} marginY={20}>
                     Account Information
                 </Typography>
                 <ContainInfor>
@@ -102,60 +96,45 @@ const Account: NextPageWithLayout = (props: Props) => {
                         email="grouptwo@gmail.com"
                         link="/account/accInfor"
                         titleLink="Edit Change Password"
-                    ></ItemAccount>
+                    />
                     <ItemAccount
                         className="newLetter"
                         header=" Newsletters"
                         sub="You are subscribed to 'General Subscription'."
                         link="/account/newSub"
                         titleLink="Edit"
-                    ></ItemAccount>
+                    />
                 </ContainInfor>
             </AccountInfor>
             <AddressBook>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        margin: '20px 0',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Typography
-                        variant="h3"
-                        sx={{
-                            fontSize: 26,
-                            fontWeight: 300,
-                        }}
-                    >
+                <Stack marginY={20} direction="row" alignItems="center">
+                    <Typography variant="h3" fontSize={26} fontWeight={300}>
                         Address Book
                     </Typography>
                     <Link href="/account/addressBook">
                         <Typography
-                            component="span"
-                            sx={{
-                                margin: '0 20px',
-                                fontSize: 16,
-                                opacity: 0.7,
-                            }}
+                            sx={{ opacity: 0.7 }}
+                            fontSize={16}
+                            marginX={20}
                         >
                             Edit Address
                         </Typography>
                     </Link>
-                </Box>
+                </Stack>
                 <ContainAddress>
                     <ItemAccount
                         header=" Default Billing Address"
                         sub="You have not set a default billing address."
                         link="/account/addressBook"
                         titleLink="Edit Address"
-                    ></ItemAccount>
+                    />
                     <ItemAccount
                         className="shippingAddress"
                         header=" Default Billing Address"
                         sub="You have not set a default billing address."
                         link="/account/addressBook"
                         titleLink="Edit Address"
-                    ></ItemAccount>
+                    />
                 </ContainAddress>
             </AddressBook>
         </Box>

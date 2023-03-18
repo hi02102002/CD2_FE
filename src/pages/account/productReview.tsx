@@ -1,6 +1,5 @@
-import { Alert, Box } from '@mui/material';
-
 import { PageTop } from '@/components/common';
+import { ReviewTable } from '@/components/pages/account';
 import { ROUTES } from '@/constants';
 import AccountLayout from '@/layouts/account';
 import { ClientLayout } from '@/layouts/client';
@@ -10,9 +9,10 @@ type Props = {};
 
 const productReview: NextPageWithLayout = (props: Props) => {
     return (
-        <Box className="container-app" sx={{ padding: 0, marginBottom: 24 }}>
-            <Alert severity="warning">You have submitted no reviews.</Alert>
-        </Box>
+        // <Box className="container-app" sx={{ padding: 0, marginBottom: 24 }}>
+        //     <Alert severity="warning">You have submitted no reviews.</Alert>
+        // </Box>
+        <ReviewTable />
     );
 };
 

@@ -8,5 +8,6 @@ export { default as PageTop } from './PageTop';
 export { default as Pagination } from './Pagination';
 export { default as SignInSocial } from './SignInSocial';
 export { default as TextHover } from './TextHover';
+export { default as TextLimit } from './TextLimit';
 export { default as TextLink } from './TextLink';
 export { default as Tooltip } from './Tooltip';

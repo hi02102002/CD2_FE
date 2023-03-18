@@ -1,21 +1,11 @@
-import * as React from 'react';
-
-import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import {
-    Box,
-    Divider,
-    List,
-    ListItem,
-    Typography,
-    styled,
-} from '@mui/material';
-import { IconX } from '@tabler/icons-react';
+import { Box, List, ListItem, Typography, styled } from '@mui/material';
 
 import img from '@/assets/h1_slide_01.jpg';
+import { TextLink } from '@/components/common';
 import { DEVICE } from '@/constants';
+import { pxToRem } from '@/utils/pxToRem';
 
 type Props = {};
 
@@ -82,33 +72,32 @@ const ListWishList = [
 
 const Sidebar = (props: Props) => {
     const router = useRouter();
-    const emtyWishlist: boolean = true;
+    const emtyWishlist = true;
 
     return (
         <MainSidebar>
-            <Box sx={{ border: '1px solid #eee', padding: 24 }}>
+            <StyledSideBarWrapper>
                 <nav>
                     <List className="list-account">
                         {LIST_ITEM.map((item) => {
                             return (
                                 <ListItem key={item.href}>
-                                    <Link href={item.href}>
-                                        <ItemAccount
-                                            className={`${
-                                                item.href === router.pathname
-                                                    ? 'active'
-                                                    : ''
-                                            }`}
-                                        >
-                                            {item.title}
-                                        </ItemAccount>
-                                    </Link>
+                                    <ItemAccount
+                                        className={`${
+                                            item.href === router.pathname
+                                                ? 'active'
+                                                : ''
+                                        }`}
+                                        href={item.href}
+                                    >
+                                        {item.title}
+                                    </ItemAccount>
                                 </ListItem>
                             );
                         })}
                     </List>
                 </nav>
-            </Box>
+            </StyledSideBarWrapper>
             {emtyWishlist ? (
                 <Box sx={{ marginTop: 30 }}>
                     <Typography
@@ -132,28 +121,22 @@ const Sidebar = (props: Props) => {
 };
 
 const MainSidebar = styled('div')`
-    min-width: 276px;
-    margin-right: 0;
-    @media screen and (${DEVICE.laptopM}) {
-        margin-right: 32px;
+    min-width: ${pxToRem(272)};
+`;
+
+const StyledSideBarWrapper = styled(Box)`
+    padding: 0;
+    border: 1px solid ${(p) => p.theme.themeColor.border};
+
+    @media screen and (${DEVICE.tablet}) {
+        padding: ${pxToRem(24)};
     }
 `;
 
-const WhishList = styled('div')`
-    max-height: 266px;
-    overflow-y: scroll;
-    ::-webkit-scrollbar {
-        width: 4px;
-        background-color: #f5f5f5;
-    }
-    ::-webkit-scrollbar-thumb {
-        background-color: #aba9a9;
-    }
-`;
-
-const ItemAccount = styled(Typography)`
+const ItemAccount = styled(TextLink)`
     &.active {
         color: red;
+        font-weight: 500;
     }
 `;
 export default Sidebar;

@@ -1,8 +1,13 @@
 import React from 'react';
 
+
+
 import { Box, styled } from '@mui/material';
 
+
+
 import { DEVICE } from '@/constants';
+import { pxToRem } from '@/utils/pxToRem';
 
 import Sidebar from './Sidebar';
 
@@ -22,6 +27,7 @@ const MainLayout = ({ children }: Props) => {
 const LayoutMain = styled(Box)`
     display: flex;
     flex-direction: column-reverse;
+    gap: ${pxToRem(16)};
 
     @media screen and (${DEVICE.laptopM}) {
         flex-direction: row;

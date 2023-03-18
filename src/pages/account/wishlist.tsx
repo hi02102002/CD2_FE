@@ -1,11 +1,7 @@
-import Image from 'next/image';
+import { Alert, Box, Grid } from '@mui/material';
 
-import { Alert, Box, Grid, Typography, styled } from '@mui/material';
-
-import ItemWishList from '@/components/client/ItemWishList';
-import { Button } from '@/components/common';
-import { PageTop } from '@/components/common';
-import { DEVICE } from '@/constants';
+import { WishlistItem } from '@/components/client';
+import { Button, PageTop } from '@/components/common';
 import { ROUTES } from '@/constants';
 import AccountLayout from '@/layouts/account';
 import { ClientLayout } from '@/layouts/client';
@@ -54,27 +50,23 @@ const Wishlist: NextPageWithLayout = (props: Props) => {
     ];
 
     return (
-        <Box
-            className="container-app"
-            //maxHeight: 742, overflow: 'hidden'
-            sx={{ padding: 0, marginBottom: 24 }}
-        >
-            {ItemWishList.length > 0 ? (
+        <Box className="container-app" padding={0} marginBottom={24}>
+            {ArrayWishList.length > 0 ? (
                 <>
-                    <Grid container spacing={2}>
+                    <Grid container spacing={16}>
                         {ArrayWishList.map((Item) => (
-                            <Grid item lg={3} md={4} xs={12}>
-                                <ItemWishList
+                            <Grid item lg={3} md={4} xs={12} key={Item.name}>
+                                <WishlistItem
                                     avatar={Item.avatar}
                                     name={Item.name}
                                     cost={Item.cost}
-                                ></ItemWishList>
+                                />
                             </Grid>
                         ))}
                     </Grid>
                     <Button
                         typeButton="primary"
-                        sx={{ margin: '26px 0 0 15px' }}
+                        sx={{ marginTop: 26, marginLeft: 15 }}
                     >
                         Add All to Cart
                     </Button>

@@ -1,6 +1,5 @@
-import { Alert, Box } from '@mui/material';
-
 import { PageTop } from '@/components/common';
+import { OrderTable } from '@/components/pages/account';
 import { ROUTES } from '@/constants';
 import AccountLayout from '@/layouts/account';
 import { ClientLayout } from '@/layouts/client';
@@ -10,9 +9,10 @@ type Props = {};
 
 const Orders: NextPageWithLayout = (props: Props) => {
     return (
-        <Box className="container-app" sx={{ padding: 0, marginBottom: 24 }}>
-            <Alert severity="warning">You have placed no orders.</Alert>
-        </Box>
+        // <Box className="container-app" sx={{ padding: 0, marginBottom: 24 }}>
+        //     <Alert severity="warning">You have placed no orders.</Alert>
+        // </Box>
+        <OrderTable />
     );
 };
 
