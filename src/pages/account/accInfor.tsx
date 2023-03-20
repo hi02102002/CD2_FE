@@ -10,7 +10,7 @@ type Props = {};
 
 const AccInfor: NextPageWithLayout = (props: Props) => {
     return (
-        <Box className="container-app" sx={{ padding: 0, marginBottom: 24 }}>
+        <Box component='div' className='main-content'>
             <Alert severity="warning">Change password</Alert>
         </Box>
     );

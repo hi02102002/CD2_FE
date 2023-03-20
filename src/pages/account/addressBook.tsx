@@ -1,15 +1,13 @@
 import React from 'react';
 
+
+
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Typography } from '@mui/material';
-import FormControl from '@mui/material/FormControl';
-import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { Box, Stack, Typography, styled } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
-import { PageTop } from '@/components/common';
-import { Button } from '@/components/common';
+import { Button, PageTop, Select } from '@/components/common';
 import Input from '@/components/common/Input';
 import { ROUTES } from '@/constants';
 import AccountLayout from '@/layouts/account';
@@ -58,7 +56,7 @@ const saveAddress = yup.object().shape({
         .min(4, 'Không đúng định dạng Postal Code'),
 });
 
-const addressBook: NextPageWithLayout = (props: Props) => {
+const AddressBook: NextPageWithLayout = (props: Props) => {
     // select---
     const countrys: string[] = ['Viet Nam', 'Canpodia', 'Canada'];
     const [country, setCountry] = React.useState('');
@@ -66,10 +64,10 @@ const addressBook: NextPageWithLayout = (props: Props) => {
     const states: string[] = ['Alaske', 'Geographi', 'Cityland'];
     const [state, setState] = React.useState('');
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setCountry(event.target.value as string);
-        setState(event.target.value as string);
-    };
+    // const handleChange = (event: SelectChangeEvent) => {
+    //     setCountry(event.target.value as string);
+    //     setState(event.target.value as string);
+    // };
 
     const {
         control,
@@ -82,28 +80,14 @@ const addressBook: NextPageWithLayout = (props: Props) => {
     };
 
     return (
-        <Box
-            className="container-app"
-            sx={{ padding: 30, marginBottom: 20, border: '1px solid #eee' }}
-        >
+        <StyledAddressBook>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="addressContainer">
-                    <Box
-                        className="contactInformation"
-                        sx={{ marginBottom: 30 }}
-                    >
-                        <Typography
-                            variant="h5"
-                            sx={{
-                                fontWeight: '300',
-                                mb: pxToRem(15),
-                                fontSize: pxToRem(20),
-                                color: '#000',
-                            }}
-                        >
+                <Stack rowGap={30}>
+                    <Box className="contactInformation">
+                        <StyledTitle variant="h5">
                             Contact Information
-                        </Typography>
-                        <Box component="div">
+                        </StyledTitle>
+                        <Stack rowGap={12}>
                             <Controller
                                 name="firstName"
                                 control={control}
@@ -116,10 +100,9 @@ const addressBook: NextPageWithLayout = (props: Props) => {
                                         messageError={errors.firstName?.message}
                                         isError={errors.firstName != undefined}
                                         required
-                                        sx={{ mb: '12px' }}
-                                    ></Input>
+                                    />
                                 )}
-                            ></Controller>
+                            />
                             <Controller
                                 name="lastName"
                                 control={control}
@@ -132,10 +115,9 @@ const addressBook: NextPageWithLayout = (props: Props) => {
                                         messageError={errors.lastName?.message}
                                         isError={errors.lastName != undefined}
                                         required
-                                        sx={{ mb: '12px' }}
-                                    ></Input>
+                                    />
                                 )}
-                            ></Controller>
+                            />
                             <Controller
                                 name="company"
                                 control={control}
@@ -147,10 +129,9 @@ const addressBook: NextPageWithLayout = (props: Props) => {
                                         value={value}
                                         messageError={errors.company?.message}
                                         isError={errors.company != undefined}
-                                        sx={{ mb: '12px' }}
-                                    ></Input>
+                                    />
                                 )}
-                            ></Controller>
+                            />
                             <Controller
                                 name="phoneNumber"
                                 control={control}
@@ -166,25 +147,14 @@ const addressBook: NextPageWithLayout = (props: Props) => {
                                             errors.phoneNumber != undefined
                                         }
                                         required
-                                        sx={{ mb: '12px' }}
-                                    ></Input>
+                                    />
                                 )}
-                            ></Controller>
-                        </Box>
+                            />
+                        </Stack>
                     </Box>
                     <Box className="address">
-                        <Typography
-                            variant="h5"
-                            sx={{
-                                fontWeight: '300',
-                                mb: pxToRem(15),
-                                fontSize: pxToRem(20),
-                                color: '#000',
-                            }}
-                        >
-                            Address
-                        </Typography>
-                        <Box component="div">
+                        <StyledTitle variant="h5">Address</StyledTitle>
+                        <Stack rowGap={12} component="div">
                             <Controller
                                 name="stress"
                                 control={control}
@@ -197,10 +167,9 @@ const addressBook: NextPageWithLayout = (props: Props) => {
                                         messageError={errors.stress?.message}
                                         isError={errors.stress != undefined}
                                         required
-                                        sx={{ mb: '12px' }}
-                                    ></Input>
+                                    />
                                 )}
-                            ></Controller>
+                            />
 
                             <Box sx={{ margin: '20px 0' }}>
                                 <Typography
@@ -211,7 +180,7 @@ const addressBook: NextPageWithLayout = (props: Props) => {
                                 >
                                     Country
                                 </Typography>
-                                <FormControl fullWidth>
+                                {/* <FormControl fullWidth>
                                     <Select
                                         value={country}
                                         onChange={handleChange}
@@ -226,10 +195,10 @@ const addressBook: NextPageWithLayout = (props: Props) => {
                                             </MenuItem>
                                         ))}
                                     </Select>
-                                </FormControl>
+                                </FormControl> */}
                             </Box>
 
-                            <Box sx={{ margin: '20px 0' }}>
+                            {/* <Box sx={{ margin: '20px 0' }}>
                                 <Typography
                                     component="span"
                                     sx={{
@@ -251,7 +220,8 @@ const addressBook: NextPageWithLayout = (props: Props) => {
                                         ))}
                                     </Select>
                                 </FormControl>
-                            </Box>
+                            </Box> */}
+                            <Select label="Hoang huy" />
 
                             <Controller
                                 name="city"
@@ -265,10 +235,9 @@ const addressBook: NextPageWithLayout = (props: Props) => {
                                         messageError={errors.city?.message}
                                         isError={errors.city != undefined}
                                         required
-                                        sx={{ mb: '12px' }}
-                                    ></Input>
+                                    />
                                 )}
-                            ></Controller>
+                            />
 
                             <Controller
                                 name="postalCode"
@@ -283,11 +252,10 @@ const addressBook: NextPageWithLayout = (props: Props) => {
                                         }
                                         isError={errors.postalCode != undefined}
                                         required
-                                        sx={{ mb: '12px' }}
-                                    ></Input>
+                                    />
                                 )}
-                            ></Controller>
-                        </Box>
+                            />
+                        </Stack>
                         <Button
                             typeButton="primary"
                             className="btn-save"
@@ -297,13 +265,25 @@ const addressBook: NextPageWithLayout = (props: Props) => {
                             Save Address
                         </Button>
                     </Box>
-                </div>
+                </Stack>
             </form>
-        </Box>
+        </StyledAddressBook>
     );
 };
 
-addressBook.getLayout = (page) => {
+const StyledAddressBook = styled(Box)`
+    padding: ${pxToRem(30)};
+    border: 1px solid ${(p) => p.theme.themeColor.border};
+    width: 100%;
+`;
+
+const StyledTitle = styled(Typography)`
+    margin-bottom: ${pxToRem(15)};
+    font-size: ${pxToRem(20)};
+    color: ${(p) => p.theme.themeColor.primary};
+`;
+
+AddressBook.getLayout = (page) => {
     return (
         <ClientLayout>
             <PageTop
@@ -328,4 +308,4 @@ addressBook.getLayout = (page) => {
     );
 };
 
-export default addressBook;
+export default AddressBook;

@@ -10,7 +10,7 @@ type Props = {};
 
 const DowProducts: NextPageWithLayout = (props: Props) => {
     return (
-        <Box className="container-app" sx={{ padding: 0, marginBottom: 24 }}>
+        <Box component='div' className='main-content'>
             <Alert severity="warning">
                 You have not purchased any downloadable products yet.
             </Alert>

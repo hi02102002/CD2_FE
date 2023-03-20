@@ -50,7 +50,7 @@ const Wishlist: NextPageWithLayout = (props: Props) => {
     ];
 
     return (
-        <Box className="container-app" padding={0} marginBottom={24}>
+        <Box >
             {ArrayWishList.length > 0 ? (
                 <>
                     <Grid container spacing={16}>

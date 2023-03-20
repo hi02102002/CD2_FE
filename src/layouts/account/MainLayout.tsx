@@ -9,7 +9,10 @@ import { Box, styled } from '@mui/material';
 import { DEVICE } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
 
+
+
 import Sidebar from './Sidebar';
+
 
 type Props = {
     children: React.ReactNode;
@@ -31,6 +34,10 @@ const LayoutMain = styled(Box)`
 
     @media screen and (${DEVICE.laptopM}) {
         flex-direction: row;
+    }
+
+    .main-content {
+        flex: 1;
     }
 `;
 
