@@ -6,13 +6,13 @@ import { Button, Input, PageTop } from '@/components/common';
 import { TableCart } from '@/components/pages/cart';
 import { DEVICE, ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
+import useCart from '@/store/cart';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
-import useCart from '@/store/cart';
 
 const Cart: NextPageWithLayout = () => {
     const router = useRouter();
-    const {clearProduct} = useCart()
+    const { clearProduct } = useCart();
     return (
         <>
             <PageTop
@@ -44,7 +44,10 @@ const Cart: NextPageWithLayout = () => {
                             Continue Shopping
                         </Button>
                         <StyledActions>
-                            <Button typeButton="secondary" onClick={clearProduct}>
+                            <Button
+                                typeButton="secondary"
+                                onClick={clearProduct}
+                            >
                                 Clear Shopping Cart
                             </Button>
                             <Button typeButton="secondary">

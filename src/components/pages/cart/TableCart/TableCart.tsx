@@ -30,7 +30,6 @@ export const TableCart = () => {
                 </tr>
             </StyledTHead>
             <StyledTBody component="tbody">
-                
                 {arrProducts.map((product, index) => {
                     return (
                         <tr key={index}>

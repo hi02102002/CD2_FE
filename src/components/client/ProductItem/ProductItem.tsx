@@ -25,16 +25,16 @@ const ProductItem = () => {
 
     const { arrProducts, addProduct } = useCart();
     console.log(arrProducts);
-    
+
     const handleAddToCart = () => {
         if (arrProducts.some((product) => product.id === data.id)) {
             console.log('smae');
-            
+
             arrProducts.forEach((product) => {
-                if(product.id === data.id){
-                    product.quantity = product.quantity +1; 
+                if (product.id === data.id) {
+                    product.quantity = product.quantity + 1;
                 }
-            })
+            });
         } else {
             addProduct(data);
         }
@@ -81,9 +81,7 @@ const ProductItem = () => {
                     <Button
                         className="btn-add-cart"
                         typeButton="secondary"
-                        onClick={
-                            handleAddToCart
-                        }
+                        onClick={handleAddToCart}
                     >
                         Add to Cart
                     </Button>

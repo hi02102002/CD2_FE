@@ -1,9 +1,9 @@
 import Image, { StaticImageData } from 'next/image';
 import { useRouter } from 'next/router';
 
-import { Box, styled, Typography } from '@mui/material';
+import { Box, Typography, styled } from '@mui/material';
 import { common } from '@mui/material/colors';
-import { motion, Variants } from 'framer-motion';
+import { Variants, motion } from 'framer-motion';
 import { Autoplay, EffectFade, Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
