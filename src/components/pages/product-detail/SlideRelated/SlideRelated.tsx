@@ -13,12 +13,10 @@ function SlideRelated() {
         <StyledSlideRelated>
             <Typography
                 variant="body1"
-                sx={{
-                    textAlign: 'center',
-                    fontSize: '36px',
-                    color: '#000',
-                    marginBottom: '40px',
-                }}
+                marginBottom={40}
+                fontSize={36}
+                textAlign="center"
+                color="#000"
             >
                 Related Products
             </Typography>
@@ -80,9 +78,7 @@ function SlideRelated() {
 }
 const StyledSlideRelated = styled(Box)`
     position: relative;
-    .mySwiper {
-        position: relative;
-    }
+
     .slider-prev,
     .slider-next {
         z-index: 999;
@@ -95,25 +91,25 @@ const StyledSlideRelated = styled(Box)`
         border-radius: 100%;
         background-color: #fff;
         color: #000;
+        top: 50%;
+        transform: translateY(-50%);
+        align-items: center;
+        justify-content: center;
     }
 
     .slider-prev {
-        top: 50%;
         left: -16px;
-        transform: translateY(-50%);
     }
 
     .slider-next {
-        top: 50%;
         right: -16px;
-        transform: translateY(-50%);
     }
 
     &:hover .slider-prev {
-        display: block;
+        display: flex;
     }
     &:hover .slider-next {
-        display: block;
+        display: flex;
     }
 `;
 export default SlideRelated;

@@ -32,6 +32,14 @@ const Customer: NextPageWithLayout = () => {
                             display: 'none',
                         },
                     }}
+                    TablePaginationProps={{
+                        count: 10,
+                        onPageChange() {
+                            //
+                        },
+                        page: 1,
+                        rowsPerPage: 10,
+                    }}
                 />
             </Box>
         </Box>

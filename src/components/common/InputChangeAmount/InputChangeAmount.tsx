@@ -97,6 +97,7 @@ const StyledInputChangeAmount = styled(Box)`
     border-radius: 4px;
     max-width: max-content;
     overflow: hidden;
+    flex-shrink: 0;
 
     .sub,
     .add,

@@ -3,13 +3,14 @@ import { Box, Grid, styled } from '@mui/material';
 import { PageTop } from '@/components/common';
 import {
     ImageLibrary,
+    ProductDetailTab,
     ProductInfo,
     SlideRelated,
 } from '@/components/pages/product-detail';
-import ProductDetailTab from '@/components/pages/product-detail/ProductDetailTab';
 import { ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
+import { pxToRem } from '@/utils/pxToRem';
 
 type Props = {};
 
@@ -33,21 +34,21 @@ const Product: NextPageWithLayout<Props> = () => {
                 <ProductMainContent
                     container
                     className="product-main-content"
-                    sx={{ padding: '0' }}
+                    padding={0}
+                    spacing={16}
                 >
-                    <ImageLibrary></ImageLibrary>
-
-                    <ProductInfo></ProductInfo>
+                    <ImageLibrary />
+                    <ProductInfo />
                 </ProductMainContent>
                 <Box
                     component="div"
                     className="product-info-detailed"
-                    sx={{ marginTop: '50px' }}
+                    marginTop={50}
                 >
-                    <ProductDetailTab></ProductDetailTab>
+                    <ProductDetailTab />
                 </Box>
                 <Box component="div" className="products-related">
-                    <SlideRelated></SlideRelated>
+                    <SlideRelated />
                 </Box>
             </Box>
         </>
@@ -59,6 +60,6 @@ Product.getLayout = (page) => {
 };
 
 const ProductMainContent = styled(Grid)`
-    padding: 0px 20px;
+    padding: 0 ${pxToRem(20)};
 `;
 export default Product;

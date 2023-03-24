@@ -9,7 +9,7 @@ import {
     IconArrowNarrowRight,
     IconArrowNarrowUp,
 } from '@tabler/icons-react';
-import { Navigation, Thumbs } from 'swiper';
+import TSwiper, { Navigation, Thumbs } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
@@ -31,7 +31,7 @@ import { pxToRem } from '@/utils/pxToRem';
 const imgs = [img1, img2, img3, img4, img5, img6, img7, img8];
 
 function ImageLibrary() {
-    const [thumbsSwiper, setThumbsSwiper] = useState(null);
+    const [thumbsSwiper, setThumbsSwiper] = useState<TSwiper | null>(null);
 
     return (
         <StyledImageLibrary
@@ -48,10 +48,11 @@ function ImageLibrary() {
 
                 <Swiper
                     scrollbar={{ draggable: true }}
-                    onSwiper={setThumbsSwiper}
+                    onSwiper={(swiper) => {
+                        setThumbsSwiper(swiper);
+                    }}
                     spaceBetween={1}
                     slidesPerView={6}
-                    // freeMode={true}
                     watchSlidesProgress={true}
                     modules={[Navigation, Thumbs]}
                     className="mySwiper"
@@ -70,7 +71,7 @@ function ImageLibrary() {
                                         height="91"
                                         src={img}
                                         alt=""
-                                    ></Image>
+                                    />
                                 </Box>
                             </SwiperSlide>
                         );
@@ -83,54 +84,48 @@ function ImageLibrary() {
             </Grid>
 
             <Grid item md={9.5} xs={12} className="right-thumb">
-                <Swiper
-                    loop={true}
-                    spaceBetween={0}
-                    slidesPerView={1}
-                    navigation={{
-                        nextEl: '.sliderImg-next',
-                        prevEl: '.sliderImg-prev',
-                    }}
-                    thumbs={{ swiper: thumbsSwiper }}
-                    modules={[Navigation, Thumbs]}
-                    className="mySwiper2"
-                >
-                    {imgs.map((img, index) => {
-                        return (
-                            <SwiperSlide key={index}>
-                                <Button
-                                    className="sliderImg-prev"
-                                    typeButton="secondary"
-                                >
-                                    <IconArrowNarrowLeft />
-                                </Button>
-
-                                <Box
-                                    paddingTop={`${1.30888030888 * 100}%`}
-                                    component="div"
-                                    className="img-wrapper"
-                                >
-                                    <Image
-                                        src={img}
-                                        alt=""
-                                        fill
-                                        style={{
-                                            objectFit: 'cover',
-                                        }}
-                                        draggable={false}
-                                    />
-                                </Box>
-
-                                <Button
-                                    className="sliderImg-next"
-                                    typeButton="secondary"
-                                >
-                                    <IconArrowNarrowRight />
-                                </Button>
-                            </SwiperSlide>
-                        );
-                    })}
-                </Swiper>
+                <Box position="relative">
+                    <Button className="sliderImg-prev" typeButton="secondary">
+                        <IconArrowNarrowLeft />
+                    </Button>
+                    <Button className="sliderImg-next" typeButton="secondary">
+                        <IconArrowNarrowRight />
+                    </Button>
+                    <Swiper
+                        loop={true}
+                        spaceBetween={0}
+                        slidesPerView={1}
+                        navigation={{
+                            nextEl: '.sliderImg-next',
+                            prevEl: '.sliderImg-prev',
+                        }}
+                        thumbs={{ swiper: thumbsSwiper }}
+                        modules={[Navigation, Thumbs]}
+                        className="mySwiper2"
+                    >
+                        {imgs.map((img, index) => {
+                            return (
+                                <SwiperSlide key={index}>
+                                    <Box
+                                        paddingTop={`${1.30888030888 * 100}%`}
+                                        component="div"
+                                        className="img-wrapper"
+                                    >
+                                        <Image
+                                            src={img}
+                                            alt=""
+                                            fill
+                                            style={{
+                                                objectFit: 'cover',
+                                            }}
+                                            draggable={false}
+                                        />
+                                    </Box>
+                                </SwiperSlide>
+                            );
+                        })}
+                    </Swiper>
+                </Box>
             </Grid>
         </StyledImageLibrary>
     );
@@ -193,23 +188,25 @@ const StyledImageLibrary = styled(Grid)`
             padding: 0;
             border: 0;
             border-radius: 100%;
+            align-items: center;
+            justify-content: center;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         .slider-prev {
-            top: 0;
-            left: 20px;
+            top: 4px;
         }
 
         .slider-next {
-            bottom: 0px;
-            left: 20px;
+            bottom: 4px;
         }
 
         &:hover .slider-prev {
-            display: block;
+            display: flex;
         }
         &:hover .slider-next {
-            display: block;
+            display: flex;
         }
 
         @media ${DEVICE.mobileS} {
@@ -226,30 +223,35 @@ const StyledImageLibrary = styled(Grid)`
         .sliderImg-next {
             z-index: 999;
             position: absolute;
-            display: none;
             width: ${pxToRem(45)};
             height: ${pxToRem(45)};
             padding: 0;
             border: 0;
             border-radius: 100%;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(-50%);
+            top: 50%;
+            display: none;
+
+            @media (hover: none) {
+                display: none;
+            }
         }
 
         .sliderImg-prev {
-            top: 50%;
-            transform: translateY(-50%);
+            left: ${pxToRem(16)};
         }
 
         .sliderImg-next {
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
+            right: ${pxToRem(16)};
         }
 
         &:hover .sliderImg-prev {
-            display: block;
+            display: flex;
         }
         &:hover .sliderImg-next {
-            display: block;
+            display: flex;
         }
     }
 `;

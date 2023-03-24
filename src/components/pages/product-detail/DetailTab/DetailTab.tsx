@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 import styled from '@emotion/styled';
-import { Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 
 import img1 from '@/assets/product_fashion_22_a_4.jpeg';
@@ -14,18 +14,14 @@ import DetailTabItem from '../DetailTabItem';
 function DetailTab() {
     return (
         <DescItem component="div">
-            <Typography
-                variant="h3"
-                fontWeight="400"
-                marginBottom={pxToRem(15)}
-            >
+            <Typography variant="h3" fontWeight="400" marginBottom={15}>
                 The Iconic Silhouette
             </Typography>
             <Typography
                 variant="body1"
                 color="#666"
                 lineHeight="1.75"
-                marginBottom="35px"
+                marginBottom={35}
             >
                 He garments labelled as Committed are products that have been
                 produced using sustainable fibers or processes, reducing their
@@ -36,8 +32,8 @@ function DetailTab() {
             </Typography>
             <StyledBox component="div">
                 <DetailTabItem
-                    classname="product-details-item"
-                    title="Infomation"
+                    className="product-details-item"
+                    title="Information"
                 >
                     <ul
                         style={{ listStyleType: 'circle', paddingLeft: '17px' }}
@@ -51,7 +47,7 @@ function DetailTab() {
                 </DetailTabItem>
 
                 <DetailTabItem
-                    classname="product-details-item"
+                    className="product-details-item"
                     title="Composition"
                 >
                     <ul
@@ -64,7 +60,7 @@ function DetailTab() {
                 </DetailTabItem>
 
                 <DetailTabItem
-                    classname="product-details-item"
+                    className="product-details-item"
                     title="Composition"
                 >
                     <Typography variant="body1">
@@ -73,7 +69,7 @@ function DetailTab() {
                 </DetailTabItem>
 
                 <DetailTabItem
-                    classname="product-details-item"
+                    className="product-details-item"
                     title="Washing Instructions"
                 >
                     <Image src={img} alt=""></Image>
@@ -83,28 +79,30 @@ function DetailTab() {
                     </Typography>
                 </DetailTabItem>
             </StyledBox>
-            <BottomDetails component="div">
-                <Box component="div" className="bottom-details-img">
-                    <Image src={img1} alt=""></Image>
-                </Box>
-                <Box component="div" className="bottom-details-desc">
-                    <Typography variant="caption">
-                        Poplin top with ruffle trim
-                    </Typography>
-                    <Typography variant="body1">
-                        We believe in crafting pieces where sustainability and
-                        style go hand in hand. Made from materials like recycled
-                        cashmere and sust
-                    </Typography>
-                </Box>
+            <BottomDetails container spacing={16}>
+                <Grid item xs={12} md={6}>
+                    <Box component="div" className="bottom-details-img">
+                        <Image src={img1} alt="" fill />
+                    </Box>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Box component="div" className="bottom-details-desc">
+                        <Typography variant="caption">
+                            Poplin top with ruffle trim
+                        </Typography>
+                        <Typography variant="body1">
+                            We believe in crafting pieces where sustainability
+                            and style go hand in hand. Made from materials like
+                            recycled cashmere and sust
+                        </Typography>
+                    </Box>
+                </Grid>
             </BottomDetails>
         </DescItem>
     );
 }
 
 const DescItem = styled(Box)`
-    padding-top: ${pxToRem(60)};
-
     .list-info {
         li {
             margin-bottom: ${pxToRem(12)};
@@ -112,24 +110,16 @@ const DescItem = styled(Box)`
     }
 `;
 
-const BottomDetails = styled(Box)`
-    display: flex;
-    justify-content: center;
-
+const BottomDetails = styled(Grid)`
     .bottom-details-img {
-        padding-right: 30px;
-        img {
-            width: 100%;
-            height: 340px;
-        }
+        padding-right: ${pxToRem(30)};
+        position: relative;
+        padding-bottom: ${0.623853211 * 100}%;
     }
-    div {
-        width: 50%;
-    }
+
     .bottom-details-desc {
         display: flex;
         flex-direction: column;
-        /* align-items: center; */
         justify-content: center;
 
         span {
@@ -139,27 +129,6 @@ const BottomDetails = styled(Box)`
 
         p {
             line-height: 1.75;
-        }
-    }
-    @media ${DEVICE.mobileS} {
-        flex-direction: column;
-        display: flex;
-
-        .bottom-details-img {
-            width: 100%;
-            padding-right: 0;
-        }
-
-        .bottom-details-desc {
-            width: 100%;
-        }
-    }
-
-    @media ${DEVICE.tablet} {
-        flex-direction: row;
-
-        .bottom-details-img {
-            padding-right: ${pxToRem(30)};
         }
     }
 `;

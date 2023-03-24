@@ -30,11 +30,8 @@ interface IFormInputs {
 }
 
 const SignupSChema = yup.object().shape({
-    email: yup
-        .string()
-        .required('Vui lòng nhập email ')
-        .email('Vui lòng nhập đúng địa chỉ email'),
-    password: yup.string().required('Vui lòng nhập mật khẩu'),
+    email: yup.string().required().email(),
+    password: yup.string().required(),
 });
 
 function LoginFrom() {
@@ -115,6 +112,7 @@ function LoginFrom() {
                             type={showPassword ? 'text' : 'password'}
                             name={name}
                             onBlur={onBlur}
+                            sx={{ mb: '12px' }}
                         />
                     )}
                 />

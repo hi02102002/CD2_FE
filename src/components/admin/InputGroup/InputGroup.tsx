@@ -2,10 +2,8 @@ import {
     Box,
     BoxProps,
     Input,
-    InputProps,
-    Typography,
-    TypographyProps,
-    styled,
+    InputProps, styled, Typography,
+    TypographyProps
 } from '@mui/material';
 import { red } from '@mui/material/colors';
 

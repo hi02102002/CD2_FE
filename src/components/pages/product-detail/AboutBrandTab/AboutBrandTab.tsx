@@ -8,7 +8,7 @@ import { pxToRem } from '@/utils/pxToRem';
 
 function AboutBrandTab() {
     return (
-        <Grid container sx={{ paddingTop: `${pxToRem(60)}` }}>
+        <Grid container>
             <Grid item md={4} xs={12}>
                 <Box
                     component="div"
@@ -32,17 +32,15 @@ function AboutBrandTab() {
                     </Link>
                 </Box>
             </Grid>
-            <Grid item md={8} xs={12} sx={{ padding: '0 15px' }}>
-                <Typography
-                    variant="h4"
-                    sx={{ margin: '10px 0', fontSize: '20px' }}
-                >
+            <Grid item md={8} xs={12} sx={{ padding: '0 15px' }} paddingX={15}>
+                <Typography variant="h4" marginY={10} fontSize={20}>
                     Minimog
                 </Typography>
                 <Typography
                     variant="body1"
                     color="#666"
-                    sx={{ paddingTop: '15px', lineHeight: '1.75' }}
+                    pt={15}
+                    lineHeight={1.75}
                 >
                     S celerisque justo condimentum est venenatis morbi mi
                     senectus a enim vestibulum sodales placerat parturient

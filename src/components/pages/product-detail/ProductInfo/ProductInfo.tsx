@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import Image from 'next/image';
 
-import { Box, Grid, Rating, Typography, styled } from '@mui/material';
+import { Box, Grid, Rating, Stack, Typography, styled } from '@mui/material';
 import {
     IconArrowsRightLeft,
     IconQuestionCircle,
@@ -15,7 +15,12 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 
 import imgFooter from '@/assets/footer-payment.png';
-import { Button, Tooltip } from '@/components/common';
+import {
+    Button,
+    InputChangeAmount,
+    TextHover,
+    Tooltip,
+} from '@/components/common';
 import { DEVICE } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
 
@@ -23,19 +28,6 @@ const sizes = ['S', 'M', 'L'];
 
 function ProductInfo() {
     const [size, setSize] = useState<String>('');
-    const [count, setCount] = useState<number>(1);
-
-    const handlePlus = () => {
-        setCount(count + 1);
-    };
-
-    const handleSubtract = () => {
-        if (count > 0) {
-            setCount(count - 1);
-        } else {
-            setCount(0);
-        }
-    };
 
     return (
         <StyledProductInfo item md={5.5} xs={12} className="product-info">
@@ -129,57 +121,36 @@ function ProductInfo() {
                     </Box>
 
                     <Box component="div" className="product-option-bottom">
-                        <Box component="div" className="add-cart">
-                            <Box component="div" className="count">
-                                <Typography
-                                    component="span"
-                                    onClick={handleSubtract}
-                                >
-                                    -
-                                </Typography>
-                                <Typography component="span">
-                                    {count}
-                                </Typography>
-                                <Typography
-                                    component="span"
-                                    onClick={handlePlus}
-                                >
-                                    +
-                                </Typography>
-                            </Box>
-
-                            <Button
-                                className="button-submit"
-                                typeButton="secondary"
-                            >
+                        <Stack direction="row" alignItems="center" gap={16}>
+                            <InputChangeAmount />
+                            <StyledAddCartButton typeButton="secondary">
                                 Add to Cart
-                            </Button>
-                        </Box>
+                            </StyledAddCartButton>
+                        </Stack>
 
-                        <Box component="div" className="buy-wrap">
-                            <Button className="button-buy" typeButton="primary">
-                                Buy It Now
-                            </Button>
-                        </Box>
+                        <StyledBuyButton
+                            className="button-buy"
+                            typeButton="primary"
+                        >
+                            Buy It Now
+                        </StyledBuyButton>
                     </Box>
                 </form>
             </Box>
-            <Box component="div" className="product-social">
-                <Box component="div" className="product-item">
-                    <IconArrowsRightLeft></IconArrowsRightLeft>
-                    <Typography variant="caption">Add to Compare</Typography>
-                </Box>
-
-                <Box component="div" className="product-item">
-                    <IconShare></IconShare>
-                    <Typography variant="caption">Share</Typography>
-                </Box>
-
-                <Box component="div" className="product-item">
-                    <IconQuestionCircle></IconQuestionCircle>
-                    <Typography variant="caption">Ask a Question</Typography>
-                </Box>
-            </Box>
+            <Stack direction="row" spacing={20} alignItems="center">
+                <StyledTextHover>
+                    <IconArrowsRightLeft />
+                    Add to Compare
+                </StyledTextHover>
+                <StyledTextHover>
+                    <IconShare />
+                    Share
+                </StyledTextHover>
+                <StyledTextHover>
+                    <IconQuestionCircle />
+                    Ask a Question
+                </StyledTextHover>
+            </Stack>
 
             <StyledInfoFooter component="div">
                 <Image src={imgFooter} alt={''}></Image>
@@ -281,73 +252,25 @@ const StyledProductInfo = styled(Grid)`
                 background-color: #000;
             }
         }
-
-        .add-cart {
-            display: flex;
-            align-items: center;
-            padding-bottom: ${pxToRem(15)};
-
-            .count {
-                background-color: #f1f1f1;
-                border: 1px solid #f1f1f1;
-                border-radius: ${pxToRem(5)};
-                display: inline-flex;
-                margin-right: ${pxToRem(10)};
-
-                span {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: ${pxToRem(40)};
-                    height: ${pxToRem(40)};
-                    font-size: ${pxToRem(20)};
-                    cursor: pointer;
-                }
-            }
-
-            .button-submit {
-                flex: 1;
-                padding: ${pxToRem(8)} ${pxToRem(32)};
-                color: #000;
-                font-weight: 600;
-
-                &:hover {
-                    color: #fff;
-                }
-            }
-        }
-
-        .buy-wrap {
-            margin: ${pxToRem(20)} 0;
-            .button-buy {
-                width: 100%;
-            }
-        }
     }
+`;
 
-    .product-social {
-        display: flex;
-        align-items: center;
-        padding-bottom: ${pxToRem(10)};
-    }
-    .product-item {
-        display: flex;
-        align-items: center;
-        margin-right: ${pxToRem(20)};
-        cursor: pointer;
-        span {
-            color: #000;
-            font-size: ${pxToRem(16)};
-            margin-left: ${pxToRem(6)};
-        }
+const StyledAddCartButton = styled(Button)`
+    height: ${pxToRem(44)};
+    width: 100%;
+`;
 
-        &:hover span {
-            color: #999;
-        }
-        &:hover {
-            color: #999;
-        }
-    }
+const StyledBuyButton = styled(Button)`
+    margin: ${pxToRem(20)} 0;
+    width: 100%;
+`;
+
+const StyledTextHover = styled(TextHover)`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: ${pxToRem(8)};
+    cursor: pointer;
 `;
 
 const StyledInfoFooter = styled(Box)`
