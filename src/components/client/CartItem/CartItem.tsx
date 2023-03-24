@@ -6,9 +6,11 @@ import { IconX } from '@tabler/icons-react';
 
 import { InputChangeAmount, TextLink } from '@/components/common';
 import { DEVICE } from '@/constants';
+import useCart from '@/store/cart';
 import { pxToRem } from '@/utils/pxToRem';
 
 export const CartItem = (props: BoxProps) => {
+    const { removeProduct } = useCart();
     return (
         <StyledCartItem {...props} className={`${props.className} cart`}>
             <StyledImageWrapper className="img-wrapper">
@@ -28,7 +30,7 @@ export const CartItem = (props: BoxProps) => {
                         className: 'product-name',
                     }}
                 >
-                    Square shoulder bag
+                    {props.id}
                 </TextLink>
                 <Box component="ul" className="product-attributes">
                     <Box component="div" className="attribute">
@@ -48,6 +50,9 @@ export const CartItem = (props: BoxProps) => {
                 }}
                 component="div"
                 className="btn-remove"
+                onClick={() => {
+                    removeProduct(props.id);
+                }}
             >
                 <IconX width={16} height={16} color={grey[500]} />
             </Box>

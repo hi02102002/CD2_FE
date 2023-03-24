@@ -13,6 +13,7 @@ import { IconX } from '@tabler/icons-react';
 
 import { Button } from '@/components/common';
 import { DEVICE, ROUTES } from '@/constants';
+import useCart from '@/store/cart';
 import { pxToRem } from '@/utils/pxToRem';
 
 import { CartItem } from '../CartItem';
@@ -25,7 +26,7 @@ type Props = {
 const DrawerCart = ({ isOpen, onClose }: Props) => {
     const isShowCartItem = true;
     const router = useRouter();
-
+    const { arrProducts } = useCart();
     return (
         <StyledDrawerCart
             ModalProps={{
@@ -47,10 +48,14 @@ const DrawerCart = ({ isOpen, onClose }: Props) => {
             <StyledBody>
                 {isShowCartItem ? (
                     <StyledListCart spacing={16}>
-                        <CartItem />
-                        <CartItem />
-                        <CartItem />
-                        <CartItem />
+                        {arrProducts.map((product, index) => {
+                            return (
+                                <CartItem
+                                    key={index}
+                                    id={product.id}
+                                ></CartItem>
+                            );
+                        })}
                     </StyledListCart>
                 ) : (
                     <>
