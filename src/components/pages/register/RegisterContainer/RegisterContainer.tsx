@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+
+
 import { useRouter } from 'next/router';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -28,7 +30,7 @@ interface IFormInputs {
 }
 
 const SignupSChema = yup.object().shape({
-    fullname: yup.string().required().min(6),
+    fullName: yup.string().required('Full name is required').min(6),
     email: yup.string().required().email(),
     password: yup
         .string()
@@ -41,13 +43,12 @@ const SignupSChema = yup.object().shape({
             /[!@#$%^&*()-+]+/,
             'password must be at least one Special character',
         )
-        // .matches(/ ![a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêếìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\ ]+$/,  "Mật khdsadsẩu cần ít nhất 1 kí tự đặc biệt" )
         .test(
             'Password must not contain spaces',
             'Password must not contain spaces',
             (value) => !/\s+/.test(value),
         ),
-    confirmpassword: yup
+    confirmPassword: yup
         .string()
         .required()
         .oneOf([yup.ref('password')], 'Re-entered password is incorrect'),
@@ -59,6 +60,7 @@ function RegisterContainer() {
         handleSubmit,
         formState: { errors },
     } = useForm<IFormInputs>({ resolver: yupResolver(SignupSChema) });
+    console.log(errors);
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
@@ -75,6 +77,7 @@ function RegisterContainer() {
             router.push(ROUTES.LOGIN);
             setIsLoading(false);
         } catch (error) {
+            console.log(error);
             setIsLoading(false);
             if (error instanceof AxiosError) {
                 toast.error(error.response?.data.message);
@@ -107,7 +110,6 @@ function RegisterContainer() {
                         <Controller
                             name="fullName"
                             control={control}
-                            defaultValue=""
                             render={({
                                 field: { onChange, value, name, onBlur },
                             }) => (
