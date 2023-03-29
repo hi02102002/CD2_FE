@@ -34,6 +34,10 @@ const App = ({
                     font-family: ${JostFont.style.fontFamily};
                     --font-base: ${JostFont.style.fontFamily};
                 }
+
+                #fb-root iframe {
+                    height:360px;
+                }
             `}</style>
             <CacheProvider value={emotionCache}>
                 <ThemeProvider theme={theme}>
