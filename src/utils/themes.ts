@@ -2,7 +2,10 @@ import { createTheme } from '@mui/material';
 import { common, orange } from '@mui/material/colors';
 import { Jost } from '@next/font/google';
 
+
+
 import { pxToRem } from './pxToRem';
+
 
 export const JostFont = Jost({
     variable: '--jost-font',
@@ -21,6 +24,7 @@ export const theme = createTheme({
         title: '#222',
         body: '#666',
         footerBg: '#f5f5f5',
+        border: '#eee',
     },
     typography: {
         fontFamily: 'var(--font-base)',
@@ -53,15 +57,6 @@ export const theme = createTheme({
         },
     },
     spacing: (factor: number) => `${factor / 16}rem`,
-    breakpoints: {
-        values: {
-            xs: 0,
-            sm: 425,
-            md: 768,
-            lg: 1024,
-            xl: 1200,
-        },
-    },
     size: {
         height: {
             header: pxToRem(60),

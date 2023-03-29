@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 
 
+
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Divider, Stack } from '@mui/material';
 import { Box } from '@mui/system';
@@ -17,6 +19,7 @@ import { CategoryInputSchema, FormInputs } from '@/types/category';
 
 import InputGroup from '../InputGroup';
 import ListFilePreview from '../ListFilePreview';
+import LoadingFullPage from '../LoadingFullPage';
 import ModalWrapper from '../ModalWrapper';
 import Upload from '../Upload';
 
@@ -32,7 +35,13 @@ type Props = {
 };
 
 const CategoryAction = ({ onClose, type = 'ADD', dataEdit }: Props) => {
-    const { control, handleSubmit, setValue, watch } = useForm<FormInputs>({
+    const {
+        control,
+        handleSubmit,
+        setValue,
+        watch,
+        formState: {},
+    } = useForm<FormInputs>({
         resolver: yupResolver(CategoryInputSchema),
         values: {
             code: dataEdit?.code as string,
@@ -104,94 +113,105 @@ const CategoryAction = ({ onClose, type = 'ADD', dataEdit }: Props) => {
     };
 
     return (
-        <ModalWrapper>
-            <form
-                onSubmit={handleSubmit(
-                    type === 'ADD' ? handelAddCategory : handelUpdateCategory,
-                )}
-            >
-                <ModalWrapper.Header
-                    titleText={
-                        type === 'ADD' ? 'Add category' : 'Edit category'
-                    }
-                    onClose={onClose}
-                />
-                <Divider />
-                <Box padding={16}>
-                    <Stack gap={16}>
-                        <Controller
-                            render={({ field, fieldState }) => {
-                                return (
-                                    <InputGroup
-                                        label="Name"
-                                        required
-                                        messageError={fieldState.error?.message}
-                                        InputProps={{
-                                            ...field,
-                                        }}
-                                    />
-                                );
-                            }}
-                            control={control}
-                            name="name"
-                        />
-                        <Controller
-                            render={({ field, fieldState }) => {
-                                return (
-                                    <InputGroup
-                                        required
-                                        label="Code"
-                                        {...field}
-                                        messageError={fieldState.error?.message}
-                                        InputProps={{
-                                            ...field,
-                                        }}
-                                    />
-                                );
-                            }}
-                            control={control}
-                            name="code"
-                        />
-                        <Controller
-                            render={({
-                                field: { onChange, onBlur },
-                                fieldState,
-                            }) => (
-                                <Box>
-                                    <Upload
-                                        required
-                                        label="Image"
-                                        onChange={onChange}
-                                        onBlur={onBlur}
-                                        onDrop={(acceptedFiles) => {
-                                            handelAddFile(acceptedFiles);
-                                        }}
-                                        errorMessage={fieldState.error?.message}
-                                        multiple={false}
-                                    />
-                                    <ListFilePreview
-                                        files={files}
-                                        onRemove={handelRemoveFile}
-                                    />
-                                </Box>
-                            )}
-                            control={control}
-                            name="file"
-                        />
-                    </Stack>
-                </Box>
-                <Divider />
-                <ModalWrapper.Footer
-                    ButtonCancelProps={{
-                        onClick: onClose,
-                    }}
-                    ButtonOkProps={{
-                        type: 'submit',
-                        loading: isLoadingAction,
-                    }}
-                />
-            </form>
-        </ModalWrapper>
+        <>
+            <ModalWrapper>
+                <form
+                    onSubmit={handleSubmit(
+                        type === 'ADD'
+                            ? handelAddCategory
+                            : handelUpdateCategory,
+                    )}
+                >
+                    <ModalWrapper.Header
+                        titleText={
+                            type === 'ADD' ? 'Add category' : 'Edit category'
+                        }
+                        onClose={onClose}
+                    />
+                    <Divider />
+                    <Box padding={16}>
+                        <Stack gap={16}>
+                            <Controller
+                                render={({ field, fieldState }) => {
+                                    return (
+                                        <InputGroup
+                                            label="Name"
+                                            required
+                                            messageError={
+                                                fieldState.error?.message
+                                            }
+                                            InputProps={{
+                                                ...field,
+                                            }}
+                                        />
+                                    );
+                                }}
+                                control={control}
+                                name="name"
+                            />
+                            <Controller
+                                render={({ field, fieldState }) => {
+                                    return (
+                                        <InputGroup
+                                            required
+                                            label="Code"
+                                            {...field}
+                                            messageError={
+                                                fieldState.error?.message
+                                            }
+                                            InputProps={{
+                                                ...field,
+                                            }}
+                                        />
+                                    );
+                                }}
+                                control={control}
+                                name="code"
+                            />
+                            <Controller
+                                render={({
+                                    field: { onChange, onBlur },
+                                    fieldState,
+                                }) => (
+                                    <Box>
+                                        <Upload
+                                            required
+                                            label="Image"
+                                            onChange={onChange}
+                                            onBlur={onBlur}
+                                            onDrop={(acceptedFiles) => {
+                                                handelAddFile(acceptedFiles);
+                                            }}
+                                            errorMessage={
+                                                fieldState.error?.message
+                                            }
+                                            multiple={false}
+                                        />
+                                        <ListFilePreview
+                                            files={files}
+                                            onRemove={handelRemoveFile}
+                                        />
+                                    </Box>
+                                )}
+                                control={control}
+                                name="file"
+                            />
+                        </Stack>
+                    </Box>
+                    <Divider />
+                    <ModalWrapper.Footer
+                        ButtonCancelProps={{
+                            onClick: onClose,
+                        }}
+                        ButtonOkProps={{
+                            type: 'submit',
+                            loading: isLoadingAction,
+                        }}
+                    />
+                </form>
+            </ModalWrapper>
+            {isLoadingAction && <LoadingFullPage />}
+        </>
     );
 };
 

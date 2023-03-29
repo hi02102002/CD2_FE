@@ -7,6 +7,7 @@ import { ROUTES } from '@/constants';
 import { AdminLayout } from '@/layouts/admin';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
+import { withProtect } from '@/utils/withProtect';
 
 const Products: NextPageWithLayout = () => {
     const router = useRouter();
@@ -56,11 +57,12 @@ const Products: NextPageWithLayout = () => {
                                 },
                             }}
                             TablePaginationProps={{
-                                count: 10,
-                                onPageChange() {
+                                count: 1,
+                                page: 10,
+                                onPageChange(event, page) {
                                     //
+                                    console.log(event, page);
                                 },
-                                page: 1,
                                 rowsPerPage: 10,
                             }}
                         />
@@ -74,5 +76,10 @@ const Products: NextPageWithLayout = () => {
 Products.getLayout = (page) => {
     return <AdminLayout>{page}</AdminLayout>;
 };
+
+export const getServerSideProps = withProtect({
+    isAdmin: true,
+    isProtect: true,
+})();
 
 export default Products;

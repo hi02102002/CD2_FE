@@ -3,11 +3,16 @@
 /* eslint-disable react/display-name */
 import { useEffect } from 'react';
 
+
+
 import { useRouter } from 'next/router';
+
+
 
 import { ROUTES } from '@/constants';
 import useAuthStore from '@/store/auth';
 import { ROLE } from '@/types/user';
+
 
 type Options = {
     isAdmin: boolean;
@@ -21,7 +26,7 @@ const ROUTES_REDIRECT_AUTH = [
     ROUTES.RESET_PASS,
 ];
 
-const withProtect =
+const withProtectClient =
     <P extends JSX.IntrinsicAttributes>(options: Options) =>
     (Component: React.FunctionComponent<P>) => {
         const ComponentWithProtect = (props: P) => {
@@ -45,11 +50,10 @@ const withProtect =
                     router.replace(ROUTES.NOT_ALLOW);
                 }
             }, [router, isAdmin, isProtect, accessToken, user]);
-            // Your auth logic
             return <Component {...props} />;
         };
 
         return ComponentWithProtect;
     };
 
-export default withProtect;
+export default withProtectClient;

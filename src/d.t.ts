@@ -1,4 +1,4 @@
-export {};
+export { };
 
 declare module '@mui/material/styles' {
     interface Theme {
@@ -10,6 +10,7 @@ declare module '@mui/material/styles' {
             body: string;
             title: string;
             footerBg: string;
+            border: string;
         };
         size: {
             height: {
@@ -42,6 +43,7 @@ declare module '@mui/material/styles' {
             body?: string;
             title?: string;
             footerBg?: string;
+            border?: string;
         };
         size?: {
             height?: {

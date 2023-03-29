@@ -1,5 +1,7 @@
 import { Box, styled } from '@mui/material';
 
+
+
 import { PageTop, SignInSocial } from '@/components/common';
 import { LoginContainer } from '@/components/pages/Login';
 import { DEVICE, ROUTES } from '@/constants';
@@ -8,22 +10,10 @@ import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
 import { withProtect } from '@/utils/withProtect';
 
+
 const Login: NextPageWithLayout = () => {
     return (
         <>
-            <PageTop
-                title="Login"
-                breadcrumbItems={[
-                    {
-                        href: ROUTES.HOME,
-                        name: 'Home',
-                    },
-                    {
-                        href: ROUTES.LOGIN,
-                        name: 'Login',
-                    },
-                ]}
-            />
             <Box className="container-app">
                 <LoginSocial className="block-content">
                     <SignInSocial social="facebook" />
@@ -52,7 +42,24 @@ const LoginSocial = styled('div')`
 `;
 
 Login.getLayout = (page) => {
-    return <ClientLayout>{page}</ClientLayout>;
+    return (
+        <ClientLayout>
+            <PageTop
+                title="Login"
+                breadcrumbItems={[
+                    {
+                        href: ROUTES.HOME,
+                        name: 'Home',
+                    },
+                    {
+                        href: ROUTES.LOGIN,
+                        name: 'Login',
+                    },
+                ]}
+            />
+            {page}
+        </ClientLayout>
+    );
 };
 
 export const getServerSideProps = withProtect({

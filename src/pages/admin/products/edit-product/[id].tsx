@@ -1,7 +1,5 @@
-import { ProductAction } from '@/components/admin';
-
 const EditProduct = () => {
-    return <ProductAction />;
+    return <div></div>;
 };
 
 export default EditProduct;

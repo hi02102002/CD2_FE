@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 
-import { Breadcrumbs, MainContent } from '@/components/admin';
+import { Breadcrumbs } from '@/components/admin';
 import { ROUTES } from '@/constants';
 import { AdminLayout } from '@/layouts/admin';
 import { NextPageWithLayout } from '@/types/shared';
@@ -21,7 +21,7 @@ const Customer: NextPageWithLayout = () => {
                 ]}
             />
             <Box marginTop={16}>
-                <MainContent
+                {/* <MainContent
                     TableProps={{
                         columns: [],
                         rows: [],
@@ -32,15 +32,7 @@ const Customer: NextPageWithLayout = () => {
                             display: 'none',
                         },
                     }}
-                    TablePaginationProps={{
-                        count: 10,
-                        onPageChange() {
-                            //
-                        },
-                        page: 1,
-                        rowsPerPage: 10,
-                    }}
-                />
+                /> */}
             </Box>
         </Box>
     );

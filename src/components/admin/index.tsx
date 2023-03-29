@@ -1,6 +1,13 @@
 export { default as Breadcrumbs } from './Breadcrumbs';
 export { default as CategoryAction } from './CategoryAction';
 export { default as InputGroup } from './InputGroup';
+export { default as InputOption } from './InputOption';
+export { default as InputOptions } from './InputOptions';
+export { default as InputTags } from './InputTags';
+export { default as Label } from './Label';
+export { default as ListFilePreview } from './ListFilePreview';
 export { default as MainContent } from './MainContent';
+export { default as MessageError } from './MessageError';
 export { default as ProductAction } from './ProductAction';
 export { default as ProductFilter } from './ProductFilter';
+export { default as Upload } from './Upload';
