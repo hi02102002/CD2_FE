@@ -26,7 +26,7 @@ const MainLayout = ({ MainProps, children, ...rest }: Props) => {
             </Box>
             <ButtonScrollTop />
             <MessengerChatComponent
-                pageId="100091055181591"
+                pageId="110141722038322"
                 themeColor={'#000000'}
                 language="en_US"
                 bottomSpacing={300}
