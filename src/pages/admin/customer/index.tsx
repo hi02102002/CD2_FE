@@ -1,7 +1,5 @@
 import { Box } from '@mui/material';
 
-
-
 import { Breadcrumbs } from '@/components/admin';
 import { ROUTES } from '@/constants';
 import { AdminLayout } from '@/layouts/admin';

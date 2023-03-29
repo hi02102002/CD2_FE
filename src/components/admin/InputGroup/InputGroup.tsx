@@ -2,9 +2,7 @@ import {
     Box,
     BoxProps,
     Input,
-    InputProps,
-    TypographyProps,
-    styled,
+    InputProps, styled, TypographyProps
 } from '@mui/material';
 
 import Label from '../Label';

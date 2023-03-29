@@ -1,10 +1,6 @@
 import { useRouter } from 'next/router';
 
-
-
 import { Box, Grid } from '@mui/material';
-
-
 
 import { Breadcrumbs, MainContent, ProductFilter } from '@/components/admin';
 import { ROUTES } from '@/constants';
@@ -65,7 +61,7 @@ const Products: NextPageWithLayout = () => {
                                 page: 10,
                                 onPageChange(event, page) {
                                     //
-                                    console.log(event,page)
+                                    console.log(event, page);
                                 },
                                 rowsPerPage: 10,
                             }}
