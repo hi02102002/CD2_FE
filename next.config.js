@@ -15,7 +15,7 @@ const nextConfig = {
                 headers: [
                     {
                         key: 'Content-Security-Policy',
-                        value: "frame-ancestors 'self' https://www.facebook.com https://*.facebook.com",
+                        value: "frame-ancestors https://www.facebook.com",
                     },
                     {
                         key: 'Access-Control-Allow-Origin',
