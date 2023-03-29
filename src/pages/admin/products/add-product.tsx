@@ -1,7 +1,5 @@
 import { Box } from '@mui/system';
 
-
-
 import { Breadcrumbs, ProductAction } from '@/components/admin';
 import { ROUTES } from '@/constants';
 import { AdminLayout } from '@/layouts/admin';

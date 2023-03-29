@@ -2,15 +2,10 @@ import { Box, BoxProps } from '@mui/system';
 //@ts-ignore
 import MessengerCustomerChat from 'react-messenger-customer-chat';
 
-
-
 import { ButtonScrollTop } from '@/components/client';
-
-
 
 import Footer from './Footer';
 import Header from './Header';
-
 
 type Props = {
     MainProps?: BoxProps;
@@ -24,10 +19,6 @@ const MainLayout = ({ MainProps, children, ...rest }: Props) => {
                 {children}
             </Box>
             <ButtonScrollTop />
-            <MessengerCustomerChat
-             pageId="100091055181591"
-             appId="3412913902281052"
-            />
             <Footer />
         </Box>
     );

@@ -14,7 +14,7 @@ import {
     Label,
     ListFilePreview,
     MessageError,
-    Upload
+    Upload,
 } from '@/components/admin';
 import { useOverflowHidden } from '@/hooks/useOverflowHidden';
 import productService from '@/services/product.service';

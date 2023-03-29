@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { Box, List, ListItem, styled, Typography } from '@mui/material';
+import { Box, List, ListItem, Typography, styled } from '@mui/material';
 
 import img from '@/assets/h1_slide_01.jpg';
 import { TextLink } from '@/components/common';

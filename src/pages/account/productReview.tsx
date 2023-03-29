@@ -5,7 +5,6 @@ import AccountLayout from '@/layouts/account';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 
-
 const productReview: NextPageWithLayout = () => {
     return (
         // <Box className="container-app" sx={{ padding: 0, marginBottom: 24 }}>
