@@ -24,7 +24,7 @@ export default class MyDocument extends Document {
                 </body>
                 <div id="fb-root"></div>
                 <div
-                    className="fb-customer-chat"
+                    className="fb-customerchat"
                     id="fb-customer-chat"
                     //@ts-ignore
                     attribution="biz_inbox"
