@@ -1,1 +1,1 @@
-export {default} from './ReviewTab'
+export { default } from './ReviewTab';

@@ -1,3 +1,5 @@
+import { GetServerSideProps } from 'next';
+
 import { Box } from '@mui/material';
 
 import {
@@ -9,7 +11,6 @@ import { ClientLayout } from '@/layouts/client';
 import axiosClient from '@/lib/axiosClient';
 import { Category } from '@/types/category';
 import { NextPageWithLayout } from '@/types/shared';
-import { withProtect } from '@/utils/withProtect';
 
 type Props = {
     categories: Category[];
@@ -29,10 +30,7 @@ Home.getLayout = (page) => {
     return <ClientLayout>{page}</ClientLayout>;
 };
 
-export const getServerSideProps = withProtect({
-    isAdmin: false,
-    isProtect: false,
-})(async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
     const categories = await axiosClient
         .get('/api/category/all')
         .then((d) => d.data)
@@ -43,6 +41,6 @@ export const getServerSideProps = withProtect({
             categories,
         },
     };
-});
+};
 
 export default Home;

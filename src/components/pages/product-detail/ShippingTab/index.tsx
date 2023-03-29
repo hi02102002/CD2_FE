@@ -1,1 +1,1 @@
-export {default} from './ShippingTab'
+export { default } from './ShippingTab';

@@ -10,7 +10,7 @@ import {
     Checkbox,
     FormControlLabel,
     Stack,
-    Typography
+    Typography,
 } from '@mui/material';
 import { red } from '@mui/material/colors';
 import { setCookie } from 'cookies-next';
@@ -30,10 +30,7 @@ interface IFormInputs {
 }
 
 const SignupSChema = yup.object().shape({
-    email: yup
-        .string()
-        .required()
-        .email(),
+    email: yup.string().required().email(),
     password: yup.string().required(),
 });
 
@@ -116,7 +113,6 @@ function LoginFrom() {
                             name={name}
                             onBlur={onBlur}
                             sx={{ mb: '12px' }}
-
                         />
                     )}
                 />

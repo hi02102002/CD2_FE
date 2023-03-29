@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Modal, Stack, styled } from '@mui/material';
 
 import { Breadcrumbs, CategoryAction, MainContent } from '@/components/admin';
+import LoadingFullPage from '@/components/admin/LoadingFullPage';
 import { ROUTES } from '@/constants';
 import { useDisclosure } from '@/hooks/useDisclosure';
 import { AdminLayout } from '@/layouts/admin';
@@ -149,7 +150,8 @@ const Category: NextPageWithLayout = () => {
 
 
     return (
-        <Box padding={16}>
+        <>
+         <Box padding={16}>
             <Breadcrumbs
                 breadcrumbs={[
                     {
@@ -225,6 +227,7 @@ const Category: NextPageWithLayout = () => {
 
                 />
             </StyledModal>
+        </Box>
             <Dialog open={isOpenModalConfirmRemove} onClose={onCloseModalConfirmRemove}>
                 <DialogTitle id="alert-dialog-title">
                     Remove category?
@@ -242,7 +245,8 @@ const Category: NextPageWithLayout = () => {
                     </DialogActions>
                 </DialogContent>
             </Dialog>
-        </Box>
+            {isLoadingRemove && <LoadingFullPage/>}
+        </>
     );
 };
 

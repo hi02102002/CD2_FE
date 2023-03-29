@@ -1,12 +1,17 @@
 import { useRouter } from 'next/router';
 
+
+
 import { Box, Grid } from '@mui/material';
+
+
 
 import { Breadcrumbs, MainContent, ProductFilter } from '@/components/admin';
 import { ROUTES } from '@/constants';
 import { AdminLayout } from '@/layouts/admin';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
+import { withProtect } from '@/utils/withProtect';
 
 const Products: NextPageWithLayout = () => {
     const router = useRouter();
@@ -55,6 +60,15 @@ const Products: NextPageWithLayout = () => {
                                     router.push(ROUTES.ADMIN_ADD_PRODUCT);
                                 },
                             }}
+                            TablePaginationProps={{
+                                count: 1,
+                                page: 10,
+                                onPageChange(event, page) {
+                                    //
+                                    console.log(event,page)
+                                },
+                                rowsPerPage: 10,
+                            }}
                         />
                     </Grid>
                 </Grid>
@@ -66,5 +80,10 @@ const Products: NextPageWithLayout = () => {
 Products.getLayout = (page) => {
     return <AdminLayout>{page}</AdminLayout>;
 };
+
+export const getServerSideProps = withProtect({
+    isAdmin: true,
+    isProtect: true,
+})();
 
 export default Products;

@@ -1,5 +1,4 @@
 import Image, { StaticImageData } from 'next/image';
-import { useRouter } from 'next/router';
 
 import { Box, Typography, styled } from '@mui/material';
 import { common } from '@mui/material/colors';
@@ -69,7 +68,6 @@ const textContentItemVariant = (startY: number, endY: number): Variants => {
 };
 
 const Banner = () => {
-    const router = useRouter();
     const { setAuth } = useAuthStore();
 
     return (
