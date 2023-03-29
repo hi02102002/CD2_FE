@@ -29,9 +29,9 @@ const MainLayout = ({ MainProps, children, ...rest }: Props) => {
                 pageId="110141722038322"
                 themeColor={'#000000'}
                 language="en_US"
-                bottomSpacing={300}
-                loggedInGreeting="loggedInGreeting"
-                loggedOutGreeting="loggedOutGreeting"
+                bottomSpacing={74}
+                loggedInGreeting="Do you need any help?"
+                loggedOutGreeting="See you again"
                 greetingDialogDisplay={'show'}
                 debugMode={true}
                 onMessengerShow={() => {
