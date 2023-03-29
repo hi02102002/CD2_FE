@@ -1,24 +1,25 @@
 import { useState } from 'react';
 
+
+
 import { useRouter } from 'next/router';
 
+
+
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-    Box,
-    Checkbox,
-    FormControlLabel,
-    Typography,
-    styled,
-} from '@mui/material';
+import { Box, Checkbox, FormControlLabel, Typography, styled } from '@mui/material';
 import { AxiosError } from 'axios';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import * as yup from 'yup';
 
+
+
 import { Button, Input } from '@/components/common';
 import { DEVICE, ROUTES } from '@/constants';
 import authService from '@/services/auth.service';
 import { pxToRem } from '@/utils/pxToRem';
+
 
 interface IFormInputs {
     fullName: string;

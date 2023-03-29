@@ -1,6 +1,18 @@
 import React from 'react';
 
+
+
+import { Box, styled } from '@mui/material';
+
+
+
+import { DEVICE } from '@/constants';
+import { pxToRem } from '@/utils/pxToRem';
+
+
+
 import Sidebar from './Sidebar';
+
 
 type Props = {
     children: React.ReactNode;
@@ -8,11 +20,25 @@ type Props = {
 
 const MainLayout = ({ children }: Props) => {
     return (
-        <div>
+        <LayoutMain className="container-app">
             <Sidebar />
             {children}
-        </div>
+        </LayoutMain>
     );
 };
+
+const LayoutMain = styled(Box)`
+    display: flex;
+    flex-direction: column-reverse;
+    gap: ${pxToRem(16)};
+
+    @media screen and (${DEVICE.laptopM}) {
+        flex-direction: row;
+    }
+
+    .main-content {
+        flex: 1;
+    }
+`;
 
 export default MainLayout;

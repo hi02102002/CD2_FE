@@ -2,12 +2,11 @@ import {
     Box,
     BoxProps,
     Input,
-    InputProps, styled, Typography,
-    TypographyProps
+    InputProps, styled, TypographyProps
 } from '@mui/material';
-import { red } from '@mui/material/colors';
 
-import { pxToRem } from '@/utils/pxToRem';
+import Label from '../Label';
+import MessageError from '../MessageError';
 
 type Props = {
     InputProps?: InputProps;
@@ -24,51 +23,25 @@ const InputGroup = ({
     InputProps,
     ErrorMessageProps,
     messageError,
-    LabelProps,
     required,
+    LabelProps,
     ...props
 }: Props) => {
     return (
         <StyledInputGroup className={className} {...props}>
-            <Typography
-                color={(theme) => theme.themeColor.primary}
-                {...LabelProps}
-                className={`${LabelProps?.className} ${
-                    required ? 'required' : ''
-                }`}
-            >
+            <Label required={required} {...LabelProps}>
                 {label}
-            </Typography>
+            </Label>
             <Input fullWidth {...InputProps} error={!!messageError} />
             {messageError && (
-                <Typography
-                    {...ErrorMessageProps}
-                    className={`${ErrorMessageProps?.className} err-message`}
-                >
+                <MessageError {...ErrorMessageProps}>
                     {messageError}
-                </Typography>
+                </MessageError>
             )}
         </StyledInputGroup>
     );
 };
 
-const StyledInputGroup = styled(Box)`
-    .required {
-        display: flex;
-        align-items: center;
-        gap: ${pxToRem(4)};
-
-        &::after {
-            content: ' *';
-            color: ${red[500]};
-        }
-    }
-
-    .err-message {
-        margin-top: ${pxToRem(7)};
-        font-size: ${pxToRem(14)};
-        color: ${red[500]};
-    }
-`;
+const StyledInputGroup = styled(Box)``;
 
 export default InputGroup;
