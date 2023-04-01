@@ -1,7 +1,5 @@
 import { Box, styled } from '@mui/material';
 
-
-
 import { PageTop, SignInSocial } from '@/components/common';
 import { LoginContainer } from '@/components/pages/Login';
 import { DEVICE, ROUTES } from '@/constants';
@@ -9,7 +7,6 @@ import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
 import { withProtect } from '@/utils/withProtect';
-
 
 const Login: NextPageWithLayout = () => {
     return (

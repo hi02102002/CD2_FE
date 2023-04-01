@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+
+import { useRouter } from 'next/router';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
@@ -10,18 +12,17 @@ import * as yup from 'yup';
 
 import {
     InputGroup,
-    InputOptions,
     Label,
     ListFilePreview,
     MessageError,
-    Upload
+    Upload,
 } from '@/components/admin';
+import { ROUTES } from '@/constants';
 import { useOverflowHidden } from '@/hooks/useOverflowHidden';
 import productService from '@/services/product.service';
 import { Category } from '@/types/category';
 import { pxToRem } from '@/utils/pxToRem';
 
-import { Option } from '../InputOption/InputOption';
 import LoadingFullPage from '../LoadingFullPage';
 
 const productInputSchema = yup.object({
@@ -67,7 +68,6 @@ const ProductAction = ({ categories }: Props) => {
         handleSubmit,
         watch,
         setValue,
-        reset,
         formState: { errors },
     } = useForm<FormData>({
         resolver: yupResolver(productInputSchema),
@@ -77,9 +77,8 @@ const ProductAction = ({ categories }: Props) => {
             name: '',
         },
     });
-    const [options, setOptions] = useState<Option[]>([]);
     const [isLoadingAction, setIsLoadingAction] = useState<boolean>(false);
-
+    const router = useRouter();
     const [files, setFiles] = useState<File[] | string[]>(
         (watch('files') as File[] | string[]) || [],
     );
@@ -95,35 +94,25 @@ const ProductAction = ({ categories }: Props) => {
         });
     };
 
-    const handelRemoveFile = (index: number) => {
-        const newFiles = [...files];
-        newFiles.splice(index, 1);
-        setFiles(newFiles as File[] | string[]);
-        setValue('files', newFiles, {
-            shouldValidate: true,
-        });
-    };
+    const handelRemoveFile = useCallback(
+        (index: number) => {
+            const newFiles = [...files];
+            newFiles.splice(index, 1);
+            setFiles(newFiles as File[] | string[]);
+            setValue('files', newFiles, {
+                shouldValidate: true,
+            });
+        },
+        [files, setValue],
+    );
 
     const handelAddProduct = async (fields: FormData) => {
         try {
             setIsLoadingAction(true);
-            const { data } = await productService.addProduct(fields);
-            if (options.length > 0) {
-                await productService.addOptions({
-                    productId: data.id,
-                    options,
-                });
-            }
+            await productService.addProduct(fields);
             setIsLoadingAction(false);
             toast.success('Add product successfully');
-            reset({
-                categoryId: undefined,
-                description: undefined,
-                files: [],
-                name: undefined,
-                price: undefined,
-            });
-            setFiles([]);
+            router.push(ROUTES.ADMIN_PRODUCT);
         } catch (error: any) {
             console.log(error);
             toast.error(
@@ -309,16 +298,6 @@ const ProductAction = ({ categories }: Props) => {
                                         name="files"
                                     />
                                 </Stack>
-                            </StyledContentWrapper>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <StyledContentWrapper>
-                                <InputOptions
-                                    value={options}
-                                    onChange={(v) => {
-                                        setOptions(v);
-                                    }}
-                                />
                             </StyledContentWrapper>
                         </Grid>
                         <Grid item xs={12}>

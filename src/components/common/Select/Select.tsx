@@ -30,6 +30,7 @@ const Select = ({
     SelectProps,
     placeholder,
 }: Props) => {
+    console.log({ className, isError, messageError, sx });
     return (
         <StyledSelect>
             {label && (

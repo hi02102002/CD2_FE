@@ -1,25 +1,28 @@
 import { useState } from 'react';
 
-
-
 import Image from 'next/image';
 
-
-
 import { Box, Grid, Rating, Stack, Typography, styled } from '@mui/material';
-import { IconArrowsRightLeft, IconQuestionMark, IconShare, IconStar } from '@tabler/icons-react';
+import {
+    IconArrowsRightLeft,
+    IconQuestionMark,
+    IconShare,
+    IconStar,
+} from '@tabler/icons-react';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 
-
-
 import imgFooter from '@/assets/footer-payment.png';
-import { Button, InputChangeAmount, TextHover, Tooltip } from '@/components/common';
+import {
+    Button,
+    InputChangeAmount,
+    TextHover,
+    Tooltip,
+} from '@/components/common';
 import { DEVICE } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
-
 
 const sizes = ['S', 'M', 'L'];
 

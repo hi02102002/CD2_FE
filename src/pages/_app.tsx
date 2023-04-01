@@ -1,14 +1,10 @@
 import type { AppProps } from 'next/app';
 
-
-
 import { EmotionCache } from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import NextNProgress from 'nextjs-progressbar';
 import { Toaster } from 'react-hot-toast';
-
-
 
 import { GlobalCSS } from '@/components/common';
 import AuthWrapper from '@/components/common/AuthWrapper';

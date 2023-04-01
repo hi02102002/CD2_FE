@@ -2,18 +2,15 @@ import { Box, Typography } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
-
-
 import { Button, PageTop } from '@/components/common';
 import { ROUTES } from '@/constants';
 import AccountLayout from '@/layouts/account';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 
-
 const NewSub: NextPageWithLayout = () => {
     return (
-        <Box component='div' className='main-content'>
+        <Box component="div" className="main-content">
             <Typography
                 variant="h4"
                 sx={{

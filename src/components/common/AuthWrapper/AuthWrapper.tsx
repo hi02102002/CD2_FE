@@ -21,7 +21,6 @@ const AuthWrapper = ({ children }: Props) => {
                 decoded.exp &&
                 decoded.exp * 1000 - 10 * 1000 < Date.now() // thoi gian het han - 10 giay < daynow
             ) {
-                console.log('logout');
                 logout();
             }
             interval = setInterval(() => {

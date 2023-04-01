@@ -1,23 +1,16 @@
 import { useEffect, useRef } from 'react';
 
-
-
 import Image from 'next/image';
 import Link from 'next/link';
-
-
 
 import { Box, IconButton, keyframes, styled, useTheme } from '@mui/material';
 import { common, grey } from '@mui/material/colors';
 import { Stack } from '@mui/system';
 import { IconMenu2 } from '@tabler/icons-react';
 
-
-
 import { HeaderToolbar } from '@/components/client';
 import { DEVICE, ROUTES } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
-
 
 const Header = () => {
     const theme = useTheme();

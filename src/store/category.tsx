@@ -75,7 +75,7 @@ const useCategoryStore = create<CategoryState>()(
             };
         }),
         {
-            name: 'auth',
+            name: 'category',
         },
     ),
 );

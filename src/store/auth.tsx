@@ -2,11 +2,8 @@ import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
-
-
 import authService from '@/services/auth.service';
 import { User } from '@/types/user';
-
 
 type AuthState = {
     user: User | null;
