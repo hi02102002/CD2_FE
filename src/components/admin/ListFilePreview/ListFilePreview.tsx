@@ -1,3 +1,5 @@
+import React from 'react';
+
 import Image from 'next/image';
 
 import { Box, IconButton, Stack, Typography, styled } from '@mui/material';
@@ -78,4 +80,4 @@ const StyledListFilePreviewItem = styled(Box)`
     gap: ${pxToRem(16)};
 `;
 
-export default ListFilePreview;
+export default React.memo(ListFilePreview);

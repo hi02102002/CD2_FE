@@ -15,7 +15,6 @@ class CategoryService {
     }
 
     async removeCategory(ids: Array<Category['id']>): Promise<void> {
-        console.log(ids.join(','));
         return axiosClient.delete(`/api/category/delete`, {
             params: {
                 ids: ids.join(','),

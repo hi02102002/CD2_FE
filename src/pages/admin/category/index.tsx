@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Modal, Stack, styled } from '@mui/material';
+import { Box, IconButton, Modal, Stack, styled } from '@mui/material';
 
-import { Breadcrumbs, CategoryAction, MainContent } from '@/components/admin';
+import { AlterConfirm, Breadcrumbs, CategoryAction, MainContent } from '@/components/admin';
 import LoadingFullPage from '@/components/admin/LoadingFullPage';
 import { ROUTES } from '@/constants';
 import { useDisclosure } from '@/hooks/useDisclosure';
@@ -11,7 +11,6 @@ import useCategoryStore from '@/store/category';
 import { Category, FormInputs as CategoryInput } from '@/types/category';
 import { NextPageWithLayout } from '@/types/shared';
 import { withProtect } from '@/utils/withProtect';
-import { LoadingButton } from '@mui/lab';
 import { GridColDef } from '@mui/x-data-grid';
 import { IconEdit } from '@tabler/icons-react';
 import Image from 'next/image';
@@ -186,7 +185,10 @@ const Category: NextPageWithLayout = () => {
                     SearchProps={{
                         onChange: (value) => setTextSearch(value),
                         value: textSearch,
-                        onClearSearch: () => handleFetchCategories({ limit, offset: page }),
+                        onClearSearch: () => {
+                            setTextSearch('')
+                            handleFetchCategories({ limit, offset: page })
+                        },
                         onSearch: () => handleFetchCategories({ limit, offset: page, name: textSearch.length > 0 ? textSearch : undefined })
                     }}
                     TablePaginationProps={{
@@ -228,24 +230,14 @@ const Category: NextPageWithLayout = () => {
                 />
             </StyledModal>
         </Box>
-            <Dialog open={isOpenModalConfirmRemove} onClose={onCloseModalConfirmRemove}>
-                <DialogTitle id="alert-dialog-title">
-                    Remove category?
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        This action will remove this category. Are you sure?
-                    </DialogContentText>
-                    <DialogActions>
-                        <Button onClick={onCloseModalConfirmRemove}>Disagree</Button>
-                        <LoadingButton loading={isLoadingRemove} variant='contained'
-                            onClick={handelRemoveCategory} autoFocus>
-                            Agree
-                        </LoadingButton>
-                    </DialogActions>
-                </DialogContent>
-            </Dialog>
-            {isLoadingRemove && <LoadingFullPage/>}
+            <AlterConfirm
+                title='Remove category?'
+                contentText='This action will remove this category. Are you sure? '
+                open={isOpenModalConfirmRemove}
+                isLoading={isLoadingRemove}
+                onConfirm={handelRemoveCategory}
+            />
+            {isLoadingRemove  && <LoadingFullPage/>}
         </>
     );
 };

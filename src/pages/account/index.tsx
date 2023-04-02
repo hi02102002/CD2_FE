@@ -1,15 +1,12 @@
 import Link from 'next/link';
 
-
-
-import { Box, Stack, styled, Typography } from '@mui/material';
+import { Box, Stack, Typography, styled } from '@mui/material';
 
 import { PageTop } from '@/components/common';
 import { DEVICE, ROUTES } from '@/constants';
 import AccountLayout from '@/layouts/account';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
-
 
 type ItemAccountProps = {
     className?: string;

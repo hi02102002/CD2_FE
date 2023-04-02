@@ -1,11 +1,20 @@
+import { useRouter } from 'next/router';
+
 import { Box, Typography, styled } from '@mui/material';
 
 import { ProductGrid } from '@/components/client';
 import { Button } from '@/components/common';
-import { DEVICE } from '@/constants';
+import { DEVICE, ROUTES } from '@/constants';
+import { Product } from '@/types/product';
 import { pxToRem } from '@/utils/pxToRem';
 
-const SectionProducts = () => {
+type Props = {
+    products: Product[];
+};
+
+const SectionProducts = ({ products }: Props) => {
+    const router = useRouter();
+
     return (
         <StyledSectionProducts>
             <Box component="div" className="container-app">
@@ -17,13 +26,16 @@ const SectionProducts = () => {
                         </Typography>
                     </Typography>
                 </StyledHeading>
-                <ProductGrid />
+                <ProductGrid products={products} />
                 <Button
                     sx={{
                         margin: '0 auto',
                         marginTop: pxToRem(20),
                     }}
                     typeButton="secondary"
+                    onClick={() => {
+                        router.push(ROUTES.PRODUCTS);
+                    }}
                 >
                     See More
                 </Button>

@@ -1,11 +1,14 @@
+export { default as AlterConfirm } from './AlterConfirm';
 export { default as Breadcrumbs } from './Breadcrumbs';
 export { default as CategoryAction } from './CategoryAction';
+export { default as FormVariants } from './FormVariants';
 export { default as InputGroup } from './InputGroup';
 export { default as InputOption } from './InputOption';
 export { default as InputOptions } from './InputOptions';
 export { default as InputTags } from './InputTags';
 export { default as Label } from './Label';
 export { default as ListFilePreview } from './ListFilePreview';
+export { default as LoadingFullPage } from './LoadingFullPage';
 export { default as MainContent } from './MainContent';
 export { default as MessageError } from './MessageError';
 export { default as ProductAction } from './ProductAction';

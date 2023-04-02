@@ -3,16 +3,11 @@
 /* eslint-disable react/display-name */
 import { useEffect } from 'react';
 
-
-
 import { useRouter } from 'next/router';
-
-
 
 import { ROUTES } from '@/constants';
 import useAuthStore from '@/store/auth';
 import { ROLE } from '@/types/user';
-
 
 type Options = {
     isAdmin: boolean;

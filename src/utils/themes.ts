@@ -2,10 +2,7 @@ import { createTheme } from '@mui/material';
 import { common, orange } from '@mui/material/colors';
 import { Jost } from '@next/font/google';
 
-
-
 import { pxToRem } from './pxToRem';
-
 
 export const JostFont = Jost({
     variable: '--jost-font',

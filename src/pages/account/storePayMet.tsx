@@ -1,7 +1,5 @@
 import { Alert, Box } from '@mui/material';
 
-
-
 import { PageTop } from '@/components/common';
 import { ROUTES } from '@/constants';
 import AccountLayout from '@/layouts/account';

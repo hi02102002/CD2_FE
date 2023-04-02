@@ -1,13 +1,20 @@
 import { Grid, GridProps, GridSpacing, styled } from '@mui/material';
 
+
+
+import { Product } from '@/types/product';
+
+
+
 import ProductItem from '../ProductItem';
 
 type Props = {
     numCol?: 5 | 4 | 3 | 2;
     spacing?: GridProps['spacing'];
+    products: Product[];
 };
 
-const ProductGrid = ({ numCol = 4, spacing }: Props) => {
+const ProductGrid = ({ numCol = 4, spacing, products }: Props) => {
     return (
         <StyledProductGrid
             container
@@ -21,30 +28,11 @@ const ProductGrid = ({ numCol = 4, spacing }: Props) => {
                       }
             }
         >
-            <Grid item xs={6} md={4} lg={12 / numCol}>
-                <ProductItem />
-            </Grid>
-            <Grid item xs={6} md={4} lg={12 / numCol}>
-                <ProductItem />
-            </Grid>
-            <Grid item xs={6} md={4} lg={12 / numCol}>
-                <ProductItem />
-            </Grid>
-            <Grid item xs={6} md={4} lg={12 / numCol}>
-                <ProductItem />
-            </Grid>
-            <Grid item xs={6} md={4} lg={12 / numCol}>
-                <ProductItem />
-            </Grid>
-            <Grid item xs={6} md={4} lg={12 / numCol}>
-                <ProductItem />
-            </Grid>
-            <Grid item xs={6} md={4} lg={12 / numCol}>
-                <ProductItem />
-            </Grid>
-            <Grid item xs={6} md={4} lg={12 / numCol}>
-                <ProductItem />
-            </Grid>
+            {products.map((product) => (
+                <Grid item xs={6} md={4} lg={12 / numCol} key={product.id}>
+                    <ProductItem product={product} />
+                </Grid>
+            ))}
         </StyledProductGrid>
     );
 };

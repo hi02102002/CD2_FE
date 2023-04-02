@@ -6,11 +6,9 @@ import AccountLayout from '@/layouts/account';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 
-type Props = {};
-
-const AccInfor: NextPageWithLayout = (props: Props) => {
+const AccInfor: NextPageWithLayout = () => {
     return (
-        <Box component='div' className='main-content'>
+        <Box component="div" className="main-content">
             <Alert severity="warning">Change password</Alert>
         </Box>
     );

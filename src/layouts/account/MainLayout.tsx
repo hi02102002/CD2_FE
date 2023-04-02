@@ -1,18 +1,11 @@
 import React from 'react';
 
-
-
 import { Box, styled } from '@mui/material';
-
-
 
 import { DEVICE } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
 
-
-
 import Sidebar from './Sidebar';
-
 
 type Props = {
     children: React.ReactNode;

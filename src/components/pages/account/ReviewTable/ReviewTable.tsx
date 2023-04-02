@@ -7,6 +7,8 @@ import { pxToRem } from '@/utils/pxToRem';
 type Props = {};
 
 const ReivewTable = (props: Props) => {
+    console.log(props);
+
     return (
         <StyledOrderTable>
             <StyledTHead>

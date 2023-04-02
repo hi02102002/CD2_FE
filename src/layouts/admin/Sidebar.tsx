@@ -33,7 +33,7 @@ const Sidebar = ({ isOpen, onClose }: Props) => {
             <Backdrop
                 open={isOpen}
                 sx={{
-                    zIndex: 10,
+                    zIndex: 100,
                 }}
                 onClick={onClose}
             />
