@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import Image from 'next/image';
 
 import { Box, Grid, Rating, Stack, Typography, styled } from '@mui/material';
@@ -22,17 +20,26 @@ import {
     Tooltip,
 } from '@/components/common';
 import { DEVICE } from '@/constants';
+import { Product } from '@/types/product';
 import { pxToRem } from '@/utils/pxToRem';
 
-const sizes = ['S', 'M', 'L'];
+type Props = {
+    product: Product;
+    options: {
+        key: string;
+        values: {
+            name: any;
+            price: number | null;
+            quantity: number | null;
+        }[];
+    }[];
+};
 
-function ProductInfo() {
-    const [size, setSize] = useState<String>('');
-
+function ProductInfo({ product, options }: Props) {
     return (
         <StyledProductInfo item md={5.5} xs={12} className="product-info">
             <Box className="product-title-wrap">
-                <Typography component="span">Linen Check Blazer</Typography>
+                <Typography component="span">{product.name}</Typography>
 
                 <Tooltip title="Add to Wish list" arrow placement="left">
                     <Box>
@@ -48,7 +55,7 @@ function ProductInfo() {
 
             <Box className="product-rate">
                 <Box className="product-rate-price">
-                    <Typography className="price">$6.00</Typography>
+                    <Typography className="price">${product.price}</Typography>
                     <Typography className="discount">$25.00</Typography>
                 </Box>
                 <Box className="product-rate-review">
@@ -56,69 +63,43 @@ function ProductInfo() {
                         name="read-only"
                         value={5}
                         readOnly
-                        sx={{ fontSize: '16px' }}
+                        sx={{ fontSize: 16 }}
                     />
                     <Typography component="a">(1 Review)</Typography>
                 </Box>
             </Box>
 
             <Typography className="product-desc">
-                At vero eos et accusamus et iusto odio dignissimos ducimus qui
-                blanditiis praesentium voluptatum deleniti atque corrupti quos
-                dolores et quas molestias excepturi sint occaecati…
+                {product.description}
             </Typography>
 
             <Box component="div" className="product-add-form">
                 <form className="product-data">
-                    <Box component="div" className="product-option">
-                        <Box component="div" className="color">
-                            <StyledAttribute variant="caption">
-                                Color:
-                            </StyledAttribute>
-                            <Typography
-                                component="span"
-                                sx={{
-                                    fontSize: `${pxToRem(16)}`,
-                                    color: '#000',
-                                }}
-                            >
-                                abc
-                            </Typography>
-                        </Box>
-                        <Box component="div" className="size">
-                            <StyledAttribute variant="caption">
-                                Size:
-                            </StyledAttribute>
-                            <Typography
-                                component="span"
-                                sx={{
-                                    fontSize: `${pxToRem(16)}`,
-                                    color: '#000',
-                                }}
-                            >
-                                {size}
-                            </Typography>
-
-                            <Box component="div" className="btn-wrap">
-                                {sizes.map((type, index) => {
-                                    return (
-                                        <Button
-                                            key={index}
-                                            className={`button-size  ${
-                                                size === type ? 'active' : ''
-                                            }`}
-                                            typeButton="secondary"
-                                            onClick={() => {
-                                                setSize(type);
-                                            }}
-                                        >
-                                            {type}
-                                        </Button>
-                                    );
-                                })}
-                            </Box>
-                        </Box>
-                    </Box>
+                    {options.length > 0 && (
+                        <StyledOptions component="div">
+                            {options.map((option) => {
+                                return (
+                                    <Box key={option.key}>
+                                        <StyledAttributeName>
+                                            {option.key}
+                                        </StyledAttributeName>
+                                        <StyledListAttributeValue>
+                                            {option.values.map((value) => {
+                                                return (
+                                                    <StyledAttributeValue
+                                                        typeButton="secondary"
+                                                        key={value.name}
+                                                    >
+                                                        {value.name}
+                                                    </StyledAttributeValue>
+                                                );
+                                            })}
+                                        </StyledListAttributeValue>
+                                    </Box>
+                                );
+                            })}
+                        </StyledOptions>
+                    )}
 
                     <Box component="div" className="product-option-bottom">
                         <Stack direction="row" alignItems="center" gap={16}>
@@ -289,10 +270,41 @@ const StyledInfoFooter = styled(Box)`
         color: #000;
     }
 `;
-const StyledAttribute = styled(Typography)`
+
+const StyledOptions = styled(Box)`
+    margin-bottom: ${pxToRem(20)};
+    display: flex;
+    flex-direction: column;
+    gap: ${pxToRem(16)};
+`;
+
+const StyledAttributeName = styled(Typography)`
     margin: 0 ${pxToRem(16)} ${pxToRem(8)} 0;
-    color: #000;
+    color: ${(p) => p.theme.themeColor.primary};
     font-weight: 600;
     font-size: ${pxToRem(16)};
+    text-transform: capitalize;
 `;
+
+const StyledListAttributeValue = styled(Box)`
+    display: flex;
+    flex-wrap: wrap;
+    gap: ${pxToRem(8)};
+    align-items: center;
+`;
+
+const StyledAttributeValue = styled(Button)`
+    width: ${pxToRem(42)};
+    height: ${pxToRem(42)};
+    padding: 0;
+    transform: none !important;
+    font-size:${pxToRem(12)};
+
+    &.active {
+        box-shadow: 0 0 0 0.1rem  ${(p) => p.theme.themeColor.primary};
+        background-color: ${(p) => p.theme.themeColor.primary}
+        color:#fff;
+    }
+`;
+
 export default ProductInfo;

@@ -1,20 +1,25 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+
+
 import { Box, Stack, Typography, styled } from '@mui/material';
 import { IconArrowRight } from '@tabler/icons-react';
+
+
 
 import { Button } from '@/components/common';
 import { ROUTES } from '@/constants';
 import { Category } from '@/types/category';
 import { pxToRem } from '@/utils/pxToRem';
 
+
 type Props = {
     category: Category;
 };
 
 const CategoryItem = ({ category }: Props) => {
-    const linkTo = `${ROUTES.PRODUCTS}?categoryId=${category.id}`;
+    const linkTo = `${ROUTES.PRODUCTS}?categoryIds=${category.id}`;
 
     return (
         <StyledCategoryItem>

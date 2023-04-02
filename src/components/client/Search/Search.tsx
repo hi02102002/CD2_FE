@@ -66,6 +66,12 @@ const Search = ({ onClose, open }: Props) => {
                                 setSearchText(e.target.value);
                             }}
                             value={searchText}
+                            onKeyDown={(e) => { 
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    handelSearch();
+                                }
+                            }}
                         />
                         <Button
                             sx={{

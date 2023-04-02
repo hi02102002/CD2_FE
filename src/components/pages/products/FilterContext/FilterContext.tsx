@@ -1,12 +1,17 @@
 import React, { createContext, useCallback, useContext } from 'react';
 
+
+
 import { useRouter } from 'next/router';
+
+
 
 import { ROUTES } from '@/constants';
 
+
 type FilterOption = {
-    page?: number;
-    categoryId?: number;
+    offset?: number;
+    categoryIds?: number;
     size?: string;
     color?: string;
     minPrice?: number;
@@ -38,27 +43,27 @@ type Props = {
 const FilterProvider = ({ children }: Props) => {
     const router = useRouter();
 
-    const { page, categoryId, size, color, minPrice, maxPrice, sort, name } =
+    const { offset, categoryIds, size, color, minPrice, maxPrice, sort, name } =
         router.query;
 
     const handelFilter = useCallback(
         ({
-            categoryId,
+            categoryIds,
             color,
             maxPrice,
             minPrice,
-            page,
+            offset,
             size,
             sort,
         }: FilterOption) => {
             const { query } = router;
 
-            if (page) {
-                query.page = `${page}`;
+            if (offset) {
+                query.offset = `${offset}`;
             }
 
-            if (categoryId) {
-                query.categoryId = `${categoryId}`;
+            if (categoryIds) {
+                query.categoryIds = `${categoryIds}`;
             }
 
             if (color) {
@@ -98,8 +103,8 @@ const FilterProvider = ({ children }: Props) => {
             value={{
                 handelFilter,
                 options: {
-                    page: page ? Number(page) : undefined,
-                    categoryId: categoryId ? Number(categoryId) : undefined,
+                    offset: offset ? Number(offset) : undefined,
+                    categoryIds: categoryIds ? Number(categoryIds) : undefined,
                     size: size as string,
                     color: color as string,
                     minPrice: minPrice ? Number(minPrice) : undefined,

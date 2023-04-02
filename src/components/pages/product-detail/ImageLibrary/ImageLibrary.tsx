@@ -1,14 +1,13 @@
 import { useState } from 'react';
 
+
+
 import Image from 'next/image';
 
+
+
 import { Box, Grid, styled } from '@mui/material';
-import {
-    IconArrowNarrowDown,
-    IconArrowNarrowLeft,
-    IconArrowNarrowRight,
-    IconArrowNarrowUp,
-} from '@tabler/icons-react';
+import { IconArrowNarrowDown, IconArrowNarrowLeft, IconArrowNarrowRight, IconArrowNarrowUp } from '@tabler/icons-react';
 import TSwiper, { Navigation, Thumbs } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/free-mode';
@@ -16,22 +15,23 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import img1 from '@/assets/product_fashion_22_a_1.jpeg';
-import img2 from '@/assets/product_fashion_22_a_2.jpeg';
-import img3 from '@/assets/product_fashion_22_a_3.jpeg';
-import img4 from '@/assets/product_fashion_22_a_4.jpeg';
-import img5 from '@/assets/product_fashion_22_b_1.jpeg';
-import img6 from '@/assets/product_fashion_22_b_2.jpeg';
-import img7 from '@/assets/product_fashion_22_b_3.jpeg';
-import img8 from '@/assets/product_fashion_22_b_4.jpeg';
+
+
 import { Button } from '@/components/common';
 import { DEVICE } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
 
-const imgs = [img1, img2, img3, img4, img5, img6, img7, img8];
 
-function ImageLibrary() {
+type Props = {
+    imageURL: string;
+};
+
+function ImageLibrary({ imageURL }: Props) {
     const [thumbsSwiper, setThumbsSwiper] = useState<TSwiper | null>(null);
+
+    const imgs = imageURL.split(',').filter((item) => item !== '');
+
+    const haveThumb = imgs.length > 1;
 
     return (
         <StyledImageLibrary
@@ -41,56 +41,76 @@ function ImageLibrary() {
             xs={12}
             className="product-images"
         >
-            <Grid item md="auto" xs={0} className="left-thumb">
-                <Button className="slider-prev" typeButton="secondary">
-                    <IconArrowNarrowUp />
-                </Button>
+            {haveThumb && (
+                <Grid item md="auto" xs={0} className="left-thumb">
+                    <Button className="slider-prev" typeButton="secondary">
+                        <IconArrowNarrowUp />
+                    </Button>
 
-                <Swiper
-                    scrollbar={{ draggable: true }}
-                    onSwiper={(swiper) => {
-                        setThumbsSwiper(swiper);
-                    }}
-                    spaceBetween={1}
-                    slidesPerView={6}
-                    watchSlidesProgress={true}
-                    modules={[Navigation, Thumbs]}
-                    className="mySwiper"
-                    direction="vertical"
-                    navigation={{
-                        nextEl: '.slider-next',
-                        prevEl: '.slider-prev',
-                    }}
-                >
-                    {imgs.map((img, index) => {
-                        return (
-                            <SwiperSlide key={index}>
-                                <Box component="div" className="gallery-img">
-                                    <Image
-                                        width="70"
-                                        height="91"
-                                        src={img}
-                                        alt=""
-                                    />
-                                </Box>
-                            </SwiperSlide>
-                        );
-                    })}
-                </Swiper>
+                    <Swiper
+                        scrollbar={{ draggable: true }}
+                        onSwiper={(swiper) => {
+                            setThumbsSwiper(swiper);
+                        }}
+                        spaceBetween={1}
+                        slidesPerView={6}
+                        watchSlidesProgress={true}
+                        modules={[Navigation, Thumbs]}
+                        className="mySwiper"
+                        direction="vertical"
+                        navigation={{
+                            nextEl: '.slider-next',
+                            prevEl: '.slider-prev',
+                        }}
+                    >
+                        {imgs.map((img, index) => {
+                            return (
+                                <SwiperSlide key={index}>
+                                    <Box
+                                        component="div"
+                                        className="gallery-img"
+                                    >
+                                        <Image
+                                            width="70"
+                                            height="91"
+                                            src={img}
+                                            alt=""
+                                        />
+                                    </Box>
+                                </SwiperSlide>
+                            );
+                        })}
+                    </Swiper>
 
-                <Button className="slider-next" typeButton="secondary">
-                    <IconArrowNarrowDown />
-                </Button>
-            </Grid>
+                    <Button className="slider-next" typeButton="secondary">
+                        <IconArrowNarrowDown />
+                    </Button>
+                </Grid>
+            )}
 
-            <Grid item md={9.5} xs={12} className="right-thumb">
+            <Grid
+                item
+                md={haveThumb ? 9.5 : undefined}
+                xs={12}
+                className="right-thumb"
+            >
                 <Box position="relative">
-                    <Button className="sliderImg-prev" typeButton="secondary">
-                        <IconArrowNarrowLeft />
-                    </Button>
-                    <Button className="sliderImg-next" typeButton="secondary">
-                        <IconArrowNarrowRight />
-                    </Button>
+                    {haveThumb && (
+                        <>
+                            <Button
+                                className="sliderImg-prev"
+                                typeButton="secondary"
+                            >
+                                <IconArrowNarrowLeft />
+                            </Button>
+                            <Button
+                                className="sliderImg-next"
+                                typeButton="secondary"
+                            >
+                                <IconArrowNarrowRight />
+                            </Button>
+                        </>
+                    )}
                     <Swiper
                         loop={true}
                         spaceBetween={0}

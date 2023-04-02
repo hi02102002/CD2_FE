@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Stack, Typography, styled } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
@@ -12,8 +10,6 @@ import AccountLayout from '@/layouts/account';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
-
-type Props = {};
 
 interface IFormInputs {
     firstName: string;
@@ -54,19 +50,7 @@ const saveAddress = yup.object().shape({
         .min(4, 'Không đúng định dạng Postal Code'),
 });
 
-const AddressBook: NextPageWithLayout = (props: Props) => {
-    // select---
-    const countrys: string[] = ['Viet Nam', 'Canpodia', 'Canada'];
-    const [country, setCountry] = React.useState('');
-
-    const states: string[] = ['Alaske', 'Geographi', 'Cityland'];
-    const [state, setState] = React.useState('');
-
-    // const handleChange = (event: SelectChangeEvent) => {
-    //     setCountry(event.target.value as string);
-    //     setState(event.target.value as string);
-    // };
-
+const AddressBook: NextPageWithLayout = () => {
     const {
         control,
         handleSubmit,
@@ -307,3 +291,4 @@ AddressBook.getLayout = (page) => {
 };
 
 export default AddressBook;
+

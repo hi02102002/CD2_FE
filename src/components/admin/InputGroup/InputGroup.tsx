@@ -4,7 +4,7 @@ import {
     Input,
     InputProps,
     TypographyProps,
-    styled,
+    styled
 } from '@mui/material';
 
 import Label from '../Label';

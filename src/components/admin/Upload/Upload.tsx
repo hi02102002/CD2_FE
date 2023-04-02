@@ -1,4 +1,4 @@
-import { ChangeEvent, FocusEvent } from 'react';
+import React, { ChangeEvent, FocusEvent } from 'react';
 
 import { Box, Typography, styled } from '@mui/material';
 import { grey, red } from '@mui/material/colors';
@@ -98,4 +98,4 @@ const StyledUpload = styled(Box)`
     }
 `;
 
-export default Upload;
+export default React.memo(Upload);

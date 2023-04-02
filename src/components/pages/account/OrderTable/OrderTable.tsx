@@ -8,6 +8,7 @@ import { pxToRem } from '@/utils/pxToRem';
 type Props = {};
 
 const OrderTable = (props: Props) => {
+    console.log(props);
     return (
         <StyledOrderTable>
             <StyledTHead>

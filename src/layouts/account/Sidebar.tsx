@@ -2,12 +2,9 @@ import { useRouter } from 'next/router';
 
 import { Box, List, ListItem, Typography, styled } from '@mui/material';
 
-import img from '@/assets/h1_slide_01.jpg';
 import { TextLink } from '@/components/common';
 import { DEVICE } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
-
-type Props = {};
 
 const LIST_ITEM = [
     {
@@ -52,25 +49,7 @@ const LIST_ITEM = [
     },
 ];
 
-const ListWishList = [
-    {
-        name: 'Square Shoulder Bag',
-        picture: '/src/assets/h1_slide_01.jpg',
-        cost: '6.00',
-    },
-    {
-        name: 'Square Shoulder Bag',
-        picture: { img },
-        cost: '6.00',
-    },
-    {
-        name: 'Square Shoulder Bag',
-        picture: { img },
-        cost: '6.00',
-    },
-];
-
-const Sidebar = (props: Props) => {
+const Sidebar = () => {
     const router = useRouter();
     const emtyWishlist = true;
 

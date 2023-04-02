@@ -4,11 +4,18 @@ import { IconArrowNarrowLeft, IconArrowNarrowRight } from '@tabler/icons-react';
 import { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+
+
 import { ProductItem } from '@/components/client';
 import { Button } from '@/components/common';
+import { Product } from '@/types/product';
 import { pxToRem } from '@/utils/pxToRem';
 
-function SlideRelated() {
+type Props = {
+    relatives: Product[];
+};
+
+function SlideRelated({ relatives }: Props) {
     return (
         <StyledSlideRelated>
             <Typography
@@ -42,33 +49,11 @@ function SlideRelated() {
                 modules={[Pagination, Navigation]}
                 className="mySwiper"
             >
-                <SwiperSlide>
-                    <ProductItem></ProductItem>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ProductItem></ProductItem>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ProductItem></ProductItem>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ProductItem></ProductItem>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ProductItem></ProductItem>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ProductItem></ProductItem>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ProductItem></ProductItem>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ProductItem></ProductItem>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ProductItem></ProductItem>
-                </SwiperSlide>
+                {relatives.map((item) => (
+                    <SwiperSlide key={item.id}>
+                        <ProductItem product={item} />
+                    </SwiperSlide>
+                ))}
             </Swiper>
             <Button className="slider-next" typeButton="secondary">
                 <IconArrowNarrowRight />
