@@ -207,3 +207,4 @@ const CategoryAction = ({ onClose, type = 'ADD', dataEdit }: Props) => {
 };
 
 export default CategoryAction;
+

@@ -34,6 +34,7 @@ const App = ({
                     font-family: ${JostFont.style.fontFamily};
                     --font-base: ${JostFont.style.fontFamily};
                 }
+
             `}</style>
             <CacheProvider value={emotionCache}>
                 <ThemeProvider theme={theme}>

@@ -61,3 +61,4 @@ export const getServerSideProps = withProtect({
 });
 
 export default AddProduct;
+

@@ -1,10 +1,17 @@
+import dynamic from 'next/dist/shared/lib/dynamic';
+
 import { Box, BoxProps } from '@mui/system';
-import { MessengerChat } from 'react-messenger-chat-plugin';
 
 import { ButtonScrollTop } from '@/components/client';
 
 import Footer from './Footer';
 import Header from './Header';
+
+const MessengerChatComponent = dynamic(
+    () =>
+        import('react-messenger-chat-plugin').then((mcp) => mcp.MessengerChat),
+    { ssr: false },
+);
 
 type Props = {
     MainProps?: BoxProps;
@@ -18,14 +25,15 @@ const MainLayout = ({ MainProps, children, ...rest }: Props) => {
                 {children}
             </Box>
             <ButtonScrollTop />
-            <MessengerChat
-                pageId="100091055181591"
-                language="sv_SE"
+            <MessengerChatComponent
+                pageId="110141722038322"
                 themeColor={'#000000'}
-                bottomSpacing={300}
-                loggedInGreeting="loggedInGreeting"
-                loggedOutGreeting="loggedOutGreeting"
+                language="en_US"
+                bottomSpacing={74}
+                loggedInGreeting="Do you need any help?"
+                loggedOutGreeting="See you again"
                 greetingDialogDisplay={'show'}
+                debugMode={true}
                 onMessengerShow={() => {
                     console.log('onMessengerShow');
                 }}
