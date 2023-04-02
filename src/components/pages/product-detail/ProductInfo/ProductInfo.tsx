@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import Image from 'next/image';
 
 import { Box, Grid, Rating, Stack, Typography, styled } from '@mui/material';
@@ -24,7 +22,6 @@ import {
 import { DEVICE } from '@/constants';
 import { Product } from '@/types/product';
 import { pxToRem } from '@/utils/pxToRem';
-const sizes = ['S', 'M', 'L'];
 
 type Props = {
     product: Product;
@@ -39,8 +36,6 @@ type Props = {
 };
 
 function ProductInfo({ product, options }: Props) {
-    const [size, setSize] = useState<String>('');
-
     return (
         <StyledProductInfo item md={5.5} xs={12} className="product-info">
             <Box className="product-title-wrap">

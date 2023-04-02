@@ -33,7 +33,6 @@ const Upload = ({
             }}
         >
             {({ getRootProps, getInputProps }) => (
-            {({ getRootProps, getInputProps }) => (
                 <StyledUploadWrapper>
                     <Typography
                         color={(theme) => theme.themeColor.primary}

@@ -6,6 +6,8 @@ import { Box, Grid, Slider, Stack, Typography, styled } from '@mui/material';
 import { common, grey } from '@mui/material/colors';
 import { motion } from 'framer-motion';
 
+
+
 import { Button, TextHover } from '@/components/common';
 import { DEVICE } from '@/constants';
 import { Category } from '@/types/category';
@@ -164,16 +166,6 @@ const StyledListCategory = styled(Box)`
     }
 `;
 
-const StyledListSize = styled(Stack)`
-    flex-wrap: wrap;
-
-    .btn-select-size {
-        width: ${pxToRem(42)};
-        height: ${pxToRem(42)};
-        padding: 0;
-    }
-`;
-
 const StyledSlider = styled(Slider)(({ theme }) => ({
     color: theme.themeColor.primary,
     height: 3,
@@ -203,30 +195,6 @@ const StyledSlider = styled(Slider)(({ theme }) => ({
     },
 }));
 
-const StyledListColor = styled(Stack)`
-    align-items: center;
-    gap: ${pxToRem(8)};
-    flex-direction: row;
 
-    .color-item {
-        border-radius: 50%;
-        cursor: pointer;
-        width: ${pxToRem(32)};
-        height: ${pxToRem(32)};
-        position: relative;
-
-        &::after {
-            content: '';
-            border-radius: 50%;
-            position: absolute;
-            inset: 0;
-            transition: all 0.3s ease;
-        }
-
-        &:hover::after {
-            border: 1px solid ${({ theme }) => theme.themeColor.primary};
-        }
-    }
-`;
 
 export default Filter;
