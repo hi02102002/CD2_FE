@@ -1,27 +1,28 @@
 import { GetServerSideProps } from 'next';
 
+
+
 import { Box } from '@mui/material';
 
-import {
-    Banner,
-    SectionCategories,
-    SectionProducts,
-} from '@/components/pages/home';
+
+
+import { Banner, SectionCategories, SectionProducts } from '@/components/pages/home';
 import { ClientLayout } from '@/layouts/client';
 import axiosClient from '@/lib/axiosClient';
 import { Category } from '@/types/category';
+import { Product } from '@/types/product';
 import { NextPageWithLayout } from '@/types/shared';
-
 type Props = {
     categories: Category[];
+    products: Product[];
 };
 
-const Home: NextPageWithLayout<Props> = ({ categories }) => {
+const Home: NextPageWithLayout<Props> = ({ categories, products }) => {
     return (
         <Box>
             <Banner />
             <SectionCategories categories={categories} />
-            <SectionProducts />
+            <SectionProducts products={products} />
         </Box>
     );
 };
@@ -36,9 +37,19 @@ export const getServerSideProps: GetServerSideProps = async () => {
         .then((d) => d.data)
         .catch((e) => console.log(e));
 
+    const products = await axiosClient
+        .get('/api/product/filter', {
+            params: {
+                limit: 8,
+            },
+        })
+        .then((d) => d.data?.content)
+        .catch((e) => console.log(e));
+
     return {
         props: {
-            categories,
+            categories: categories || [],
+            products,
         },
     };
 };

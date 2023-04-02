@@ -1,19 +1,30 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+
+
 import { Box, Typography, styled } from '@mui/material';
 import { Stack } from '@mui/system';
 import { IconEye, IconHeart } from '@tabler/icons-react';
 
+
+
 import { Button, TextLink, Tooltip } from '@/components/common';
-import { DEVICE } from '@/constants';
+import { DEVICE, ROUTES } from '@/constants';
+import { Product } from '@/types/product';
 import { pxToRem } from '@/utils/pxToRem';
 
-const ProductItem = () => {
+
+
+type Props = {
+    product: Product;
+};
+
+const ProductItem = ({ product }: Props) => {
     return (
         <StyledProductItem>
             <StyledProductTop>
-                <Link href="/products/i">
+                <Link href={`${ROUTES.PRODUCTS}/${product?.id}`}>
                     <Box
                         position="relative"
                         paddingTop={`${1.30888030888 * 100}%`}
@@ -21,7 +32,11 @@ const ProductItem = () => {
                         className="img-wrapper"
                     >
                         <Image
-                            src="https://blueskytechmage.com/minimog/media/catalog/product/cache/03457e065bff3e97e5626ac3824c5d10/p/r/product_fashion_03_3.jpg"
+                            src={
+                                product?.imageURL
+                                    ?.split(',')
+                                    .filter((item) => item !== '')[0]
+                            }
                             alt=""
                             fill
                             style={{
@@ -55,15 +70,17 @@ const ProductItem = () => {
             </StyledProductTop>
             <StyledContent>
                 <TextLink
-                    href="/products/i"
+                    href={`${ROUTES.PRODUCTS}/${product?.id}`}
                     MuiLinkProps={{
                         className: 'title',
+                        title: product?.name,
                     }}
+                    limitLine={1}
                 >
-                    Product 1
+                    {product?.name}
                 </TextLink>
                 <Stack direction="row" spacing={pxToRem(8)}>
-                    <Typography className="price">$102.00</Typography>
+                    <Typography className="price">${product?.price}</Typography>
                     <Typography className="discount">$102.00</Typography>
                 </Stack>
             </StyledContent>

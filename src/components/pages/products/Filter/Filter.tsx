@@ -1,17 +1,20 @@
 import { useState } from 'react';
 
+
+
 import { Box, Grid, Slider, Stack, Typography, styled } from '@mui/material';
 import { common, grey } from '@mui/material/colors';
 import { motion } from 'framer-motion';
 
-import { Button, TextHover, Tooltip } from '@/components/common';
+import { Button, TextHover } from '@/components/common';
 import { DEVICE } from '@/constants';
 import { Category } from '@/types/category';
 import { pxToRem } from '@/utils/pxToRem';
 
+
+
 import { useFilter } from '../FilterContext';
 
-const SIZES = ['S', 'M', 'L', 'XL', '2XL', '3XL'];
 
 const marks = [
     {
@@ -42,7 +45,7 @@ const Filter = ({ categories }: Props) => {
 
     return (
         <StyledFilter container rowSpacing={16} columnSpacing={16}>
-            <Grid item xs={12} lg={3}>
+            <Grid item xs={12} lg={6}>
                 <StyledTitle variant="h4">Category</StyledTitle>
                 <StyledListCategory component="ul">
                     {categories.map((category) => {
@@ -52,12 +55,12 @@ const Filter = ({ categories }: Props) => {
                                 className="category-item"
                                 key={category.id}
                                 onClick={() => {
-                                    handelFilter({ categoryId: category.id });
+                                    handelFilter({ categoryIds: category.id });
                                 }}
                             >
                                 <TextHover
                                     fontWeight={
-                                        category.id === options.categoryId
+                                        category.id === options.categoryIds
                                             ? 600
                                             : undefined
                                     }
@@ -70,88 +73,7 @@ const Filter = ({ categories }: Props) => {
                     })}
                 </StyledListCategory>
             </Grid>
-            <Grid item xs={12} lg={3}>
-                <StyledTitle variant="h4">Sizes</StyledTitle>
-                <StyledListSize gap={8} direction="row">
-                    {SIZES.map((size) => {
-                        return (
-                            <Tooltip
-                                title={size}
-                                sx={{
-                                    width: 42,
-                                    textAlign: 'center',
-                                }}
-                                placement="top"
-                                arrow
-                                key={size}
-                            >
-                                <Button
-                                    className="btn-select-size"
-                                    typeButton="secondary"
-                                    onClick={() => {
-                                        handelFilter({
-                                            size,
-                                        });
-                                    }}
-                                >
-                                    {size}
-                                </Button>
-                            </Tooltip>
-                        );
-                    })}
-                </StyledListSize>
-            </Grid>
-            <Grid item xs={12} lg={3}>
-                <StyledTitle variant="h4">Colors</StyledTitle>
-                <StyledListColor>
-                    <Box
-                        component="div"
-                        className="color-item"
-                        sx={{
-                            backgroundColor: 'ButtonFace',
-                        }}
-                        onClick={() => {
-                            handelFilter({ color: 'black' });
-                        }}
-                    />
-                    <Box
-                        component="div"
-                        className="color-item"
-                        sx={{
-                            backgroundColor: 'ButtonFace',
-                        }}
-                    />
-                    <Box
-                        component="div"
-                        className="color-item"
-                        sx={{
-                            backgroundColor: 'ButtonFace',
-                        }}
-                    />
-                    <Box
-                        component="div"
-                        className="color-item"
-                        sx={{
-                            backgroundColor: 'ButtonFace',
-                        }}
-                    />
-                    <Box
-                        component="div"
-                        className="color-item"
-                        sx={{
-                            backgroundColor: 'ButtonFace',
-                        }}
-                    />
-                    <Box
-                        component="div"
-                        className="color-item"
-                        sx={{
-                            backgroundColor: 'ButtonFace',
-                        }}
-                    />
-                </StyledListColor>
-            </Grid>
-            <Grid item xs={12} lg={3}>
+            <Grid item xs={12} lg={6}>
                 <StyledTitle variant="h4">Price</StyledTitle>
                 <Stack alignItems="center" justifyContent="center">
                     <StyledSlider

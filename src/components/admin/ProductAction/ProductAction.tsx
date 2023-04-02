@@ -1,6 +1,10 @@
 import { useCallback, useState } from 'react';
 
+
+
 import { useRouter } from 'next/router';
+
+
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
@@ -10,20 +14,20 @@ import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import * as yup from 'yup';
 
-import {
-    InputGroup,
-    Label,
-    ListFilePreview,
-    MessageError,
-    Upload,
-} from '@/components/admin';
+
+
+import { InputGroup, Label, ListFilePreview, MessageError, Upload } from '@/components/admin';
 import { ROUTES } from '@/constants';
 import { useOverflowHidden } from '@/hooks/useOverflowHidden';
 import productService from '@/services/product.service';
 import { Category } from '@/types/category';
+import { Product } from '@/types/product';
 import { pxToRem } from '@/utils/pxToRem';
 
+
+
 import LoadingFullPage from '../LoadingFullPage';
+
 
 const productInputSchema = yup.object({
     name: yup.string().required('Product name is required'),
@@ -60,9 +64,11 @@ type FormData = yup.InferType<typeof productInputSchema>;
 
 type Props = {
     categories: Category[];
+    defautlValues?: Product;
+    type?: 'ADD' | 'EDIT';
 };
 
-const ProductAction = ({ categories }: Props) => {
+const ProductAction = ({ categories, defautlValues, type = 'ADD' }: Props) => {
     const {
         control,
         handleSubmit,
@@ -72,11 +78,18 @@ const ProductAction = ({ categories }: Props) => {
     } = useForm<FormData>({
         resolver: yupResolver(productInputSchema),
         defaultValues: {
-            description: '',
-            files: [],
-            name: '',
+            description: defautlValues?.description || '',
+            categoryId: defautlValues?.categoryId,
+            price: defautlValues?.price.toString() || '',
+            quantity: defautlValues?.quantity.toString() || '',
+            files:
+                defautlValues?.imageURL?.split(',').filter((i) => i !== '') ||
+                defautlValues?.imageUrl?.split(',').filter((i) => i !== '') ||
+                [],
+            name: defautlValues?.name || '',
         },
     });
+
     const [isLoadingAction, setIsLoadingAction] = useState<boolean>(false);
     const router = useRouter();
     const [files, setFiles] = useState<File[] | string[]>(
@@ -122,10 +135,30 @@ const ProductAction = ({ categories }: Props) => {
         }
     };
 
+    const handelEditProduct = async (fields: FormData) => {
+        try {
+            setIsLoadingAction(true);
+            await productService.updateProduct(Number(router.query.id), fields);
+            setIsLoadingAction(false);
+            toast.success('Edit product successfully');
+            router.push(ROUTES.ADMIN_PRODUCT);
+        } catch (error: any) {
+            console.log(error);
+            toast.error(
+                error.response?.data?.message || 'Something went wrong',
+            );
+            setIsLoadingAction(false);
+        }
+    };
+
     return (
         <>
             <StyledProductAction>
-                <form onSubmit={handleSubmit(handelAddProduct)}>
+                <form
+                    onSubmit={handleSubmit(
+                        type === 'ADD' ? handelAddProduct : handelEditProduct,
+                    )}
+                >
                     <Grid container spacing={16}>
                         <Grid item xs={12}>
                             <StyledContentWrapper>
@@ -309,7 +342,9 @@ const ProductAction = ({ categories }: Props) => {
                                     variant="contained"
                                     type="submit"
                                 >
-                                    Add product
+                                    {type === 'ADD'
+                                        ? 'Add Product'
+                                        : 'Save Changes'}
                                 </LoadingButton>
                             </Stack>
                         </Grid>

@@ -1,31 +1,20 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+
+
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import {
-    Box,
-    Button,
-    CircularProgress,
-    Drawer,
-    Grid,
-    Menu,
-    MenuItem,
-    Stack,
-} from '@mui/material';
+
+
+import { Box, Button, CircularProgress, Drawer, Grid, Menu, MenuItem, Stack } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
-import {
-    AlterConfirm,
-    Breadcrumbs,
-    FormVariants,
-    InputOptions,
-    LoadingFullPage,
-    MainContent,
-    ProductFilter,
-} from '@/components/admin';
+
+
+import { AlterConfirm, Breadcrumbs, FormVariants, InputOptions, LoadingFullPage, MainContent } from '@/components/admin';
 import { Option as OptionInput } from '@/components/admin/InputOption';
 import { ROUTES } from '@/constants';
 import { useDisclosure } from '@/hooks/useDisclosure';
@@ -134,7 +123,6 @@ const Action = ({ productId }: { productId: number }) => {
     };
 
     const handelUpdateOptions = async (data: { options: Option[] }) => {
-        console.log(data.options);
         try {
             setLoadingUpdateOptions(true);
             await productService.updateOptionsByProductId(
@@ -146,6 +134,7 @@ const Action = ({ productId }: { productId: number }) => {
             );
             setLoadingUpdateOptions(false);
             toast.success('Update options successfully');
+            onCloseDrawer();
         } catch (error) {
             setLoadingUpdateOptions(false);
             toast.error('Something went wrong');
@@ -250,9 +239,9 @@ const Action = ({ productId }: { productId: number }) => {
                         </>
                     )}
                 </Stack>
-                {(loadingRemoveOption || loadingUpdateOptions) && (
-                    <LoadingFullPage />
-                )}
+                {(loadingRemoveOption ||
+                    loadingUpdateOptions ||
+                    loadingAddOptions) && <LoadingFullPage />}
             </Drawer>
         </>
     );
@@ -267,22 +256,25 @@ const Products: NextPageWithLayout = () => {
     const [limit, setLimit] = useState<number>(15);
     const [removeIds, setRemoveIds] = useState<number[]>([]);
     const [isLoadingRemove, setIsLoadingRemove] = useState<boolean>(false);
-
+    const [textSearch, setTextSearch] = useState<string>('');
     const {
         isOpen: isOpenModalConfirmRemove,
         onClose: onCloseModalConfirmRemove,
         onOpen: onOpenModalConfirmRemove,
     } = useDisclosure();
 
-    const handelFetchProducts = useCallback(async () => {
-        try {
-            setIsLoadingFetch(true);
-            await fetchProducts();
-            setIsLoadingFetch(false);
-        } catch (error) {
-            setIsLoadingFetch(false);
-        }
-    }, [fetchProducts]);
+    const handelFetchProducts = useCallback(
+        async (q: any) => {
+            try {
+                setIsLoadingFetch(true);
+                await fetchProducts(q);
+                setIsLoadingFetch(false);
+            } catch (error) {
+                setIsLoadingFetch(false);
+            }
+        },
+        [fetchProducts],
+    );
 
     const handelRemoveProducts = async () => {
         try {
@@ -375,8 +367,11 @@ const Products: NextPageWithLayout = () => {
     );
 
     useEffect(() => {
-        handelFetchProducts();
-    }, [handelFetchProducts]);
+        handelFetchProducts({
+            offset: page,
+            limit,
+        });
+    }, [handelFetchProducts, page, limit]);
 
     return (
         <>
@@ -399,10 +394,7 @@ const Products: NextPageWithLayout = () => {
                         columnSpacing={{ xs: 0, md: 16 }}
                         rowSpacing={{ xs: 16, md: 0 }}
                     >
-                        <Grid item xs={12} md={3}>
-                            <ProductFilter />
-                        </Grid>
-                        <Grid item xs={12} md={9}>
+                        <Grid item xs={12}>
                             <MainContent
                                 TableProps={{
                                     columns,
@@ -438,6 +430,26 @@ const Products: NextPageWithLayout = () => {
                                     ButtonRemoveProps: {
                                         onClick: onOpenModalConfirmRemove,
                                     },
+                                }}
+                                SearchProps={{
+                                    onChange: (value) => setTextSearch(value),
+                                    value: textSearch,
+                                    onClearSearch: () => {
+                                        setTextSearch('');
+                                        handelFetchProducts({
+                                            limit,
+                                            offset: page,
+                                        });
+                                    },
+                                    onSearch: () =>
+                                        handelFetchProducts({
+                                            limit,
+                                            offset: page,
+                                            name:
+                                                textSearch.length > 0
+                                                    ? textSearch
+                                                    : undefined,
+                                        }),
                                 }}
                             />
                         </Grid>

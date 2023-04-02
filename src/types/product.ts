@@ -2,7 +2,12 @@ export type Product = {
     id: number;
     name: string;
     imageURL: string;
+    imageUrl: string;
     price: number;
+    description: string;
+    quantity: number;
+    categoryId: number;
+    options: Option[];
 };
 
 export type Option = {

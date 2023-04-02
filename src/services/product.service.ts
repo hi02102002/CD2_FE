@@ -2,6 +2,7 @@ import axiosClient from '@/lib/axiosClient';
 import { Option, Product } from '@/types/product';
 import { BaseResponse } from '@/types/shared';
 
+
 class ProductService {
     async addProduct(fields: any): Promise<BaseResponse<any>> {
         const formData = new FormData();
@@ -31,7 +32,7 @@ class ProductService {
             totalElements: number;
         }>
     > {
-        return await axiosClient.get('/api/product', {
+        return await axiosClient.get('/api/product/filter', {
             params: q,
         });
     }
@@ -71,6 +72,27 @@ class ProductService {
             params: {
                 productId,
             },
+        });
+    }
+
+    async updateProduct(productId: Product['id'], fields: any) {
+        const formData = new FormData();
+
+        for (const [key, value] of Object.entries(fields)) {
+            if (key === 'files' || key === 'file') {
+                for (const file of value as any) {
+                    formData.append('file', file);
+                }
+            } else {
+                formData.append(key, value as string);
+            }
+        }
+
+        return axiosClient.put('/api/product', formData, {
+            params: {
+                id: productId,
+            },
+            headers: { 'Content-Type': 'multipart/form-data' },
         });
     }
 }

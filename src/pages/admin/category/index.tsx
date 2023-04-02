@@ -185,7 +185,10 @@ const Category: NextPageWithLayout = () => {
                     SearchProps={{
                         onChange: (value) => setTextSearch(value),
                         value: textSearch,
-                        onClearSearch: () => handleFetchCategories({ limit, offset: page }),
+                        onClearSearch: () => {
+                            setTextSearch('')
+                            handleFetchCategories({ limit, offset: page })
+                        },
                         onSearch: () => handleFetchCategories({ limit, offset: page, name: textSearch.length > 0 ? textSearch : undefined })
                     }}
                     TablePaginationProps={{
