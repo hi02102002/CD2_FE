@@ -26,6 +26,7 @@ type Props = {
 const Product: NextPageWithLayout<Props> = ({ product, relatives }) => {
 
 
+
     const optionsKeyValues = useMemo(() => {
         
         if(product?.options.length===0) return [];
