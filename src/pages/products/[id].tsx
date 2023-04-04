@@ -59,7 +59,7 @@ const Product: NextPageWithLayout<Props> = ({ product, relatives }) => {
                     padding={0}
                     spacing={16}
                 >
-                    <ImageLibrary imageURL={ product.imageURL} />
+                    <ImageLibrary imageURL={ product.imageUrl} />
                     <ProductInfo product={product} options={optionsKeyValues}/>
                 </ProductMainContent>
                 <Box
@@ -76,17 +76,17 @@ const Product: NextPageWithLayout<Props> = ({ product, relatives }) => {
 };
 
 Product.getLayout = (page) => {
-    return <ClientLayout title={page.props.product.name} description={page.props.product.description}
+    return <ClientLayout title={page.props.product.name} description={page.props?.product?.description}
         seo={{
             openGraph: {
-                title: page.props.product.name,
-                description: page.props.product.description,
-                images: page.props.product.imageURL.split(',').filter((v: string) => v !== '').map((v: string) => { 
+                title: page.props?.product?.name,
+                description: page?.props.product?.description,
+                images: page.props?.product.imageUrl?.split(',').filter((v: string) => v !== '').map((v: string) => { 
                     return {
                         url: v,
                     }
                 }),
-                url: `https://minimogshop.vercel.app/products/${page.props.product.id}`,
+                url: `https://minimogshop.vercel.app/products/${page?.props?.product.id}`,
                 site_name: 'Minimog Shop',
             },
 

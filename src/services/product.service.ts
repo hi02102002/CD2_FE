@@ -80,8 +80,13 @@ class ProductService {
 
         for (const [key, value] of Object.entries(fields)) {
             if (key === 'files' || key === 'file') {
+                
                 for (const file of value as any) {
-                    formData.append('file', file);
+                    if (typeof file === 'string') {
+                        formData.append('oldFiles', file);
+                    } else {
+                        formData.append('newFiles', file);
+                    }
                 }
             } else {
                 formData.append(key, value as string);

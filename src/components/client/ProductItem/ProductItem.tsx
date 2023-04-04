@@ -47,7 +47,7 @@ const ProductItem = ({ product }: Props) => {
                     >
                         <Image
                             src={
-                                product?.imageURL
+                                product?.imageUrl
                                     ?.split(',')
                                     .filter((item) => item !== '')[0]
                             }
