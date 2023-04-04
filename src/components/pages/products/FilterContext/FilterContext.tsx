@@ -16,8 +16,10 @@ type FilterOption = {
     color?: string;
     minPrice?: number;
     maxPrice?: number;
-    sort?: string;
+    sortBy?: string;
     name?: string;
+    asc?: boolean;
+    createdDate?: string;
 };
 
 type FilterCtx = {
@@ -43,8 +45,18 @@ type Props = {
 const FilterProvider = ({ children }: Props) => {
     const router = useRouter();
 
-    const { offset, categoryIds, size, color, minPrice, maxPrice, sort, name } =
-        router.query;
+    const {
+        offset,
+        categoryIds,
+        size,
+        color,
+        minPrice,
+        maxPrice,
+        sortBy,
+        name,
+        asc,
+        createdDate,
+    } = router.query;
 
     const handelFilter = useCallback(
         ({
@@ -54,7 +66,9 @@ const FilterProvider = ({ children }: Props) => {
             minPrice,
             offset,
             size,
-            sort,
+            sortBy,
+            asc,
+            createdDate,
         }: FilterOption) => {
             const { query } = router;
 
@@ -74,8 +88,8 @@ const FilterProvider = ({ children }: Props) => {
                 query.size = size;
             }
 
-            if (sort) {
-                query.sort = sort;
+            if (sortBy) {
+                query.sortBy = sortBy;
             }
 
             if (minPrice !== undefined) {
@@ -84,6 +98,14 @@ const FilterProvider = ({ children }: Props) => {
 
             if (maxPrice !== undefined) {
                 query.maxPrice = `${maxPrice}`;
+            }
+
+            if (asc !== undefined) {
+                query.asc = `${asc}`;
+            }
+
+            if (createdDate) {
+                query.createdDate = createdDate;
             }
 
             router.push({
@@ -109,8 +131,10 @@ const FilterProvider = ({ children }: Props) => {
                     color: color as string,
                     minPrice: minPrice ? Number(minPrice) : undefined,
                     maxPrice: maxPrice ? Number(maxPrice) : undefined,
-                    sort: sort as string,
+                    sortBy: sortBy as string,
                     name: name as string,
+                    asc: asc ? Boolean(asc) : undefined,
+                    createdDate: createdDate as string,
                 },
                 handelClear,
             }}

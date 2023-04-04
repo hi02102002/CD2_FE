@@ -25,12 +25,12 @@ const marks = [
     },
 
     {
-        value: 50,
-        label: '50$',
+        value: 500,
+        label: '5000$',
     },
     {
-        value: 100,
-        label: '100$',
+        value: 1000,
+        label: '99999$',
     },
 ];
 
@@ -85,13 +85,15 @@ const Filter = ({ categories }: Props) => {
                         valueLabelDisplay="auto"
                         defaultValue={[
                             options.minPrice || 0,
-                            options.maxPrice || 100,
+                            options.maxPrice || 99999,
                         ]}
                         value={price}
                         marks={marks}
                         onChange={(e, value) => {
                             setPrice(value as number[]);
                         }}
+                        min={0}
+                        max={1000}
                     />
                     <Button
                         sx={{
