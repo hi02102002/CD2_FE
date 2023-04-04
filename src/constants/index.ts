@@ -17,6 +17,7 @@ export const ROUTES = {
     ACCOUNT: '/account',
     PRODUCT_DETAIL: '/product-detail',
     NOT_ALLOW: '/not-allow',
+    PRODUCT_DETAIL: 'product/abc',
 };
 
 export const SIZE_MEDIA = {

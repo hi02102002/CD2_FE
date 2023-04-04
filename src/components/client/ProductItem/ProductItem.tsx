@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -6,13 +8,43 @@ import Link from 'next/link';
 import { Box, Typography, styled } from '@mui/material';
 import { Stack } from '@mui/system';
 import { IconEye, IconHeart } from '@tabler/icons-react';
+import { v4 as uuidv4 } from 'uuid';
 
 
 
 import { Button, TextLink, Tooltip } from '@/components/common';
+import { DEVICE } from '@/constants';
+import useCart from '@/store/cart';
 import { DEVICE, ROUTES } from '@/constants';
 import { Product } from '@/types/product';
 import { pxToRem } from '@/utils/pxToRem';
+
+const ProductItem = () => {
+    const [data, setData] = useState({
+        href1: 'https://blueskytechmage.com/minimog/media/catalog/product/cache/03457e065bff3e97e5626ac3824c5d10/p/r/product_fashion_03_3.jpg',
+        productName: 'Product',
+        id: uuidv4(),
+        price: Math.floor(Math.random() * 100 + 1),
+        discount: Math.floor(Math.random() * (400 - 100) + 100),
+        quantity: 1,
+    });
+
+    const { arrProducts, addProduct } = useCart();
+    console.log(arrProducts);
+
+    const handleAddToCart = () => {
+        if (arrProducts.some((product) => product.id === data.id)) {
+            console.log('smae');
+
+            arrProducts.forEach((product) => {
+                if (product.id === data.id) {
+                    product.quantity = product.quantity + 1;
+                }
+            });
+        } else {
+            addProduct(data);
+        }
+    };
 
 
 
@@ -63,7 +95,11 @@ const ProductItem = ({ product }: Props) => {
                     </Tooltip>
                 </StyledTools>
                 <Box component="div" className="btn-wrapper">
-                    <Button className="btn-add-cart" typeButton="secondary">
+                    <Button
+                        className="btn-add-cart"
+                        typeButton="secondary"
+                        onClick={handleAddToCart}
+                    >
                         Add to Cart
                     </Button>
                 </Box>
@@ -77,9 +113,14 @@ const ProductItem = ({ product }: Props) => {
                     }}
                     limitLine={1}
                 >
+                    {data.productName}
                     {product?.name}
                 </TextLink>
                 <Stack direction="row" spacing={pxToRem(8)}>
+                    <Typography className="price">${data.price}</Typography>
+                    <Typography className="discount">
+                        ${data.discount}
+                    </Typography>
                     <Typography className="price">${product?.price}</Typography>
                     <Typography className="discount">$102.00</Typography>
                 </Stack>
