@@ -16,7 +16,10 @@ const AccInfor: NextPageWithLayout = () => {
 
 AccInfor.getLayout = (page) => {
     return (
-        <ClientLayout>
+        <ClientLayout
+            title="Account Information"
+            description="Account Information"
+        >
             <PageTop
                 title="Account Information"
                 breadcrumbItems={[

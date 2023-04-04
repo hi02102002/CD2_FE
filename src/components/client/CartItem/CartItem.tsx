@@ -1,16 +1,23 @@
 import Image from 'next/image';
 
+
+
 import { Box, BoxProps, Typography, styled } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { IconX } from '@tabler/icons-react';
 
 import { InputChangeAmount, TextLink } from '@/components/common';
 import { DEVICE } from '@/constants';
-import useCart from '@/store/cart';
+import useCartStore from '@/store/cart';
+import { CartItem as TCartItem } from '@/types/product';
 import { pxToRem } from '@/utils/pxToRem';
 
-export const CartItem = (props: BoxProps) => {
-    const { removeProduct } = useCart();
+type Props = {
+    cart: TCartItem;
+} & BoxProps;
+
+export const CartItem = ({ cart, ...props }: Props) => {
+    const { removeProductFromCart } = useCartStore();
     return (
         <StyledCartItem {...props} className={`${props.className} cart`}>
             <StyledImageWrapper className="img-wrapper">
@@ -50,9 +57,6 @@ export const CartItem = (props: BoxProps) => {
                 }}
                 component="div"
                 className="btn-remove"
-                onClick={() => {
-                    removeProduct(props.id);
-                }}
             >
                 <IconX width={16} height={16} color={grey[500]} />
             </Box>

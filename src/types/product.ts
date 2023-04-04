@@ -15,3 +15,5 @@ export type Option = {
     quantity: null | number;
     price: null | number;
 };
+
+export type CartItem = {};

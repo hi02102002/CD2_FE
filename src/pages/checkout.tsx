@@ -121,11 +121,11 @@ const Checkout: NextPageWithLayout<Props> = () => {
                                     Order Summary
                                 </StyledTitle>
                                 <StyledListCart>
+                                    {/* <StyledCartItem />
                                     <StyledCartItem />
                                     <StyledCartItem />
                                     <StyledCartItem />
-                                    <StyledCartItem />
-                                    <StyledCartItem />
+                                    <StyledCartItem /> */}
                                 </StyledListCart>
                                 <Stack gap={16} paddingY={16}>
                                     <Stack gap={8}>
@@ -202,7 +202,11 @@ const Checkout: NextPageWithLayout<Props> = () => {
 };
 
 Checkout.getLayout = (page) => {
-    return <ClientLayout>{page}</ClientLayout>;
+    return (
+        <ClientLayout title="Checkout" description="Checkout">
+            {page}
+        </ClientLayout>
+    );
 };
 
 const StyledTitle = styled(Typography)`

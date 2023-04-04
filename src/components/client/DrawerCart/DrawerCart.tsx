@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
+
+
 import {
     Box,
     Drawer,
@@ -13,7 +15,7 @@ import { IconX } from '@tabler/icons-react';
 
 import { Button } from '@/components/common';
 import { DEVICE, ROUTES } from '@/constants';
-import useCart from '@/store/cart';
+import useCartStore from '@/store/cart';
 import { pxToRem } from '@/utils/pxToRem';
 
 import { CartItem } from '../CartItem';
@@ -24,9 +26,11 @@ type Props = {
 };
 
 const DrawerCart = ({ isOpen, onClose }: Props) => {
-    const isShowCartItem = true;
     const router = useRouter();
-    const { arrProducts } = useCart();
+    const { cartItems } = useCartStore();
+
+    const isShowCartItems = cartItems.length > 0;
+
     return (
         <StyledDrawerCart
             ModalProps={{
@@ -46,15 +50,10 @@ const DrawerCart = ({ isOpen, onClose }: Props) => {
                 </Box>
             </StyledHeader>
             <StyledBody>
-                {isShowCartItem ? (
+                {isShowCartItems ? (
                     <StyledListCart spacing={16}>
-                        {arrProducts.map((product, index) => {
-                            return (
-                                <CartItem
-                                    key={index}
-                                    id={product.id}
-                                ></CartItem>
-                            );
+                        {cartItems.map((cart, index) => {
+                            return <CartItem key={index} cart={cart} />;
                         })}
                     </StyledListCart>
                 ) : (
@@ -83,13 +82,17 @@ const DrawerCart = ({ isOpen, onClose }: Props) => {
                             You may check out all the available products and buy
                             some in the shop.
                         </Typography>
-                        <Button className="btn-return" typeButton="primary">
+                        <Button
+                            className="btn-return"
+                            typeButton="primary"
+                            onClick={onClose}
+                        >
                             Return to shop
                         </Button>
                     </>
                 )}
             </StyledBody>
-            {isShowCartItem && (
+            {isShowCartItems && (
                 <StyledBottom>
                     <Stack direction="row" justifyContent="space-between">
                         <Typography fontWeight={500}>Total:</Typography>

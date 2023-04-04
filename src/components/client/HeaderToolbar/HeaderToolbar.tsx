@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+
+
 import { useRouter } from 'next/router';
 
 import {
@@ -27,7 +29,7 @@ import { DEVICE, ROUTES } from '@/constants';
 import { useDisclosure } from '@/hooks/useDisclosure';
 import authService from '@/services/auth.service';
 import useAuthStore from '@/store/auth';
-import useCart from '@/store/cart';
+import useCartStore from '@/store/cart';
 import { ROLE } from '@/types/user';
 import { pxToRem } from '@/utils/pxToRem';
 
@@ -70,7 +72,7 @@ const HeaderToolbar = ({ forSearch = false }: Props) => {
         setAnchorElMenuUser(null);
     };
 
-    const { arrProducts } = useCart();
+    const { cartItems } = useCartStore();
     return (
         <>
             <StyledToolbar>
@@ -221,7 +223,7 @@ const HeaderToolbar = ({ forSearch = false }: Props) => {
                             onClick={onOpenCart}
                             className="cart"
                         >
-                            <Badge badgeContent={arrProducts.length}>
+                            <Badge badgeContent={cartItems.length}>
                                 <IconShoppingCart
                                     color={theme.themeColor.primary}
                                 />

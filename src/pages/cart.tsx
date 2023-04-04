@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router';
 
+
+
 import { Box, Stack, Typography, styled } from '@mui/material';
 
 import { Button, Input, PageTop } from '@/components/common';
@@ -9,25 +11,13 @@ import { ClientLayout } from '@/layouts/client';
 import useCart from '@/store/cart';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
+import { withProtect } from '@/utils/withProtect';
 
 const Cart: NextPageWithLayout = () => {
     const router = useRouter();
-    const { clearProduct } = useCart();
+    const { clearCart } = useCart();
     return (
         <>
-            <PageTop
-                breadcrumbItems={[
-                    {
-                        href: ROUTES.HOME,
-                        name: 'Home',
-                    },
-                    {
-                        href: ROUTES.CART,
-                        name: 'Cart',
-                    },
-                ]}
-                title="Shopping Cart"
-            />
             <StyledPageCart>
                 <Box component="div" className="container-app">
                     <TableCart />
@@ -44,14 +34,8 @@ const Cart: NextPageWithLayout = () => {
                             Continue Shopping
                         </Button>
                         <StyledActions>
-                            <Button
-                                typeButton="secondary"
-                                onClick={clearProduct}
-                            >
+                            <Button typeButton="secondary" onClick={clearCart}>
                                 Clear Shopping Cart
-                            </Button>
-                            <Button typeButton="secondary">
-                                Update Shopping Cart
                             </Button>
                         </StyledActions>
                     </StyledActions>
@@ -129,8 +113,30 @@ const Cart: NextPageWithLayout = () => {
 };
 
 Cart.getLayout = (page) => {
-    return <ClientLayout>{page}</ClientLayout>;
+    return (
+        <ClientLayout title="Cart" description="">
+            <PageTop
+                breadcrumbItems={[
+                    {
+                        href: ROUTES.HOME,
+                        name: 'Home',
+                    },
+                    {
+                        href: ROUTES.CART,
+                        name: 'Cart',
+                    },
+                ]}
+                title="Shopping Cart"
+            />
+            {page}
+        </ClientLayout>
+    );
 };
+
+export const getServerSideProps = withProtect({
+    isAdmin: false,
+    isProtect: true,
+})();
 
 export default Cart;
 

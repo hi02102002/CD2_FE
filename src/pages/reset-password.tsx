@@ -1,19 +1,17 @@
 import { useState } from 'react';
 
-import {
-    Box,
-    Checkbox,
-    FormControlLabel,
-    Stack,
-    Typography,
-    styled,
-} from '@mui/material';
+
+
+import { Box, Checkbox, FormControlLabel, Stack, Typography, styled } from '@mui/material';
+
+
 
 import { Button, Input, PageTop } from '@/components/common';
 import { ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
+
 
 type Props = {};
 
@@ -85,7 +83,14 @@ const ResetPassword: NextPageWithLayout<Props> = () => {
     );
 };
 
-ResetPassword.getLayout = (page) => <ClientLayout>{page}</ClientLayout>;
+ResetPassword.getLayout = (page) => (
+    <ClientLayout
+        title="Reset Your Password"
+        description="Enter new password to reset your password"
+    >
+        {page}
+    </ClientLayout>
+);
 
 export default ResetPassword;
 

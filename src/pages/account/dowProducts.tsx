@@ -18,7 +18,10 @@ const DownProducts: NextPageWithLayout = () => {
 
 DownProducts.getLayout = (page) => {
     return (
-        <ClientLayout>
+        <ClientLayout
+            title="My Dowloadable Products"
+            description="My Dowloadable Products"
+        >
             <PageTop
                 title="My Dowloadable Products"
                 breadcrumbItems={[

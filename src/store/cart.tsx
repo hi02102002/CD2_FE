@@ -1,37 +1,47 @@
 import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
 
-interface Product {
-    href1: string;
-    productName: string;
-    id: string;
-    price: number;
-    discount: string;
-    quantity: number;
-}
+import { CartItem } from '@/types/product';
+
 interface CartState {
-    arrProducts: Product[];
-    addProduct: (newProduct: object) => void;
-    removeProduct: (id: string) => void;
-    clearProduct: () => void;
+    cartItems: CartItem[];
+    addProductToCart: (cartItem: CartItem) => Promise<void>;
+    removeProductFromCart: (cartItemId: string) => Promise<void>;
+    clearCart: () => Promise<void>;
+    updateProductQuantity: (
+        cartItemId: string,
+        quantity: number,
+    ) => Promise<void>;
+    fetchCart: () => Promise<void>;
 }
 
-const useCart = create<CartState>()((set) => ({
-    arrProducts: [],
-    addProduct: (newProduct: any) => {
-        set((state) => ({ arrProducts: [...state.arrProducts, newProduct] }));
-    },
-    removeProduct: (uuid: string) => {
-        set((state) => ({
-            arrProducts: state.arrProducts.filter(
-                (product) => product.id !== uuid,
-            ),
-        }));
-    },
-    clearProduct: () => {
-        set(() => ({
-            arrProducts: [],
-        }));
-    },
-}));
+const useCartStore = create<CartState>()(
+    devtools(
+        immer((set) => {
+            return {
+                cartItems: [],
+                addProductToCart: async (cartItem) => {
+                    //
+                },
+                removeProductFromCart: async (cartItemId) => {
+                    //
+                },
+                clearCart: async () => {
+                    //
+                },
+                updateProductQuantity: async (cartItemId, quantity) => {
+                    //
+                },
+                fetchCart: async () => {
+                    //
+                },
+            };
+        }),
+        {
+            name: 'cart',
+        },
+    ),
+);
 
-export default useCart;
+export default useCartStore;

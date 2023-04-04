@@ -1,10 +1,13 @@
 import { Box, Stack, Typography, styled } from '@mui/material';
 
+
+
 import { Button, Input, PageTop } from '@/components/common';
 import { ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
+
 
 type Props = {};
 
@@ -43,7 +46,14 @@ const ForgotPassword: NextPageWithLayout<Props> = () => {
     );
 };
 
-ForgotPassword.getLayout = (page) => <ClientLayout>{page}</ClientLayout>;
+ForgotPassword.getLayout = (page) => (
+    <ClientLayout
+        title="Forgot Your Password?"
+        description="Please enter your email address below to receive a password reset link."
+    >
+        {page}
+    </ClientLayout>
+);
 
 export default ForgotPassword;
 

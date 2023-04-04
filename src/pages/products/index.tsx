@@ -65,7 +65,10 @@ const Products: NextPageWithLayout<Props> = ({
 
 Products.getLayout = (page) => {
     return (
-        <ClientLayout>
+        <ClientLayout
+            title='MinimogShop'
+            description="Get your shopping done quickly and easily with our cart! Everything is at your fingertips, so there's no need to waste time or money on unnecessary items."
+        >
             <PageTop
                 title="Shop"
                 breadcrumbItems={[

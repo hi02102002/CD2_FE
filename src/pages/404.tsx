@@ -1,12 +1,17 @@
 import { useRouter } from 'next/router';
 
+
+
 import { Box, BoxProps, Typography, styled } from '@mui/material';
+
+
 
 import { Button } from '@/components/common';
 import { DEVICE, ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
+
 
 const NotFound: NextPageWithLayout = () => {
     const router = useRouter();
@@ -56,7 +61,14 @@ const StyledNotFound = styled(Box)<BoxProps>`
 `;
 
 NotFound.getLayout = (page) => {
-    return <ClientLayout>{page}</ClientLayout>;
+    return (
+        <ClientLayout
+            title="404 - Page not found"
+            description="404 - Page not found"
+        >
+            {page}
+        </ClientLayout>
+    );
 };
 
 export default NotFound;
