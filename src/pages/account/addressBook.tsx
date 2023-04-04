@@ -267,7 +267,10 @@ const StyledTitle = styled(Typography)`
 
 AddressBook.getLayout = (page) => {
     return (
-        <ClientLayout>
+        <ClientLayout
+            title='Address Book'
+            description='Address Book'
+        >
             <PageTop
                 title="Address Book"
                 breadcrumbItems={[

@@ -39,7 +39,10 @@ const NewSub: NextPageWithLayout = () => {
 
 NewSub.getLayout = (page) => {
     return (
-        <ClientLayout>
+        <ClientLayout
+            title='Newsletter Subscriptions'
+            description='Newsletter Subscriptions'
+        >
             <PageTop
                 title="Newsletter Subscriptions"
                 breadcrumbItems={[

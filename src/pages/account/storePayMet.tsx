@@ -18,7 +18,10 @@ const StorePayment: NextPageWithLayout = () => {
 
 StorePayment.getLayout = (page) => {
     return (
-        <ClientLayout>
+        <ClientLayout
+            title="My Store Payment Methods"
+            description="My Store Payment Methods"
+        >
             <PageTop
                 title="Store Payment Methods"
                 breadcrumbItems={[

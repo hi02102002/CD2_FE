@@ -5,16 +5,29 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-
-
-import { Box, Button, CircularProgress, Drawer, Grid, Menu, MenuItem, Stack } from '@mui/material';
+import {
+    Box,
+    Button,
+    CircularProgress,
+    Drawer,
+    Grid,
+    Menu,
+    MenuItem,
+    Stack,
+} from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
+import { omit } from 'lodash';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
-
-
-import { AlterConfirm, Breadcrumbs, FormVariants, InputOptions, LoadingFullPage, MainContent } from '@/components/admin';
+import {
+    AlterConfirm,
+    Breadcrumbs,
+    FormVariants,
+    InputOptions,
+    LoadingFullPage,
+    MainContent,
+} from '@/components/admin';
 import { Option as OptionInput } from '@/components/admin/InputOption';
 import { ROUTES } from '@/constants';
 import { useDisclosure } from '@/hooks/useDisclosure';
@@ -113,7 +126,10 @@ const Action = ({ productId }: { productId: number }) => {
     ) => {
         try {
             setLoadingRemoveOption(true);
-            await productService.removeOptionByProductId(productId, value);
+            await productService.removeOptionByProductId(
+                productId,
+                omit(value, ['id']),
+            );
             remove(i);
             setLoadingRemoveOption(false);
             toast.success('Remove option successfully');

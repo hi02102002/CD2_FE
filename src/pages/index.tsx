@@ -28,7 +28,10 @@ const Home: NextPageWithLayout<Props> = ({ categories, products }) => {
 };
 
 Home.getLayout = (page) => {
-    return <ClientLayout>{page}</ClientLayout>;
+    return <ClientLayout
+        title='MimimogShop'
+        description={`Looking for the best deals on everything? Check us out - we've got all the best shopping options covered! from clothes to appliances, we have it all!`}
+    >{page}</ClientLayout>;
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {

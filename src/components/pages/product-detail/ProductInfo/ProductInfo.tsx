@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import Image from 'next/image';
 
 import { Box, Grid, Rating, Stack, Typography, styled } from '@mui/material';
@@ -20,6 +22,7 @@ import {
     Tooltip,
 } from '@/components/common';
 import { DEVICE } from '@/constants';
+import useCartStore from '@/store/cart';
 import { Product } from '@/types/product';
 import { pxToRem } from '@/utils/pxToRem';
 
@@ -36,6 +39,9 @@ type Props = {
 };
 
 function ProductInfo({ product, options }: Props) {
+    const [amount, setAmount] = useState(1);
+    const { addProductToCart } = useCartStore();
+
     return (
         <StyledProductInfo item md={5.5} xs={12} className="product-info">
             <Box className="product-title-wrap">
@@ -74,7 +80,7 @@ function ProductInfo({ product, options }: Props) {
             </Typography>
 
             <Box component="div" className="product-add-form">
-                <form className="product-data">
+                <Box component="div" className="product-data">
                     {options.length > 0 && (
                         <StyledOptions component="div">
                             {options.map((option) => {
@@ -103,7 +109,14 @@ function ProductInfo({ product, options }: Props) {
 
                     <Box component="div" className="product-option-bottom">
                         <Stack direction="row" alignItems="center" gap={16}>
-                            <InputChangeAmount />
+                            <InputChangeAmount
+                                value={amount}
+                                onChange={(value) => {
+                                    if (value) {
+                                        setAmount(value);
+                                    }
+                                }}
+                            />
                             <StyledAddCartButton typeButton="secondary">
                                 Add to Cart
                             </StyledAddCartButton>
@@ -116,7 +129,7 @@ function ProductInfo({ product, options }: Props) {
                             Buy It Now
                         </StyledBuyButton>
                     </Box>
-                </form>
+                </Box>
             </Box>
             <Stack direction="row" spacing={20} alignItems="center">
                 <StyledTextHover>

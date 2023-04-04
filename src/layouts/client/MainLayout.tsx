@@ -1,7 +1,9 @@
-import dynamic from 'next/dist/shared/lib/dynamic';
+import dynamic from 'next/dynamic';
 
 import { Box, BoxProps } from '@mui/system';
+import { NextSeo, NextSeoProps } from 'next-seo';
 
+import h1 from '@/assets/h1_slide_01.jpg';
 import { ButtonScrollTop } from '@/components/client';
 
 import Footer from './Footer';
@@ -15,46 +17,78 @@ const MessengerChatComponent = dynamic(
 
 type Props = {
     MainProps?: BoxProps;
+    title: string;
+    description: string;
+    seo?: Omit<NextSeoProps, 'title' | 'description'>;
 } & BoxProps;
 
-const MainLayout = ({ MainProps, children, ...rest }: Props) => {
+const MainLayout = ({
+    MainProps,
+    children,
+    title,
+    description,
+    seo,
+    ...rest
+}: Props) => {
     return (
-        <Box component="div" {...rest}>
-            <Header />
-            <Box {...MainProps} component="main">
-                {children}
-            </Box>
-            <ButtonScrollTop />
-            <MessengerChatComponent
-                pageId="110141722038322"
-                themeColor={'#000000'}
-                language="en_US"
-                bottomSpacing={74}
-                loggedInGreeting="Do you need any help?"
-                loggedOutGreeting="See you again"
-                greetingDialogDisplay={'show'}
-                debugMode={true}
-                onMessengerShow={() => {
-                    console.log('onMessengerShow');
-                }}
-                onMessengerHide={() => {
-                    console.log('onMessengerHide');
-                }}
-                onMessengerDialogShow={() => {
-                    console.log('onMessengerDialogShow');
-                }}
-                onMessengerDialogHide={() => {
-                    console.log('onMessengerDialogHide');
-                }}
-                onMessengerMounted={() => {
-                    console.log('onMessengerMounted');
-                }}
-                onMessengerLoad={() => {
-                    console.log('onMessengerLoad');
+        <>
+            <NextSeo
+                title={title}
+                description={description}
+                {...seo}
+                openGraph={{
+                    title: title || 'MinimogShop',
+                    description:
+                        description ||
+                        'Are you tired of waiting in line at the store? Check out our cart! It makes shopping a breeze!',
+                    images: [
+                        {
+                            url: h1.src,
+                            alt: 'MinimogShop',
+                            width: h1.width,
+                            height: h1.height,
+                        },
+                    ],
+                    ...seo?.openGraph,
                 }}
             />
-            <Footer />
-        </Box>
+            <Box component="div" {...rest}>
+                <Header />
+                <Box {...MainProps} component="main">
+                    {children}
+                </Box>
+                <ButtonScrollTop />
+                <MessengerChatComponent
+                    pageId="110141722038322"
+                    themeColor={'#000000'}
+                    language="en_US"
+                    bottomSpacing={74}
+                    loggedInGreeting="Do you need any help?"
+                    loggedOutGreeting="See you again"
+                    greetingDialogDisplay={'show'}
+                    debugMode={true}
+                    onMessengerShow={() => {
+                        console.log('onMessengerShow');
+                    }}
+                    onMessengerHide={() => {
+                        console.log('onMessengerHide');
+                    }}
+                    onMessengerDialogShow={() => {
+                        console.log('onMessengerDialogShow');
+                    }}
+                    onMessengerDialogHide={() => {
+                        console.log('onMessengerDialogHide');
+                    }}
+                    onMessengerMounted={() => {
+                        console.log('onMessengerMounted');
+                    }}
+                    onMessengerLoad={() => {
+                        console.log('onMessengerLoad');
+                    }}
+                />
+                <Footer />
+            </Box>
+        </>
     );
 };
 

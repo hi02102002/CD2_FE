@@ -16,7 +16,10 @@ const productReview: NextPageWithLayout = () => {
 
 productReview.getLayout = (page) => {
     return (
-        <ClientLayout>
+        <ClientLayout
+            title="My Product Review"
+            description="My Product Review"
+        >
             <PageTop
                 title="My Product Review"
                 breadcrumbItems={[
