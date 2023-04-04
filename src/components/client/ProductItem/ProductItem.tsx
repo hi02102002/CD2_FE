@@ -1,26 +1,40 @@
+import { useState } from 'react';
+
+
+
 import Image from 'next/image';
 import Link from 'next/link';
-
-
 
 import { Box, Typography, styled } from '@mui/material';
 import { Stack } from '@mui/system';
 import { IconEye, IconHeart } from '@tabler/icons-react';
 
-
-
 import { Button, TextLink, Tooltip } from '@/components/common';
 import { DEVICE, ROUTES } from '@/constants';
+import useCartStore from '@/store/cart';
 import { Product } from '@/types/product';
 import { pxToRem } from '@/utils/pxToRem';
-
-
 
 type Props = {
     product: Product;
 };
 
 const ProductItem = ({ product }: Props) => {
+    const { addProductToCart } = useCartStore();
+    const [loading, setLoading] = useState(false);
+
+    const handleAddToCart = async () => {
+        try {
+            //
+            setLoading(true);
+            console.log(product.options);
+            addProductToCart({});
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+        }
+    };
+
     return (
         <StyledProductItem>
             <StyledProductTop>
@@ -63,7 +77,12 @@ const ProductItem = ({ product }: Props) => {
                     </Tooltip>
                 </StyledTools>
                 <Box component="div" className="btn-wrapper">
-                    <Button className="btn-add-cart" typeButton="secondary">
+                    <Button
+                        className="btn-add-cart"
+                        typeButton="secondary"
+                        isLoading={loading}
+                        onClick={handleAddToCart}
+                    >
                         Add to Cart
                     </Button>
                 </Box>

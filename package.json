@@ -36,6 +36,7 @@
         "material-react-table": "^1.8.5",
         "next": "13.1.6",
         "next-auth": "^4.20.1",
+        "next-seo": "^6.0.0",
         "nextjs-progressbar": "^0.0.16",
         "npm": "^9.4.2",
         "react": "18.2.0",

@@ -40,7 +40,10 @@ const LoginSocial = styled('div')`
 
 Login.getLayout = (page) => {
     return (
-        <ClientLayout>
+        <ClientLayout
+            title='Login'
+            description='Login to your account'
+        >
             <PageTop
                 title="Login"
                 breadcrumbItems={[

@@ -1,14 +1,18 @@
 import Image from 'next/image';
 
+
+
 import { Box, Typography, styled } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { Stack } from '@mui/system';
 
 import { Button, InputChangeAmount } from '@/components/common';
 import { DEVICE } from '@/constants';
+import useCartStore from '@/store/cart';
 import { pxToRem } from '@/utils/pxToRem';
 
 export const TableCart = () => {
+    const { cartItems } = useCartStore();
     return (
         <StyledTable>
             <StyledTHead component="thead">
@@ -28,159 +32,88 @@ export const TableCart = () => {
                 </tr>
             </StyledTHead>
             <StyledTBody component="tbody">
-                <tr>
-                    <td className="col item">
-                        <Stack direction="row" spacing={16} alignItems="center">
-                            <Box width="30%">
-                                <Box
-                                    position="relative"
-                                    paddingBottom="130.5%"
-                                    width="100%"
-                                >
-                                    <Image
-                                        src="https://blueskytechmage.com/minimog/media/catalog/product/cache/8a992f0e07ac0af177f1d8a49e61f0ae/p/r/product_fashion_14_b_1_1.jpeg"
-                                        alt=""
-                                        fill
-                                        style={{
-                                            objectFit: 'cover',
-                                        }}
-                                    />
-                                </Box>
-                            </Box>
-                            <Box width="70%">
-                                <Typography variant="h4">
-                                    Product name
-                                </Typography>
-                                <Stack direction="row" gap={8}>
-                                    <Typography fontWeight={500}>
-                                        Color:{' '}
-                                    </Typography>
-                                    <Typography>Red </Typography>
-                                </Stack>
-                            </Box>
-                        </Stack>
-                    </td>
-                    <td className="col price" data-td="Price">
-                        <Typography>$8.00</Typography>
-                    </td>
-                    <td className="col quantity" data-td="Quantity">
-                        <InputChangeAmount className="input-quantity" />
-                    </td>
-                    <td className="col subtotal" data-td="Subtotal">
-                        <Typography>$8.00</Typography>
-                    </td>
-                    <td className="col action" data-td="Action">
-                        <Button
-                            sx={{
-                                width: '100%',
-                            }}
+                {cartItems.length > 0 ? (
+                    <>
+                        {cartItems.map((cart, index) => {
+                            return (
+                                <tr key={index}>
+                                    <td className="col item">
+                                        <Stack
+                                            direction="row"
+                                            spacing={16}
+                                            alignItems="center"
+                                        >
+                                            <Box width="30%">
+                                                <Box
+                                                    position="relative"
+                                                    paddingBottom="130.5%"
+                                                    width="100%"
+                                                >
+                                                    <Image
+                                                        src="https://blueskytechmage.com/minimog/media/catalog/product/cache/8a992f0e07ac0af177f1d8a49e61f0ae/p/r/product_fashion_14_b_1_1.jpeg"
+                                                        alt=""
+                                                        fill
+                                                        style={{
+                                                            objectFit: 'cover',
+                                                        }}
+                                                    />
+                                                </Box>
+                                            </Box>
+                                            <Box width="70%">
+                                                <Typography variant="h4"></Typography>
+                                                <Stack direction="row" gap={8}>
+                                                    <Typography
+                                                        fontWeight={500}
+                                                    >
+                                                        Color:{' '}
+                                                    </Typography>
+                                                    <Typography>
+                                                        Red{' '}
+                                                    </Typography>
+                                                </Stack>
+                                            </Box>
+                                        </Stack>
+                                    </td>
+                                    <td className="col price" data-td="Price">
+                                        <Typography>$8.00</Typography>
+                                    </td>
+                                    <td
+                                        className="col quantity"
+                                        data-td="Quantity"
+                                    >
+                                        <InputChangeAmount className="input-quantity" />
+                                    </td>
+                                    <td
+                                        className="col subtotal"
+                                        data-td="Subtotal"
+                                    >
+                                        <Typography>$8.00</Typography>
+                                    </td>
+                                    <td className="col action" data-td="Action">
+                                        <Button
+                                            sx={{
+                                                width: '100%',
+                                            }}
+                                        >
+                                            Remove
+                                        </Button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </>
+                ) : (
+                    <tr>
+                        <Typography
+                            variant="h4"
+                            textAlign="center"
+                            padding={16}
+                            flex={1}
                         >
-                            Remove
-                        </Button>
-                    </td>
-                </tr>
-                <tr>
-                    <td className="col item">
-                        <Stack direction="row" spacing={16} alignItems="center">
-                            <Box width="30%">
-                                <Box
-                                    position="relative"
-                                    paddingBottom="130.5%"
-                                    width="100%"
-                                >
-                                    <Image
-                                        src="https://blueskytechmage.com/minimog/media/catalog/product/cache/8a992f0e07ac0af177f1d8a49e61f0ae/p/r/product_fashion_14_b_1_1.jpeg"
-                                        alt=""
-                                        fill
-                                        style={{
-                                            objectFit: 'cover',
-                                        }}
-                                    />
-                                </Box>
-                            </Box>
-                            <Box width="70%">
-                                <Typography variant="h4">
-                                    Product name
-                                </Typography>
-                                <Stack direction="row" gap={8}>
-                                    <Typography fontWeight={500}>
-                                        Color:{' '}
-                                    </Typography>
-                                    <Typography>Red </Typography>
-                                </Stack>
-                            </Box>
-                        </Stack>
-                    </td>
-                    <td className="col price" data-td="Price">
-                        <Typography>$8.00</Typography>
-                    </td>
-                    <td className="col quantity" data-td="Quantity">
-                        <InputChangeAmount className="input-quantity" />
-                    </td>
-                    <td className="col subtotal" data-td="Subtotal">
-                        <Typography>$8.00</Typography>
-                    </td>
-                    <td className="col action" data-td="Action">
-                        <Button
-                            sx={{
-                                width: '100%',
-                            }}
-                        >
-                            Remove
-                        </Button>
-                    </td>
-                </tr>
-                <tr>
-                    <td className="col item">
-                        <Stack direction="row" spacing={16} alignItems="center">
-                            <Box width="30%">
-                                <Box
-                                    position="relative"
-                                    paddingBottom="130.5%"
-                                    width="100%"
-                                >
-                                    <Image
-                                        src="https://blueskytechmage.com/minimog/media/catalog/product/cache/8a992f0e07ac0af177f1d8a49e61f0ae/p/r/product_fashion_14_b_1_1.jpeg"
-                                        alt=""
-                                        fill
-                                        style={{
-                                            objectFit: 'cover',
-                                        }}
-                                    />
-                                </Box>
-                            </Box>
-                            <Box width="70%">
-                                <Typography variant="h4">
-                                    Product name
-                                </Typography>
-                                <Stack direction="row" gap={8}>
-                                    <Typography fontWeight={500}>
-                                        Color:{' '}
-                                    </Typography>
-                                    <Typography>Red </Typography>
-                                </Stack>
-                            </Box>
-                        </Stack>
-                    </td>
-                    <td className="col price" data-td="Price">
-                        <Typography>$8.00</Typography>
-                    </td>
-                    <td className="col quantity" data-td="Quantity">
-                        <InputChangeAmount className="input-quantity" />
-                    </td>
-                    <td className="col subtotal" data-td="Subtotal">
-                        <Typography>$8.00</Typography>
-                    </td>
-                    <td className="col action" data-td="Action">
-                        <Button
-                            sx={{
-                                width: '100%',
-                            }}
-                        >
-                            Remove
-                        </Button>
-                    </td>
-                </tr>
+                            No item in cart
+                        </Typography>
+                    </tr>
+                )}
             </StyledTBody>
         </StyledTable>
     );
