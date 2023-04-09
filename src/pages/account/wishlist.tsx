@@ -80,10 +80,7 @@ const Wishlist: NextPageWithLayout = () => {
 
 Wishlist.getLayout = (page) => {
     return (
-        <ClientLayout
-            title="My Wish List"
-            description="My Wish List"
-        >
+        <ClientLayout title="My Wish List" description="My Wish List">
             <PageTop
                 title="My Wish List"
                 breadcrumbItems={[

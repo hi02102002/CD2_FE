@@ -1,17 +1,12 @@
 import { useRouter } from 'next/router';
 
-
-
 import { Box, BoxProps, Typography, styled } from '@mui/material';
-
-
 
 import { Button } from '@/components/common';
 import { DEVICE, ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
-
 
 const NotFound: NextPageWithLayout = () => {
     const router = useRouter();

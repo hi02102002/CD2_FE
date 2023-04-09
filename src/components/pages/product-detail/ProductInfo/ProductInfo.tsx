@@ -9,12 +9,14 @@ import {
     IconShare,
     IconStar,
 } from '@tabler/icons-react';
+import { toast } from 'react-hot-toast';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 
 import imgFooter from '@/assets/footer-payment.png';
+import { ChooseOptions } from '@/components/client';
 import {
     Button,
     InputChangeAmount,
@@ -22,25 +24,60 @@ import {
     Tooltip,
 } from '@/components/common';
 import { DEVICE } from '@/constants';
+import { useSelectedProductVariant } from '@/hooks/useSelectedProductVariant';
+import useAuthStore from '@/store/auth';
 import useCartStore from '@/store/cart';
 import { Product } from '@/types/product';
+import { formatCurrency } from '@/utils/formatCurrency';
+import { optionsKeyValues } from '@/utils/optionsKeyValues';
 import { pxToRem } from '@/utils/pxToRem';
 
 type Props = {
     product: Product;
-    options: {
-        key: string;
-        values: {
-            name: any;
-            price: number | null;
-            quantity: number | null;
-        }[];
-    }[];
 };
 
-function ProductInfo({ product, options }: Props) {
-    const [amount, setAmount] = useState(1);
+function ProductInfo({ product }: Props) {
     const { addProductToCart } = useCartStore();
+    const { user } = useAuthStore();
+    const options = optionsKeyValues(product.options);
+    const [quantity, setQuantity] = useState<number>(1);
+    const {
+        isSelectAllKeyRequired,
+        selected,
+        selectedProductVariant,
+        setSelected,
+    } = useSelectedProductVariant(product.options);
+
+    const isQuantityInputLargerProductQuantity =
+        selectedProductVariant?.quantity
+            ? quantity > selectedProductVariant.quantity
+            : quantity > product.quantity;
+
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const handelAddProductToCart = async () => {
+        if (!user) {
+            toast.error('Please login to add this product to cart');
+            return;
+        }
+        if (!selectedProductVariant && product.options.length > 0) {
+            toast.error(' You must choose options before add to cart');
+            return;
+        }
+        try {
+            setLoading(true);
+            await addProductToCart({
+                optionsSelected: selectedProductVariant || {},
+                productId: product.id,
+                quantity,
+            });
+            setLoading(false);
+            toast.success('Add this product to your cart successfully');
+        } catch (error) {
+            toast.error('Something went wrong');
+            setLoading(false);
+        }
+    };
 
     return (
         <StyledProductInfo item md={5.5} xs={12} className="product-info">
@@ -61,7 +98,11 @@ function ProductInfo({ product, options }: Props) {
 
             <Box className="product-rate">
                 <Box className="product-rate-price">
-                    <Typography className="price">${product.price}</Typography>
+                    <Typography className="price">
+                        {formatCurrency(
+                            selectedProductVariant?.price || product.price,
+                        )}
+                    </Typography>
                     <Typography className="discount">$25.00</Typography>
                 </Box>
                 <Box className="product-rate-review">
@@ -82,42 +123,39 @@ function ProductInfo({ product, options }: Props) {
             <Box component="div" className="product-add-form">
                 <Box component="div" className="product-data">
                     {options.length > 0 && (
-                        <StyledOptions component="div">
-                            {options.map((option) => {
-                                return (
-                                    <Box key={option.key}>
-                                        <StyledAttributeName>
-                                            {option.key}
-                                        </StyledAttributeName>
-                                        <StyledListAttributeValue>
-                                            {option.values.map((value) => {
-                                                return (
-                                                    <StyledAttributeValue
-                                                        typeButton="secondary"
-                                                        key={value.name}
-                                                    >
-                                                        {value.name}
-                                                    </StyledAttributeValue>
-                                                );
-                                            })}
-                                        </StyledListAttributeValue>
-                                    </Box>
-                                );
-                            })}
-                        </StyledOptions>
+                        <ChooseOptions
+                            selected={selected}
+                            setSelected={setSelected}
+                            options={options}
+                        />
                     )}
-
-                    <Box component="div" className="product-option-bottom">
+                    <Typography my={24}>
+                        {selectedProductVariant?.quantity || product.quantity}{' '}
+                        pieces available
+                    </Typography>
+                    <Box
+                        component="div"
+                        className="product-option-bottom"
+                        mt={24}
+                    >
                         <Stack direction="row" alignItems="center" gap={16}>
                             <InputChangeAmount
-                                value={amount}
+                                value={quantity}
                                 onChange={(value) => {
                                     if (value) {
-                                        setAmount(value);
+                                        setQuantity(value);
                                     }
                                 }}
                             />
-                            <StyledAddCartButton typeButton="secondary">
+                            <StyledAddCartButton
+                                typeButton="secondary"
+                                onClick={handelAddProductToCart}
+                                disabled={
+                                    !isSelectAllKeyRequired ||
+                                    isQuantityInputLargerProductQuantity
+                                }
+                                isLoading={loading}
+                            >
                                 Add to Cart
                             </StyledAddCartButton>
                         </Stack>
@@ -281,42 +319,6 @@ const StyledInfoFooter = styled(Box)`
         margin-top: ${pxToRem(10)};
         font-size: ${pxToRem(16)};
         color: #000;
-    }
-`;
-
-const StyledOptions = styled(Box)`
-    margin-bottom: ${pxToRem(20)};
-    display: flex;
-    flex-direction: column;
-    gap: ${pxToRem(16)};
-`;
-
-const StyledAttributeName = styled(Typography)`
-    margin: 0 ${pxToRem(16)} ${pxToRem(8)} 0;
-    color: ${(p) => p.theme.themeColor.primary};
-    font-weight: 600;
-    font-size: ${pxToRem(16)};
-    text-transform: capitalize;
-`;
-
-const StyledListAttributeValue = styled(Box)`
-    display: flex;
-    flex-wrap: wrap;
-    gap: ${pxToRem(8)};
-    align-items: center;
-`;
-
-const StyledAttributeValue = styled(Button)`
-    width: ${pxToRem(42)};
-    height: ${pxToRem(42)};
-    padding: 0;
-    transform: none !important;
-    font-size:${pxToRem(12)};
-
-    &.active {
-        box-shadow: 0 0 0 0.1rem  ${(p) => p.theme.themeColor.primary};
-        background-color: ${(p) => p.theme.themeColor.primary}
-        color:#fff;
     }
 `;
 

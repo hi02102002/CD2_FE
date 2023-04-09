@@ -1,7 +1,5 @@
 import Image from 'next/image';
 
-
-
 import { Box, Typography, styled } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { Stack } from '@mui/system';
@@ -9,10 +7,12 @@ import { Stack } from '@mui/system';
 import { Button, InputChangeAmount } from '@/components/common';
 import { DEVICE } from '@/constants';
 import useCartStore from '@/store/cart';
+import { formatCurrency } from '@/utils/formatCurrency';
+import { getImgUrls } from '@/utils/getImgUrl';
 import { pxToRem } from '@/utils/pxToRem';
 
 export const TableCart = () => {
-    const { cartItems } = useCartStore();
+    const { userCart } = useCartStore();
     return (
         <StyledTable>
             <StyledTHead component="thead">
@@ -32,9 +32,9 @@ export const TableCart = () => {
                 </tr>
             </StyledTHead>
             <StyledTBody component="tbody">
-                {cartItems.length > 0 ? (
+                {userCart && userCart?.cartItems.length > 0 ? (
                     <>
-                        {cartItems.map((cart, index) => {
+                        {userCart?.cartItems.map((cartItem, index) => {
                             return (
                                 <tr key={index}>
                                     <td className="col item">
@@ -50,7 +50,11 @@ export const TableCart = () => {
                                                     width="100%"
                                                 >
                                                     <Image
-                                                        src="https://blueskytechmage.com/minimog/media/catalog/product/cache/8a992f0e07ac0af177f1d8a49e61f0ae/p/r/product_fashion_14_b_1_1.jpeg"
+                                                        src={
+                                                            getImgUrls(
+                                                                cartItem.imageUrl,
+                                                            )?.[0]
+                                                        }
                                                         alt=""
                                                         fill
                                                         style={{
@@ -75,7 +79,9 @@ export const TableCart = () => {
                                         </Stack>
                                     </td>
                                     <td className="col price" data-td="Price">
-                                        <Typography>$8.00</Typography>
+                                        <Typography>
+                                            {formatCurrency(cartItem.price)}
+                                        </Typography>
                                     </td>
                                     <td
                                         className="col quantity"

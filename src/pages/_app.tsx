@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import type { AppProps } from 'next/app';
 
 import { EmotionCache } from '@emotion/cache';
@@ -8,6 +10,8 @@ import { Toaster } from 'react-hot-toast';
 
 import { GlobalCSS } from '@/components/common';
 import AuthWrapper from '@/components/common/AuthWrapper';
+import useAuthStore from '@/store/auth';
+import useCartStore from '@/store/cart';
 import '@/styles/globals.css';
 import { NextPageWithLayout } from '@/types/shared';
 import createEmotionCache from '@/utils/createEmotionCache';
@@ -27,6 +31,15 @@ const App = ({
 }: MyAppProps) => {
     const getLayout = Component.getLayout ?? ((page) => page);
 
+    const { user } = useAuthStore();
+    const { fetchCart } = useCartStore();
+
+    useEffect(() => {
+        if (user?.id) {
+            fetchCart(user.id);
+        }
+    }, [user?.id, fetchCart]);
+
     return (
         <>
             <style jsx global>{`
@@ -34,7 +47,6 @@ const App = ({
                     font-family: ${JostFont.style.fontFamily};
                     --font-base: ${JostFont.style.fontFamily};
                 }
-
             `}</style>
             <CacheProvider value={emotionCache}>
                 <ThemeProvider theme={theme}>

@@ -1,7 +1,5 @@
 import { useState } from 'react';
 
-
-
 import { useRouter } from 'next/router';
 
 import {
@@ -72,7 +70,7 @@ const HeaderToolbar = ({ forSearch = false }: Props) => {
         setAnchorElMenuUser(null);
     };
 
-    const { cartItems } = useCartStore();
+    const { userCart } = useCartStore();
     return (
         <>
             <StyledToolbar>
@@ -223,7 +221,9 @@ const HeaderToolbar = ({ forSearch = false }: Props) => {
                             onClick={onOpenCart}
                             className="cart"
                         >
-                            <Badge badgeContent={cartItems.length}>
+                            <Badge
+                                badgeContent={userCart?.cartItems.length || 0}
+                            >
                                 <IconShoppingCart
                                     color={theme.themeColor.primary}
                                 />

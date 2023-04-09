@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-
-
 import { Box, styled } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { v4 as uuid } from 'uuid';
@@ -10,7 +8,6 @@ import { Button, Menu, MenuItem } from '@/components/common';
 import { pxToRem } from '@/utils/pxToRem';
 
 import { useFilter } from '../FilterContext';
-
 
 export type Props = {
     onSort?: (option: Option) => void;

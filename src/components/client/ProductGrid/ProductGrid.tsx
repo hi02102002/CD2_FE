@@ -1,10 +1,6 @@
 import { Grid, GridProps, GridSpacing, styled } from '@mui/material';
 
-
-
 import { Product } from '@/types/product';
-
-
 
 import ProductItem from '../ProductItem';
 

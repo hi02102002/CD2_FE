@@ -267,10 +267,7 @@ const StyledTitle = styled(Typography)`
 
 AddressBook.getLayout = (page) => {
     return (
-        <ClientLayout
-            title='Address Book'
-            description='Address Book'
-        >
+        <ClientLayout title="Address Book" description="Address Book">
             <PageTop
                 title="Address Book"
                 breadcrumbItems={[
@@ -294,4 +291,3 @@ AddressBook.getLayout = (page) => {
 };
 
 export default AddressBook;
-

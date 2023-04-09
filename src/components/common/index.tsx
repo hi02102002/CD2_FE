@@ -3,6 +3,7 @@ export { default as Button } from './Button';
 export { default as GlobalCSS } from './GlobalCss';
 export { default as Input } from './Input';
 export * from './InputChangeAmount';
+export { default as LoadingFullPage } from './LoadingFullPage';
 export { StyledMenu as Menu, StyledMenuItem as MenuItem } from './Menu';
 export { default as PageTop } from './PageTop';
 export { default as Pagination } from './Pagination';
@@ -12,4 +13,3 @@ export { default as TextHover } from './TextHover';
 export { default as TextLimit } from './TextLimit';
 export { default as TextLink } from './TextLink';
 export { default as Tooltip } from './Tooltip';
-
