@@ -71,7 +71,7 @@ const FormVariants = ({ options, onRemove, control }: Props) => {
                                                     }
                                                     required
                                                     flex={1}
-                                                    flexWrap='wrap'
+                                                    flexWrap="wrap"
                                                 />
                                             );
                                         }}

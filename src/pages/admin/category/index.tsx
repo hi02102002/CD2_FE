@@ -120,9 +120,10 @@ const Category: NextPageWithLayout = () => {
             toast.success('Remove successfully')
             onCloseModalConfirmRemove()
             setRemoveIds([])
-        } catch (error) {
+        } catch (error:any) {
             setIsLoadingRemove(false)
-            toast.error('Something went wrong')
+            toast.error(error?.response?.data.message || 'Remove failed')
+            onCloseModalConfirmRemove()
 
 
         }

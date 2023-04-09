@@ -1,22 +1,15 @@
 import { useState } from 'react';
 
-
-
 import { Box, Grid, Slider, Stack, Typography, styled } from '@mui/material';
 import { common, grey } from '@mui/material/colors';
 import { motion } from 'framer-motion';
-
-
 
 import { Button, TextHover } from '@/components/common';
 import { DEVICE } from '@/constants';
 import { Category } from '@/types/category';
 import { pxToRem } from '@/utils/pxToRem';
 
-
-
 import { useFilter } from '../FilterContext';
-
 
 const marks = [
     {
@@ -25,12 +18,12 @@ const marks = [
     },
 
     {
-        value: 50,
-        label: '50$',
+        value: 500,
+        label: '5000$',
     },
     {
-        value: 100,
-        label: '100$',
+        value: 1000,
+        label: '99999$',
     },
 ];
 
@@ -57,7 +50,10 @@ const Filter = ({ categories }: Props) => {
                                 className="category-item"
                                 key={category.id}
                                 onClick={() => {
-                                    handelFilter({ categoryIds: category.id });
+                                    handelFilter({
+                                        categoryIds: category.id,
+                                        offset: 1,
+                                    });
                                 }}
                             >
                                 <TextHover
@@ -85,13 +81,15 @@ const Filter = ({ categories }: Props) => {
                         valueLabelDisplay="auto"
                         defaultValue={[
                             options.minPrice || 0,
-                            options.maxPrice || 100,
+                            options.maxPrice || 99999,
                         ]}
                         value={price}
                         marks={marks}
                         onChange={(e, value) => {
                             setPrice(value as number[]);
                         }}
+                        min={0}
+                        max={1000}
                     />
                     <Button
                         sx={{
@@ -194,7 +192,5 @@ const StyledSlider = styled(Slider)(({ theme }) => ({
         backgroundColor: theme.themeColor.primary,
     },
 }));
-
-
 
 export default Filter;

@@ -40,8 +40,8 @@ const NewSub: NextPageWithLayout = () => {
 NewSub.getLayout = (page) => {
     return (
         <ClientLayout
-            title='Newsletter Subscriptions'
-            description='Newsletter Subscriptions'
+            title="Newsletter Subscriptions"
+            description="Newsletter Subscriptions"
         >
             <PageTop
                 title="Newsletter Subscriptions"

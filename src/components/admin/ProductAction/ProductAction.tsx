@@ -1,10 +1,6 @@
 import { useCallback, useState } from 'react';
 
-
-
 import { useRouter } from 'next/router';
-
-
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
@@ -14,9 +10,13 @@ import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import * as yup from 'yup';
 
-
-
-import { InputGroup, Label, ListFilePreview, MessageError, Upload } from '@/components/admin';
+import {
+    InputGroup,
+    Label,
+    ListFilePreview,
+    MessageError,
+    Upload,
+} from '@/components/admin';
 import { ROUTES } from '@/constants';
 import { useOverflowHidden } from '@/hooks/useOverflowHidden';
 import productService from '@/services/product.service';
@@ -24,10 +24,7 @@ import { Category } from '@/types/category';
 import { Product } from '@/types/product';
 import { pxToRem } from '@/utils/pxToRem';
 
-
-
 import LoadingFullPage from '../LoadingFullPage';
-
 
 const productInputSchema = yup.object({
     name: yup.string().required('Product name is required'),

@@ -15,39 +15,13 @@ import { Product } from '@/types/product';
 import { NextPageWithLayout } from '@/types/shared';
 import { pxToRem } from '@/utils/pxToRem';
 import { getCookies } from 'cookies-next';
-import { uniqBy } from 'lodash';
 import { GetServerSideProps } from 'next';
-import { useMemo } from 'react';
 type Props = {
     product: Product;
     relatives: Product[];
 };
 
 const Product: NextPageWithLayout<Props> = ({ product, relatives }) => {
-
-
-
-    const optionsKeyValues = useMemo(() => {
-        
-        if(product?.options.length===0) return [];
-        const keys = Object.keys(product.options[0]).filter(key => key !== 'price' && key !== 'quantity'); // lay ra 2 key khac price va quantity
-
-      return keys.map(key => {
-            // lay ra cac gia tri cua option co key la key hien tai
-          const values = uniqBy(product.options.map(obj => {
-            return {
-                name: obj[key],
-                price: obj.price,
-                  quantity: obj.quantity,
-              }
-          }),'name');
-          return { key, values };
-        });
-
-    }, [product.options])
-
-    
-
 
     return (
         <>
@@ -59,8 +33,8 @@ const Product: NextPageWithLayout<Props> = ({ product, relatives }) => {
                     padding={0}
                     spacing={16}
                 >
-                    <ImageLibrary imageURL={ product.imageURL} />
-                    <ProductInfo product={product} options={optionsKeyValues}/>
+                    <ImageLibrary imageURL={ product.imageUrl} />
+                    <ProductInfo product={product}/>
                 </ProductMainContent>
                 <Box
                     component="div"
@@ -76,17 +50,17 @@ const Product: NextPageWithLayout<Props> = ({ product, relatives }) => {
 };
 
 Product.getLayout = (page) => {
-    return <ClientLayout title={page.props.product.name} description={page.props.product.description}
+    return <ClientLayout title={page.props.product.name} description={page.props?.product?.description}
         seo={{
             openGraph: {
-                title: page.props.product.name,
-                description: page.props.product.description,
-                images: page.props.product.imageURL.split(',').filter((v: string) => v !== '').map((v: string) => { 
+                title: page.props?.product?.name,
+                description: page?.props.product?.description,
+                images: page.props?.product.imageUrl?.split(',').filter((v: string) => v !== '').map((v: string) => { 
                     return {
                         url: v,
                     }
                 }),
-                url: `https://minimogshop.vercel.app/products/${page.props.product.id}`,
+                url: `https://minimogshop.vercel.app/products/${page?.props?.product.id}`,
                 site_name: 'Minimog Shop',
             },
 
@@ -122,10 +96,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         })
        .then((v) => v.data?.data as Product);
     
-    if (!product) return {
+    if (!product) {
+        return {
         notFound: true,
     }
 
+    }
+  
         const { products:relatives } = await axiosServer(auth_token as string)
         .get('/api/product/filter', {
             params: {

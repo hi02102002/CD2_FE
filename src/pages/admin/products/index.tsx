@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-
-
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -324,7 +322,7 @@ const Products: NextPageWithLayout = () => {
             },
 
             {
-                field: 'imageURL',
+                field: 'imageUrl',
                 headerName: 'Image',
                 sortable: false,
                 disableColumnMenu: true,

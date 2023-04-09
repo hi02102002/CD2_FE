@@ -139,10 +139,7 @@ const Account: NextPageWithLayout = () => {
 
 Account.getLayout = (page) => {
     return (
-        <ClientLayout
-            title="My Account"
-            description="My Account"
-        >
+        <ClientLayout title="My Account" description="My Account">
             <PageTop
                 title="My Account"
                 breadcrumbItems={[

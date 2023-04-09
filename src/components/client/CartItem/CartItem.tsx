@@ -1,28 +1,31 @@
+import { useState } from 'react';
+
 import Image from 'next/image';
 
-
-
-import { Box, BoxProps, Typography, styled } from '@mui/material';
+import { Box, BoxProps, Stack, Typography, styled } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { IconX } from '@tabler/icons-react';
 
-import { InputChangeAmount, TextLink } from '@/components/common';
-import { DEVICE } from '@/constants';
+import { InputChangeAmount, TextHover, TextLink } from '@/components/common';
+import { DEVICE, ROUTES } from '@/constants';
 import useCartStore from '@/store/cart';
-import { CartItem as TCartItem } from '@/types/product';
+import { CartItem as TCartItem } from '@/types/cart';
+import { formatCurrency } from '@/utils/formatCurrency';
+import { getImgUrls } from '@/utils/getImgUrl';
 import { pxToRem } from '@/utils/pxToRem';
 
 type Props = {
-    cart: TCartItem;
+    cartItem: TCartItem;
 } & BoxProps;
 
-export const CartItem = ({ cart, ...props }: Props) => {
-    const { removeProductFromCart } = useCartStore();
+export const CartItem = ({ cartItem, ...props }: Props) => {
+    const { removeProductFromCart, userCart } = useCartStore();
+    const [quantity, setQuantity] = useState<number>(cartItem.quantity);
     return (
         <StyledCartItem {...props} className={`${props.className} cart`}>
             <StyledImageWrapper className="img-wrapper">
                 <Image
-                    src="https://blueskytechmage.com/minimog/media/catalog/product/cache/88bf2add142c4b6ca1b5495b85e72541/p/r/product_fashion_12_b_1_1_4.jpeg"
+                    src={getImgUrls(cartItem.imageUrl)?.[0]}
                     alt=""
                     style={{
                         objectFit: 'cover',
@@ -32,21 +35,61 @@ export const CartItem = ({ cart, ...props }: Props) => {
             </StyledImageWrapper>
             <StyledContent>
                 <TextLink
-                    href="/products/1"
+                    href={`${ROUTES.PRODUCTS}/${cartItem.productName}`}
                     MuiLinkProps={{
                         className: 'product-name',
                     }}
+                    limitLine={1}
                 >
-                    {props.id}
+                    {cartItem.productName}
                 </TextLink>
                 <Box component="ul" className="product-attributes">
-                    <Box component="div" className="attribute">
-                        <Typography className="key">Colors: </Typography>
-                        <Typography className="value">Red</Typography>
+                    {cartItem.option &&
+                        Object?.entries(cartItem.option).map(([key, value]) => {
+                            console.log(key, value);
+                            return (
+                                <Box
+                                    component="li"
+                                    className="attribute"
+                                    key={key}
+                                >
+                                    <Typography className="key">
+                                        {key}:{' '}
+                                    </Typography>
+                                    <Typography className="value">
+                                        {value}
+                                    </Typography>
+                                </Box>
+                            );
+                        })}
+                    <Box component="li" className="attribute">
+                        <Typography className="key">Quantity: </Typography>
+                        <Typography className="value">
+                            {cartItem.quantity}
+                        </Typography>
+                    </Box>
+                    <Box component="li" className="attribute">
+                        <Typography className="key">Total: </Typography>
+                        <Typography className="value">
+                            {formatCurrency(cartItem.price)}
+                        </Typography>
                     </Box>
                 </Box>
-                <Typography className="product-price">$55.00</Typography>
-                <InputChangeAmount className="input-amount" />
+
+                <Stack direction="row" gap={8} alignItems="center">
+                    <InputChangeAmount
+                        className="input-amount"
+                        value={quantity}
+                        onChange={(value) => {
+                            if (value) {
+                                setQuantity(value);
+                            }
+                        }}
+                    />
+                    {quantity !== cartItem.quantity && (
+                        <TextHover>Update</TextHover>
+                    )}
+                </Stack>
             </StyledContent>
             <Box
                 display="flex"
@@ -90,7 +133,9 @@ const StyledContent = styled(Box)`
     gap: ${pxToRem(8)};
 
     .product-name {
-        width: max-content;
+        max-width: 250px;
+        font-size: ${pxToRem(18)};
+        font-weight: 600;
     }
 
     .product-attributes {
@@ -101,11 +146,11 @@ const StyledContent = styled(Box)`
         .attribute {
             display: flex;
             align-items: center;
-            gap: ${pxToRem(16)};
         }
 
         .attribute .key {
             font-weight: 600;
+            width: 80px;
         }
     }
 
