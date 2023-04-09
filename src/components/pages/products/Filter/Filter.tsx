@@ -1,22 +1,15 @@
 import { useState } from 'react';
 
-
-
 import { Box, Grid, Slider, Stack, Typography, styled } from '@mui/material';
 import { common, grey } from '@mui/material/colors';
 import { motion } from 'framer-motion';
-
-
 
 import { Button, TextHover } from '@/components/common';
 import { DEVICE } from '@/constants';
 import { Category } from '@/types/category';
 import { pxToRem } from '@/utils/pxToRem';
 
-
-
 import { useFilter } from '../FilterContext';
-
 
 const marks = [
     {
@@ -57,7 +50,10 @@ const Filter = ({ categories }: Props) => {
                                 className="category-item"
                                 key={category.id}
                                 onClick={() => {
-                                    handelFilter({ categoryIds: category.id });
+                                    handelFilter({
+                                        categoryIds: category.id,
+                                        offset: 1,
+                                    });
                                 }}
                             >
                                 <TextHover
@@ -196,7 +192,5 @@ const StyledSlider = styled(Slider)(({ theme }) => ({
         backgroundColor: theme.themeColor.primary,
     },
 }));
-
-
 
 export default Filter;

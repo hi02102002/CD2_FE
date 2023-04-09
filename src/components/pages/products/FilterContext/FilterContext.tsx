@@ -1,13 +1,8 @@
 import React, { createContext, useCallback, useContext } from 'react';
 
-
-
 import { useRouter } from 'next/router';
 
-
-
 import { ROUTES } from '@/constants';
-
 
 type FilterOption = {
     offset?: number;
