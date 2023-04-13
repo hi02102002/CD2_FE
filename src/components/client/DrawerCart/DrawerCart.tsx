@@ -26,7 +26,7 @@ type Props = {
 
 const DrawerCart = ({ isOpen, onClose }: Props) => {
     const router = useRouter();
-    const { userCart } = useCartStore();
+    const { userCart, totalPrice } = useCartStore();
 
     const isShowCartItems = userCart && userCart.cartItems.length > 0;
 
@@ -99,7 +99,7 @@ const DrawerCart = ({ isOpen, onClose }: Props) => {
                             fontWeight={500}
                             color={(theme) => theme.themeColor.primary}
                         >
-                            {formatCurrency(userCart.totalPrice || 0)}
+                            {formatCurrency(totalPrice || 0)}
                         </Typography>
                     </Stack>
                     <Button

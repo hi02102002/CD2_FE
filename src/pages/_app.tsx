@@ -32,13 +32,21 @@ const App = ({
     const getLayout = Component.getLayout ?? ((page) => page);
 
     const { user } = useAuthStore();
-    const { fetchCart } = useCartStore();
+    const { fetchCart, userCart, setTotalPrice, setTotalQuantity } =
+        useCartStore();
 
     useEffect(() => {
         if (user?.id) {
             fetchCart(user.id);
         }
     }, [user?.id, fetchCart]);
+
+    useEffect(() => {
+        if (userCart?.cartItems) {
+            setTotalPrice();
+            setTotalQuantity();
+        }
+    }, [userCart?.cartItems, setTotalPrice, setTotalQuantity]);
 
     return (
         <>

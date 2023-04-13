@@ -19,7 +19,7 @@ type Props = {
 } & BoxProps;
 
 export const CartItem = ({ cartItem, ...props }: Props) => {
-    const { removeProductFromCart, userCart } = useCartStore();
+    const { removeProductFromCart, updateProductQuantity } = useCartStore();
     const [quantity, setQuantity] = useState<number>(cartItem.quantity);
     return (
         <StyledCartItem {...props} className={`${props.className} cart`}>
@@ -87,7 +87,21 @@ export const CartItem = ({ cartItem, ...props }: Props) => {
                         }}
                     />
                     {quantity !== cartItem.quantity && (
-                        <TextHover>Update</TextHover>
+                        <TextHover
+                            sx={{
+                                cursor: 'pointer',
+                            }}
+                            onClick={() => {
+                                updateProductQuantity({
+                                    option: cartItem.option,
+                                    quantity,
+                                    cartItemId: cartItem.cartItemId,
+                                    productId: cartItem.productId,
+                                });
+                            }}
+                        >
+                            Update
+                        </TextHover>
                     )}
                 </Stack>
             </StyledContent>
@@ -100,6 +114,10 @@ export const CartItem = ({ cartItem, ...props }: Props) => {
                 }}
                 component="div"
                 className="btn-remove"
+                onClick={() => {
+                    removeProductFromCart(cartItem.cartItemId);
+                }}
+                title="Remove"
             >
                 <IconX width={16} height={16} color={grey[500]} />
             </Box>

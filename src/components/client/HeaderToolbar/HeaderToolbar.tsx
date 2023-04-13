@@ -29,6 +29,7 @@ import authService from '@/services/auth.service';
 import useAuthStore from '@/store/auth';
 import useCartStore from '@/store/cart';
 import { ROLE } from '@/types/user';
+import { formatCurrency } from '@/utils/formatCurrency';
 import { pxToRem } from '@/utils/pxToRem';
 
 import DrawerCart from '../DrawerCart';
@@ -70,7 +71,8 @@ const HeaderToolbar = ({ forSearch = false }: Props) => {
         setAnchorElMenuUser(null);
     };
 
-    const { userCart } = useCartStore();
+    const { totalQuantity, totalPrice } = useCartStore();
+
     return (
         <>
             <StyledToolbar>
@@ -150,8 +152,8 @@ const HeaderToolbar = ({ forSearch = false }: Props) => {
                             </MenuItem>
                             <MenuItem
                                 disableRipple
-                                onClick={() => {
-                                    authService.logout();
+                                onClick={async () => {
+                                    await authService.logout();
                                     setAuth({
                                         accessToken: null,
                                         user: null,
@@ -221,9 +223,7 @@ const HeaderToolbar = ({ forSearch = false }: Props) => {
                             onClick={onOpenCart}
                             className="cart"
                         >
-                            <Badge
-                                badgeContent={userCart?.cartItems.length || 0}
-                            >
+                            <Badge badgeContent={totalQuantity || 0}>
                                 <IconShoppingCart
                                     color={theme.themeColor.primary}
                                 />
@@ -231,9 +231,11 @@ const HeaderToolbar = ({ forSearch = false }: Props) => {
                         </IconButton>
                     </Tooltip>
                     <StyledDisplayItemsPrice>
-                        <Typography className="items">0 Items</Typography>
+                        <Typography className="items">
+                            {totalQuantity} Items
+                        </Typography>
                         <Typography variant="body2" className="price">
-                            0.00$
+                            {formatCurrency(totalPrice)}
                         </Typography>
                     </StyledDisplayItemsPrice>
                 </Stack>

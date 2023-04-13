@@ -1,5 +1,10 @@
 import axiosClient from '@/lib/axiosClient';
-import { Cart, CartItemInput } from '@/types/cart';
+import {
+    Cart,
+    CartItem,
+    CartItemInput,
+    UpdateCartItemInput,
+} from '@/types/cart';
 import { BaseResponse } from '@/types/shared';
 
 class CartService {
@@ -14,12 +19,32 @@ class CartService {
     async addProductToCart(
         fields: CartItemInput,
         cartId: number,
-    ): Promise<any> {
+    ): Promise<BaseResponse<CartItem>> {
         return axiosClient.post('/api/cart', fields, {
             params: {
                 userId: cartId,
             },
         });
+    }
+
+    async removeProductFromCart(
+        cartItemId: number,
+    ): Promise<BaseResponse<CartItem>> {
+        return axiosClient.delete('/api/cart', {
+            params: {
+                cartItemId,
+            },
+        });
+    }
+
+    async updateCartItem(
+        fields: UpdateCartItemInput,
+    ): Promise<BaseResponse<CartItem>> {
+        return axiosClient.put('/api/cart', fields);
+    }
+
+    async clearCart() {
+        return axiosClient.delete('/api/cart/delete-all');
     }
 }
 

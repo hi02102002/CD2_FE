@@ -21,7 +21,14 @@ export type CartItem = {
     };
     quantity: number;
     price: number;
+    cartItemId: number;
+    productId: number;
 };
+
+export type UpdateCartItemInput = Omit<
+    CartItem,
+    'imageUrl' | 'productName' | 'price'
+>;
 
 export type OptionSelected = {
     [key: string]: string | undefined;
