@@ -77,7 +77,6 @@ const useCartStore = create<CartState>()(
                             }
                         }
                     });
-                    // //
                 },
                 removeProductFromCart: async (cartItemId) => {
                     await cartService.removeProductFromCart(cartItemId);
@@ -94,7 +93,9 @@ const useCartStore = create<CartState>()(
                     //
                     await cartService.clearCart();
                     set((state) => {
-                        state.userCart = null;
+                        if (state.userCart) {
+                            state.userCart.cartItems = [];
+                        }
                         state.totalPrice = 0;
                         state.totalQuantity = 0;
                     });
