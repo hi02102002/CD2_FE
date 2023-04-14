@@ -1,23 +1,40 @@
+import { useState } from 'react';
+
 import { useRouter } from 'next/router';
 
-
-
 import { Box, Stack, Typography, styled } from '@mui/material';
+import { toast } from 'react-hot-toast';
 
-import { Button, Input, PageTop } from '@/components/common';
+import { Button, Input, LoadingFullPage, PageTop } from '@/components/common';
 import { TableCart } from '@/components/pages/cart';
 import { DEVICE, ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
 import useCart from '@/store/cart';
 import { NextPageWithLayout } from '@/types/shared';
+import { formatCurrency } from '@/utils/formatCurrency';
 import { pxToRem } from '@/utils/pxToRem';
 import { withProtect } from '@/utils/withProtect';
 
 const Cart: NextPageWithLayout = () => {
     const router = useRouter();
-    const { clearCart } = useCart();
+    const { clearCart, totalPrice } = useCart();
+    const [isLoadingClear, setIsLoadingClear] = useState<boolean>(false);
+    const handleClearCart = async () => {
+        try {
+            setIsLoadingClear(true);
+            await clearCart();
+            setIsLoadingClear(false);
+            toast.success('Clear cart success');
+        } catch (error) {
+            console.log(error);
+            setIsLoadingClear(false);
+            toast.error('Clear cart failed');
+        }
+    };
+
     return (
         <>
+            {isLoadingClear && <LoadingFullPage />}
             <StyledPageCart>
                 <Box component="div" className="container-app">
                     <TableCart />
@@ -34,7 +51,10 @@ const Cart: NextPageWithLayout = () => {
                             Continue Shopping
                         </Button>
                         <StyledActions>
-                            <Button typeButton="secondary" onClick={clearCart}>
+                            <Button
+                                typeButton="secondary"
+                                onClick={handleClearCart}
+                            >
                                 Clear Shopping Cart
                             </Button>
                         </StyledActions>
@@ -48,7 +68,9 @@ const Cart: NextPageWithLayout = () => {
                                 alignItems="center"
                             >
                                 <Typography>Subtotal</Typography>
-                                <Typography>$105.00</Typography>
+                                <Typography>
+                                    {formatCurrency(totalPrice)}
+                                </Typography>
                             </Stack>
                             <Stack
                                 direction="row"

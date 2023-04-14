@@ -1,8 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-
-
 import {
     Box,
     Drawer,
@@ -16,6 +14,7 @@ import { IconX } from '@tabler/icons-react';
 import { Button } from '@/components/common';
 import { DEVICE, ROUTES } from '@/constants';
 import useCartStore from '@/store/cart';
+import { formatCurrency } from '@/utils/formatCurrency';
 import { pxToRem } from '@/utils/pxToRem';
 
 import { CartItem } from '../CartItem';
@@ -27,9 +26,9 @@ type Props = {
 
 const DrawerCart = ({ isOpen, onClose }: Props) => {
     const router = useRouter();
-    const { cartItems } = useCartStore();
+    const { userCart, totalPrice } = useCartStore();
 
-    const isShowCartItems = cartItems.length > 0;
+    const isShowCartItems = userCart && userCart.cartItems.length > 0;
 
     return (
         <StyledDrawerCart
@@ -52,8 +51,8 @@ const DrawerCart = ({ isOpen, onClose }: Props) => {
             <StyledBody>
                 {isShowCartItems ? (
                     <StyledListCart spacing={16}>
-                        {cartItems.map((cart, index) => {
-                            return <CartItem key={index} cart={cart} />;
+                        {userCart.cartItems.map((cartItem, index) => {
+                            return <CartItem key={index} cartItem={cartItem} />;
                         })}
                     </StyledListCart>
                 ) : (
@@ -100,7 +99,7 @@ const DrawerCart = ({ isOpen, onClose }: Props) => {
                             fontWeight={500}
                             color={(theme) => theme.themeColor.primary}
                         >
-                            $71.00
+                            {formatCurrency(totalPrice || 0)}
                         </Typography>
                     </Stack>
                     <Button

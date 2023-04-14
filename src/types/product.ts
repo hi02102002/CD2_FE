@@ -12,8 +12,15 @@ export type Product = {
 
 export type Option = {
     [key: string]: any;
-    quantity: null | number;
-    price: null | number;
+};
+
+export type OptionKeyValues = {
+    key: string;
+    values: Array<{
+        name: any;
+        price: number | null;
+        quantity: number | null;
+    }>;
 };
 
 export type CartItem = {};

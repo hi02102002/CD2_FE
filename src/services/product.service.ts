@@ -2,7 +2,6 @@ import axiosClient from '@/lib/axiosClient';
 import { Option, Product } from '@/types/product';
 import { BaseResponse } from '@/types/shared';
 
-
 class ProductService {
     async addProduct(fields: any): Promise<BaseResponse<any>> {
         const formData = new FormData();
@@ -81,7 +80,11 @@ class ProductService {
         for (const [key, value] of Object.entries(fields)) {
             if (key === 'files' || key === 'file') {
                 for (const file of value as any) {
-                    formData.append('file', file);
+                    if (typeof file === 'string') {
+                        formData.append('oldFiles', file);
+                    } else {
+                        formData.append('newFiles', file);
+                    }
                 }
             } else {
                 formData.append(key, value as string);

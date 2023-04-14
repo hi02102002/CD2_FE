@@ -10,7 +10,6 @@ import { DEVICE } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
 
 import AboutBrandTab from '../AboutBrandTab';
-import DetailTab from '../DetailTab';
 import ReviewTab from '../ReviewTab';
 import ShippingTab from '../ShippingTab';
 
@@ -45,7 +44,7 @@ function a11yProps(index: number) {
 }
 
 function ProductDetailTab() {
-    const [tab, setTab] = useState(0);
+    const [tab, setTab] = useState(1);
     const theme = useTheme();
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -71,12 +70,6 @@ function ProductDetailTab() {
                 >
                     <Tab
                         className="btn-changetab"
-                        label="Details"
-                        disableRipple
-                        {...a11yProps(0)}
-                    />
-                    <Tab
-                        className="btn-changetab"
                         label={`Reviews ${1}`}
                         disableRipple
                         {...a11yProps(1)}
@@ -95,10 +88,6 @@ function ProductDetailTab() {
                     />
                 </Tabs>
             </Box>
-            <TabPanel value={tab} index={0}>
-                <DetailTab />
-            </TabPanel>
-
             <TabPanel value={tab} index={1}>
                 <ReviewTab />
             </TabPanel>

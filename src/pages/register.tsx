@@ -38,10 +38,11 @@ const Register: NextPageWithLayout<Props> = () => {
 };
 
 Register.getLayout = (page) => {
-    return <ClientLayout
-        title='Register'
-        description='Register to your account'
-    >{page}</ClientLayout>;
+    return (
+        <ClientLayout title="Register" description="Register to your account">
+            {page}
+        </ClientLayout>
+    );
 };
 
 const LoginSocial = styled('div')`

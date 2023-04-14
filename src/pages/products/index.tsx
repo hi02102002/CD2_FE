@@ -66,7 +66,7 @@ const Products: NextPageWithLayout<Props> = ({
 Products.getLayout = (page) => {
     return (
         <ClientLayout
-            title='MinimogShop'
+            title="MinimogShop"
             description="Get your shopping done quickly and easily with our cart! Everything is at your fingertips, so there's no need to waste time or money on unnecessary items."
         >
             <PageTop
@@ -97,6 +97,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const { products, total } = await axiosClient
         .get('/api/product/filter', {
             params: {
+                sortBy: 'name',
+                asc: true,
                 ...query,
                 limit: 12,
                 offset: query.offset ? Number(query.offset) - 1 : undefined,

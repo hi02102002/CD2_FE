@@ -16,10 +16,7 @@ const Orders: NextPageWithLayout = () => {
 
 Orders.getLayout = (page) => {
     return (
-        <ClientLayout
-            title="My Orders"
-            description="My Orders"
-        >
+        <ClientLayout title="My Orders" description="My Orders">
             <PageTop
                 title="My Orders"
                 breadcrumbItems={[

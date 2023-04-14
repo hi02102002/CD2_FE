@@ -4,8 +4,6 @@ import { IconArrowNarrowLeft, IconArrowNarrowRight } from '@tabler/icons-react';
 import { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-
-
 import { ProductItem } from '@/components/client';
 import { Button } from '@/components/common';
 import { Product } from '@/types/product';

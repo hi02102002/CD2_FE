@@ -16,45 +16,68 @@ export type Props = {
 export type Option = {
     id: string;
     name: string;
-    value: string;
+    value: {
+        [key: string]: any;
+    };
 };
 
 const OPTIONS_SORT: Array<Option> = [
     {
         id: uuid(),
         name: 'Name: A -> Z',
-        value: 'name-asc',
+        value: {
+            name: 'name',
+            asc: true,
+        },
     },
     {
         id: uuid(),
         name: 'Name: Z -> A',
-        value: 'name-desc',
+        value: {
+            name: 'name',
+            asc: false,
+        },
     },
     {
         id: uuid(),
         name: 'Price: Low to high',
-        value: 'price-asc',
+        value: {
+            name: 'price',
+            asc: true,
+        },
     },
     {
         id: uuid(),
         name: 'Price: High to low',
-        value: 'price-desc',
+        value: {
+            name: 'price',
+            asc: false,
+        },
     },
 
     {
         id: uuid(),
         name: 'Latest',
-        value: 'lasted',
+        value: {
+            name: 'createdDate',
+            asc: true,
+        },
     },
     {
         id: uuid(),
         name: 'Oldest',
-        value: 'oldest',
+        value: {
+            name: 'createdDate',
+            asc: false,
+        },
     },
     {
         id: uuid(),
         name: 'Avg rating',
-        value: 'ratting',
+        value: {
+            name: 'avgRating',
+            asc: false,
+        },
     },
 ];
 
@@ -62,8 +85,15 @@ const Sort = ({ onSort }: Props) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const { handelFilter, options } = useFilter();
     const [selected, setSelected] = useState<Option>(
-        OPTIONS_SORT.find((option) => option.value === options.sort) ||
-            OPTIONS_SORT[0],
+        OPTIONS_SORT.find((option) => {
+            if (option.value.name === 'Latest' && option.value.asc === true) {
+                return true;
+            }
+            if (option.value.name === 'Oldest' && option.value.asc === false) {
+                return true;
+            }
+            return option.value.name === options.sortBy;
+        }) || OPTIONS_SORT[0],
     );
     const open = Boolean(anchorEl);
 
@@ -71,7 +101,8 @@ const Sort = ({ onSort }: Props) => {
         if (!(option.id === selected.id)) {
             setSelected(option);
             handelFilter({
-                sort: option.value,
+                sortBy: option.value.name,
+                asc: option.value.asc,
             });
             onSort?.(option);
             setAnchorEl(null);
@@ -110,7 +141,7 @@ const Sort = ({ onSort }: Props) => {
                             disableRipple
                             sx={{
                                 backgroundColor:
-                                    option.value === options.sort
+                                    option.name === selected.name
                                         ? grey[100]
                                         : undefined,
                             }}

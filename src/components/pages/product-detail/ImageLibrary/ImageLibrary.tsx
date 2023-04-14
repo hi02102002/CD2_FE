@@ -1,13 +1,14 @@
 import { useState } from 'react';
 
-
-
 import Image from 'next/image';
 
-
-
 import { Box, Grid, styled } from '@mui/material';
-import { IconArrowNarrowDown, IconArrowNarrowLeft, IconArrowNarrowRight, IconArrowNarrowUp } from '@tabler/icons-react';
+import {
+    IconArrowNarrowDown,
+    IconArrowNarrowLeft,
+    IconArrowNarrowRight,
+    IconArrowNarrowUp,
+} from '@tabler/icons-react';
 import TSwiper, { Navigation, Thumbs } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/free-mode';
@@ -15,12 +16,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-
-
 import { Button } from '@/components/common';
 import { DEVICE } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
-
 
 type Props = {
     imageURL: string;

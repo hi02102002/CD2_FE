@@ -1,17 +1,18 @@
 import { GetServerSideProps } from 'next';
 
-
-
 import { Box } from '@mui/material';
 
-
-
-import { Banner, SectionCategories, SectionProducts } from '@/components/pages/home';
+import {
+    Banner,
+    SectionCategories,
+    SectionProducts,
+} from '@/components/pages/home';
 import { ClientLayout } from '@/layouts/client';
 import axiosClient from '@/lib/axiosClient';
 import { Category } from '@/types/category';
 import { Product } from '@/types/product';
 import { NextPageWithLayout } from '@/types/shared';
+
 type Props = {
     categories: Category[];
     products: Product[];
@@ -28,10 +29,14 @@ const Home: NextPageWithLayout<Props> = ({ categories, products }) => {
 };
 
 Home.getLayout = (page) => {
-    return <ClientLayout
-        title='MimimogShop'
-        description={`Looking for the best deals on everything? Check us out - we've got all the best shopping options covered! from clothes to appliances, we have it all!`}
-    >{page}</ClientLayout>;
+    return (
+        <ClientLayout
+            title="MimimogShop"
+            description={`Looking for the best deals on everything? Check us out - we've got all the best shopping options covered! from clothes to appliances, we have it all!`}
+        >
+            {page}
+        </ClientLayout>
+    );
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {

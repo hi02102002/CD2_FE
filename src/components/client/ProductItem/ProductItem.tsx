@@ -1,19 +1,24 @@
 import { useState } from 'react';
 
-
-
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { Box, Typography, styled } from '@mui/material';
 import { Stack } from '@mui/system';
 import { IconEye, IconHeart } from '@tabler/icons-react';
+import { toast } from 'react-hot-toast';
 
 import { Button, TextLink, Tooltip } from '@/components/common';
 import { DEVICE, ROUTES } from '@/constants';
+import { useDisclosure } from '@/hooks/useDisclosure';
+import productService from '@/services/product.service';
+import useAuthStore from '@/store/auth';
 import useCartStore from '@/store/cart';
-import { Product } from '@/types/product';
+import { OptionKeyValues, Product } from '@/types/product';
+import { optionsKeyValues } from '@/utils/optionsKeyValues';
 import { pxToRem } from '@/utils/pxToRem';
+
+import ModalChooseOptions from '../ModalChooseOptions/ModalChooseOptions';
 
 type Props = {
     product: Product;
@@ -22,88 +27,148 @@ type Props = {
 const ProductItem = ({ product }: Props) => {
     const { addProductToCart } = useCartStore();
     const [loading, setLoading] = useState(false);
+    const { user } = useAuthStore();
+    const {
+        isOpen,
+        onOpen: onOpenModalChooseOption,
+        onClose,
+    } = useDisclosure();
+    const [productOptions, setProductOptions] = useState<Product['options']>(
+        [],
+    );
+    const [options, setOptions] = useState<Array<OptionKeyValues>>([]);
 
     const handleAddToCart = async () => {
+        if (!user) {
+            toast.error('Please login to add this product to cart');
+            return;
+        }
         try {
-            //
             setLoading(true);
-            console.log(product.options);
-            addProductToCart({});
+
+            const productOptions = await productService.fetchOptionsById(
+                product.id,
+            );
+            setProductOptions(productOptions);
+
+            if (productOptions.length !== 0) {
+                setLoading(false);
+                const _optionsKeyValues = optionsKeyValues(productOptions);
+                setOptions(_optionsKeyValues);
+                onOpenModalChooseOption();
+                return;
+            }
+
+            await addProductToCart({
+                optionsSelected: {},
+                productId: product.id,
+                quantity: 1,
+            });
+
             setLoading(false);
+            toast.success('Add this product to your cart successfully');
         } catch (error) {
+            toast.error('Something went wrong');
             setLoading(false);
         }
     };
 
     return (
-        <StyledProductItem>
-            <StyledProductTop>
-                <Link href={`${ROUTES.PRODUCTS}/${product?.id}`}>
+        <>
+            <StyledProductItem>
+                <StyledProductTop>
+                    <Link href={`${ROUTES.PRODUCTS}/${product?.id}`}>
+                        <Box
+                            position="relative"
+                            paddingTop={`${1.30888030888 * 100}%`}
+                            component="div"
+                            className="img-wrapper"
+                        >
+                            <Image
+                                src={
+                                    product?.imageUrl
+                                        ?.split(',')
+                                        .filter((item) => item !== '')[0]
+                                }
+                                alt=""
+                                fill
+                                style={{
+                                    objectFit: 'cover',
+                                }}
+                                draggable={false}
+                            />
+                        </Box>
+                    </Link>
+                    <StyledTools spacing={pxToRem(10)} className="tools">
+                        <Tooltip title="Quick view" arrow placement="left">
+                            <Box>
+                                <Button
+                                    typeButton="secondary"
+                                    className="btn-tool"
+                                >
+                                    <IconEye />
+                                </Button>
+                            </Box>
+                        </Tooltip>
+                        <Tooltip title="Add to wishlist" arrow placement="left">
+                            <Box>
+                                <Button
+                                    typeButton="secondary"
+                                    className="btn-tool"
+                                >
+                                    <IconHeart />
+                                </Button>
+                            </Box>
+                        </Tooltip>
+                    </StyledTools>
                     <Box
-                        position="relative"
-                        paddingTop={`${1.30888030888 * 100}%`}
                         component="div"
-                        className="img-wrapper"
+                        className="btn-wrapper"
+                        sx={{
+                            bottom: loading ? 20 : undefined,
+                        }}
                     >
-                        <Image
-                            src={
-                                product?.imageURL
-                                    ?.split(',')
-                                    .filter((item) => item !== '')[0]
-                            }
-                            alt=""
-                            fill
-                            style={{
-                                objectFit: 'cover',
-                            }}
-                            draggable={false}
-                        />
+                        <Button
+                            className="btn-add-cart"
+                            typeButton="secondary"
+                            isLoading={loading}
+                            onClick={handleAddToCart}
+                        >
+                            Add to Cart
+                        </Button>
                     </Box>
-                </Link>
-                <StyledTools spacing={pxToRem(10)} className="tools">
-                    <Tooltip title="Quick view" arrow placement="left">
-                        <Box>
-                            <Button typeButton="secondary" className="btn-tool">
-                                <IconEye />
-                            </Button>
-                        </Box>
-                    </Tooltip>
-                    <Tooltip title="Add to wishlist" arrow placement="left">
-                        <Box>
-                            <Button typeButton="secondary" className="btn-tool">
-                                <IconHeart />
-                            </Button>
-                        </Box>
-                    </Tooltip>
-                </StyledTools>
-                <Box component="div" className="btn-wrapper">
-                    <Button
-                        className="btn-add-cart"
-                        typeButton="secondary"
-                        isLoading={loading}
-                        onClick={handleAddToCart}
+                </StyledProductTop>
+                <StyledContent>
+                    <TextLink
+                        href={`${ROUTES.PRODUCTS}/${product?.id}`}
+                        MuiLinkProps={{
+                            className: 'title',
+                            title: product?.name,
+                        }}
+                        limitLine={1}
                     >
-                        Add to Cart
-                    </Button>
-                </Box>
-            </StyledProductTop>
-            <StyledContent>
-                <TextLink
-                    href={`${ROUTES.PRODUCTS}/${product?.id}`}
-                    MuiLinkProps={{
-                        className: 'title',
-                        title: product?.name,
+                        {product?.name}
+                    </TextLink>
+                    <Stack direction="row" spacing={pxToRem(8)}>
+                        <Typography className="price">
+                            ${product?.price}
+                        </Typography>
+                        <Typography className="discount">$102.00</Typography>
+                    </Stack>
+                </StyledContent>
+            </StyledProductItem>
+            {isOpen && (
+                <ModalChooseOptions
+                    onClose={onClose}
+                    open={isOpen}
+                    options={options}
+                    product={{
+                        ...product,
+                        options: productOptions,
                     }}
-                    limitLine={1}
-                >
-                    {product?.name}
-                </TextLink>
-                <Stack direction="row" spacing={pxToRem(8)}>
-                    <Typography className="price">${product?.price}</Typography>
-                    <Typography className="discount">$102.00</Typography>
-                </Stack>
-            </StyledContent>
-        </StyledProductItem>
+                />
+            )}
+        </>
     );
 };
 

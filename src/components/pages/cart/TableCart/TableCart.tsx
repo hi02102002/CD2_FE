@@ -1,18 +1,28 @@
+import { useState } from 'react';
+
 import Image from 'next/image';
-
-
 
 import { Box, Typography, styled } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { Stack } from '@mui/system';
+import { toast } from 'react-hot-toast';
 
-import { Button, InputChangeAmount } from '@/components/common';
+import {
+    Button,
+    InputChangeAmount,
+    LoadingFullPage,
+    TextHover,
+} from '@/components/common';
 import { DEVICE } from '@/constants';
 import useCartStore from '@/store/cart';
+import { CartItem } from '@/types/cart';
+import { formatCurrency } from '@/utils/formatCurrency';
+import { getImgUrls } from '@/utils/getImgUrl';
 import { pxToRem } from '@/utils/pxToRem';
 
 export const TableCart = () => {
-    const { cartItems } = useCartStore();
+    const { userCart } = useCartStore();
+
     return (
         <StyledTable>
             <StyledTHead component="thead">
@@ -26,79 +36,17 @@ export const TableCart = () => {
                     <th className="col quantity">
                         <Typography variant="h4">Quantity</Typography>
                     </th>
-                    <th className="col subtotal">
-                        <Typography variant="h4">Subtotal</Typography>
-                    </th>
                 </tr>
             </StyledTHead>
             <StyledTBody component="tbody">
-                {cartItems.length > 0 ? (
+                {userCart && userCart?.cartItems.length > 0 ? (
                     <>
-                        {cartItems.map((cart, index) => {
+                        {userCart?.cartItems.map((cartItem) => {
                             return (
-                                <tr key={index}>
-                                    <td className="col item">
-                                        <Stack
-                                            direction="row"
-                                            spacing={16}
-                                            alignItems="center"
-                                        >
-                                            <Box width="30%">
-                                                <Box
-                                                    position="relative"
-                                                    paddingBottom="130.5%"
-                                                    width="100%"
-                                                >
-                                                    <Image
-                                                        src="https://blueskytechmage.com/minimog/media/catalog/product/cache/8a992f0e07ac0af177f1d8a49e61f0ae/p/r/product_fashion_14_b_1_1.jpeg"
-                                                        alt=""
-                                                        fill
-                                                        style={{
-                                                            objectFit: 'cover',
-                                                        }}
-                                                    />
-                                                </Box>
-                                            </Box>
-                                            <Box width="70%">
-                                                <Typography variant="h4"></Typography>
-                                                <Stack direction="row" gap={8}>
-                                                    <Typography
-                                                        fontWeight={500}
-                                                    >
-                                                        Color:{' '}
-                                                    </Typography>
-                                                    <Typography>
-                                                        Red{' '}
-                                                    </Typography>
-                                                </Stack>
-                                            </Box>
-                                        </Stack>
-                                    </td>
-                                    <td className="col price" data-td="Price">
-                                        <Typography>$8.00</Typography>
-                                    </td>
-                                    <td
-                                        className="col quantity"
-                                        data-td="Quantity"
-                                    >
-                                        <InputChangeAmount className="input-quantity" />
-                                    </td>
-                                    <td
-                                        className="col subtotal"
-                                        data-td="Subtotal"
-                                    >
-                                        <Typography>$8.00</Typography>
-                                    </td>
-                                    <td className="col action" data-td="Action">
-                                        <Button
-                                            sx={{
-                                                width: '100%',
-                                            }}
-                                        >
-                                            Remove
-                                        </Button>
-                                    </td>
-                                </tr>
+                                <Row
+                                    cartItem={cartItem}
+                                    key={cartItem.cartItemId}
+                                />
                             );
                         })}
                     </>
@@ -116,6 +64,127 @@ export const TableCart = () => {
                 )}
             </StyledTBody>
         </StyledTable>
+    );
+};
+
+type PropsRow = {
+    cartItem: CartItem;
+};
+
+const Row = ({ cartItem }: PropsRow) => {
+    const { updateProductQuantity, removeProductFromCart } = useCartStore();
+
+    const [quantity, setQuantity] = useState<number>(cartItem.quantity);
+
+    const [isLoadingRemove, setIsLoadingRemove] = useState<boolean>(false);
+
+    const handleRemove = async () => {
+        try {
+            setIsLoadingRemove(true);
+            await removeProductFromCart(cartItem.cartItemId);
+            setIsLoadingRemove(false);
+            toast.success('Remove item success');
+            setIsLoadingRemove(false);
+        } catch (error) {
+            console.log(error);
+            setIsLoadingRemove(false);
+            toast.error('Remove item failed');
+        }
+    };
+
+    return (
+        <>
+            <tr>
+                <td className="col item">
+                    <Stack direction="row" spacing={16}>
+                        <Box width="30%">
+                            <Box
+                                position="relative"
+                                paddingBottom="130.5%"
+                                width="100%"
+                            >
+                                <Image
+                                    src={getImgUrls(cartItem.imageUrl)?.[0]}
+                                    alt=""
+                                    fill
+                                    style={{
+                                        objectFit: 'cover',
+                                    }}
+                                />
+                            </Box>
+                        </Box>
+                        <Box width="70%">
+                            <Typography variant="h4"></Typography>
+                            {cartItem.option &&
+                                Object?.entries(cartItem.option).map(
+                                    ([key, value]) => {
+                                        return (
+                                            <Stack
+                                                direction="row"
+                                                gap={8}
+                                                key={key}
+                                            >
+                                                <Typography fontWeight={500}>
+                                                    {key}:{' '}
+                                                </Typography>
+                                                <Typography>
+                                                    {value}{' '}
+                                                </Typography>
+                                            </Stack>
+                                        );
+                                    },
+                                )}
+                        </Box>
+                    </Stack>
+                </td>
+                <td className="col price" data-td="Price">
+                    <Typography>{formatCurrency(cartItem.price)}</Typography>
+                </td>
+                <td className="col quantity" data-td="Quantity">
+                    <Stack direction="row" gap={16} alignItems="center">
+                        <InputChangeAmount
+                            className="input-quantity"
+                            value={quantity}
+                            onChange={(value) => {
+                                if (value) {
+                                    setQuantity(value);
+                                }
+                            }}
+                        />
+                        <Box flexShrink={0}>
+                            {quantity !== cartItem.quantity && (
+                                <TextHover
+                                    sx={{
+                                        cursor: 'pointer',
+                                    }}
+                                    onClick={() => {
+                                        updateProductQuantity({
+                                            option: cartItem.option,
+                                            quantity,
+                                            cartItemId: cartItem.cartItemId,
+                                            productId: cartItem.productId,
+                                        });
+                                    }}
+                                >
+                                    Update
+                                </TextHover>
+                            )}
+                        </Box>
+                    </Stack>
+                </td>
+                <td className="col action" data-td="Action">
+                    <Button
+                        sx={{
+                            width: '100%',
+                        }}
+                        onClick={handleRemove}
+                    >
+                        Remove
+                    </Button>
+                </td>
+            </tr>
+            {isLoadingRemove && <LoadingFullPage />}
+        </>
     );
 };
 
@@ -269,9 +338,6 @@ const StyledTBody = styled(Box)`
 
     .col.quantity .input-quantity {
         max-width: unset;
-        .MuiInputBase-root {
-            width: 100%;
-        }
     }
 
     .col.price {
