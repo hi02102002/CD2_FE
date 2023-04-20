@@ -53,6 +53,7 @@ export const InputChangeAmount = ({
                 className="sub"
                 title="Decrease"
                 onClick={handelDecrease}
+                type="button"
             >
                 <IconMinus />
             </Box>
@@ -71,7 +72,7 @@ export const InputChangeAmount = ({
                 }}
                 value={amount}
                 onBlur={(e) => {
-                    if (e.target.value === '') {
+                    if (e.target.value === '' || e.target.value === '0') {
                         setAmount(1);
                         onChange?.(1);
                     }
@@ -82,6 +83,7 @@ export const InputChangeAmount = ({
                 className="add"
                 title="Increase"
                 onClick={handelIncrease}
+                type="button"
             >
                 <IconPlus />
             </Box>

@@ -8,6 +8,7 @@ export type Product = {
     quantity: number;
     categoryId: number;
     options: Option[];
+    discountPercent: number;
 };
 
 export type Option = {

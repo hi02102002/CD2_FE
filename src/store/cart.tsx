@@ -21,6 +21,7 @@ interface CartState {
     totalQuantity: number;
     setTotalPrice: () => void;
     setTotalQuantity: () => void;
+    clearCartClient: () => void;
 }
 
 const useCartStore = create<CartState>()(
@@ -135,7 +136,7 @@ const useCartStore = create<CartState>()(
                     set((state) => {
                         state.totalPrice = state.userCart?.cartItems.reduce(
                             (total, item) => {
-                                return total + item.price;
+                                return total + item.price * item.quantity;
                             },
                             0,
                         ) as number;
@@ -149,6 +150,15 @@ const useCartStore = create<CartState>()(
                             },
                             0,
                         ) as number;
+                    });
+                },
+                clearCartClient: () => {
+                    set((state) => {
+                        if (state.userCart) {
+                            state.userCart.cartItems = [];
+                            state.totalPrice = 0;
+                            state.totalQuantity = 0;
+                        }
                     });
                 },
             };

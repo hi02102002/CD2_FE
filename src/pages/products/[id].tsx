@@ -25,7 +25,7 @@ const Product: NextPageWithLayout<Props> = ({ product, relatives }) => {
 
     return (
         <>
-         
+
             <Box className="container-app">
                 <ProductMainContent
                     container
@@ -33,8 +33,8 @@ const Product: NextPageWithLayout<Props> = ({ product, relatives }) => {
                     padding={0}
                     spacing={16}
                 >
-                    <ImageLibrary imageURL={ product.imageUrl} />
-                    <ProductInfo product={product}/>
+                    <ImageLibrary imageURL={product.imageUrl} />
+                    <ProductInfo product={product} />
                 </ProductMainContent>
                 <Box
                     component="div"
@@ -43,7 +43,7 @@ const Product: NextPageWithLayout<Props> = ({ product, relatives }) => {
                 >
                     <ProductDetailTab />
                 </Box>
-               {relatives?.length > 0 && <SlideRelated relatives={relatives} />}
+                {relatives?.length > 0 && <SlideRelated relatives={relatives} />}
             </Box>
         </>
     );
@@ -55,7 +55,7 @@ Product.getLayout = (page) => {
             openGraph: {
                 title: page.props?.product?.name,
                 description: page?.props.product?.description,
-                images: page.props?.product.imageUrl?.split(',').filter((v: string) => v !== '').map((v: string) => { 
+                images: page.props?.product.imageUrl?.split(',').filter((v: string) => v !== '').map((v: string) => {
                     return {
                         url: v,
                     }
@@ -64,21 +64,21 @@ Product.getLayout = (page) => {
                 site_name: 'Minimog Shop',
             },
 
-    }}
+        }}
     >
-           <PageTop
-                title="Shop"
-                breadcrumbItems={[
-                    {
-                        href: ROUTES.HOME,
-                        name: 'Home',
-                    },
-                    {
-                        href: `${ROUTES.PRODUCTS}/${page.props.product.id}`,
-                        name: 'Linen Check Blazer',
-                    },
-                ]}
-            />
+        <PageTop
+            title="Shop"
+            breadcrumbItems={[
+                {
+                    href: ROUTES.HOME,
+                    name: 'Home',
+                },
+                {
+                    href: `${ROUTES.PRODUCTS}/${page.props.product.id}`,
+                    name: 'Linen Check Blazer',
+                },
+            ]}
+        />
         {page}</ClientLayout>;
 };
 
@@ -87,40 +87,52 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
     const { auth_token } = getCookies({ req: ctx.req, res: ctx.res });
 
-    
-   const  product = await axiosServer(auth_token as string)
-        .get('/api/product/getOne', {
-            params: {
-                id: productId,
-            },
-        })
-       .then((v) => v.data?.data as Product);
-    
-    if (!product) {
-        return {
-        notFound: true,
-    }
 
-    }
-  
-        const { products:relatives } = await axiosServer(auth_token as string)
-        .get('/api/product/filter', {
-            params: {
-                categoryIds:product.categoryId,
-                limit: 8,
-            },
-        })
-            .then((d) => {
+
+
+    let product: Product | null = null;
+    let relatives: Array<Product> = [];
+
+    try {
+        product = await axiosServer(auth_token as string)
+            .get('/api/product/getOne', {
+                params: {
+                    id: productId,
+                },
+            })
+            .then((v) => v.data?.data as Product);
+        if (!product) {
             return {
-                products: d.data?.data?.content.filter((p:Product)=>p.id !==product.id) as Product[],
-            };
-        });
+                notFound: true,
+            }
+
+        }
+
+        const res = await axiosServer(auth_token as string)
+            .get('/api/product/filter', {
+                params: {
+                    categoryIds: product.categoryId,
+                    limit: 8,
+                },
+            })
+            .then((d) => {
+                return {
+                    products: d.data?.data?.content.filter((p: Product) => p.id !== product?.id) as Product[],
+                };
+            });
+        relatives = res.products;
+
+    } catch (error) {
+        return {
+            notFound: true,
+        }
+    }
 
 
     return {
         props: {
             product,
-            relatives:relatives||[]
+            relatives: relatives || []
         },
     };
 };

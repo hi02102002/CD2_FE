@@ -12,7 +12,14 @@ class ProductService {
                     formData.append('file', file as string);
                 }
             } else {
-                formData.append(key, value as string);
+                if (
+                    !(
+                        key === 'discountPercent' &&
+                        (value === undefined || value === null)
+                    )
+                ) {
+                    formData.append(key, value as string);
+                }
             }
         }
 
@@ -87,7 +94,14 @@ class ProductService {
                     }
                 }
             } else {
-                formData.append(key, value as string);
+                if (
+                    !(
+                        key === 'discountPercent' &&
+                        (value === undefined || value === null)
+                    )
+                ) {
+                    formData.append(key, value as string);
+                }
             }
         }
 

@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { Box, Stack, Typography, styled } from '@mui/material';
 import { toast } from 'react-hot-toast';
 
-import { Button, Input, LoadingFullPage, PageTop } from '@/components/common';
+import { Button, LoadingFullPage, PageTop } from '@/components/common';
 import { TableCart } from '@/components/pages/cart';
 import { DEVICE, ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
@@ -17,7 +17,7 @@ import { withProtect } from '@/utils/withProtect';
 
 const Cart: NextPageWithLayout = () => {
     const router = useRouter();
-    const { clearCart, totalPrice } = useCart();
+    const { clearCart, totalPrice, userCart } = useCart();
     const [isLoadingClear, setIsLoadingClear] = useState<boolean>(false);
     const handleClearCart = async () => {
         try {
@@ -108,22 +108,12 @@ const Cart: NextPageWithLayout = () => {
                                 </Typography>
                             </Stack>
                         </Stack>
-                        <Stack gap={16} className="discount-wrapper">
-                            <Box width="100%">
-                                <Input
-                                    label="Enter discount code"
-                                    placeholder="Enter discount code"
-                                />
-                            </Box>
-                            <Button className="btn-discount">
-                                Apply discount
-                            </Button>
-                        </Stack>
                         <Button
                             className="btn-checkout"
                             onClick={() => {
                                 router.push(ROUTES.CHECKOUT);
                             }}
+                            disabled={userCart?.cartItems.length === 0}
                         >
                             Proceed to Checkout
                         </Button>

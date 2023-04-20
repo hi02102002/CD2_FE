@@ -10,13 +10,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import * as yup from 'yup';
 
-import {
-    InputGroup,
-    Label,
-    ListFilePreview,
-    MessageError,
-    Upload,
-} from '@/components/admin';
+import { InputGroup, ListFilePreview, Upload } from '@/components/admin';
+import { Label, MessageError } from '@/components/common';
 import { ROUTES } from '@/constants';
 import { useOverflowHidden } from '@/hooks/useOverflowHidden';
 import productService from '@/services/product.service';
@@ -39,23 +34,38 @@ const productInputSchema = yup.object({
         .min(1, 'File is required!'),
     categoryId: yup.number().required('Category is required'),
     price: yup
-        .string()
+        .number()
         .required('Price is required')
-        .test('test', 'Price is required', (value) => {
-            if ([...value].every((v) => Number(v) === 0)) {
-                return false;
-            }
-            return true;
-        }),
+        .transform((value) =>
+            isNaN(value) || value === null || value === undefined
+                ? 0
+                : Number(value) < 0
+                ? Math.abs(Number(value))
+                : Number(value),
+        ),
     quantity: yup
-        .string()
+        .number()
         .required('Quantity is required')
-        .test('test', 'Quantity is required', (value) => {
-            if ([...value].every((v) => Number(v) === 0)) {
-                return false;
-            }
-            return true;
-        }),
+        .transform((value) =>
+            isNaN(value) || value === null || value === undefined
+                ? 0
+                : Number(value) < 0
+                ? Math.abs(Number(value))
+                : Number(value),
+        ),
+    discountPercent: yup
+        .number()
+        .nullable()
+        .max(100, 'Discount percent must be less than 100%')
+        .notRequired()
+        .min(0, 'Discount percent must be greater than 0%')
+        .transform((value) =>
+            isNaN(value) || value === null || value === undefined
+                ? 0
+                : Number(value) < 0
+                ? Math.abs(Number(value))
+                : Number(value),
+        ),
 });
 type FormData = yup.InferType<typeof productInputSchema>;
 
@@ -77,13 +87,16 @@ const ProductAction = ({ categories, defautlValues, type = 'ADD' }: Props) => {
         defaultValues: {
             description: defautlValues?.description || '',
             categoryId: defautlValues?.categoryId,
-            price: defautlValues?.price.toString() || '',
-            quantity: defautlValues?.quantity.toString() || '',
+            price: defautlValues?.price || 0,
+            quantity: defautlValues?.quantity || 0,
             files:
                 defautlValues?.imageURL?.split(',').filter((i) => i !== '') ||
                 defautlValues?.imageUrl?.split(',').filter((i) => i !== '') ||
                 [],
             name: defautlValues?.name || '',
+            discountPercent: defautlValues?.discountPercent
+                ? defautlValues?.discountPercent
+                : 0,
         },
     });
 
@@ -119,7 +132,10 @@ const ProductAction = ({ categories, defautlValues, type = 'ADD' }: Props) => {
     const handelAddProduct = async (fields: FormData) => {
         try {
             setIsLoadingAction(true);
-            await productService.addProduct(fields);
+            await productService.addProduct({
+                ...fields,
+                discountPercent: fields.discountPercent || null,
+            });
             setIsLoadingAction(false);
             toast.success('Add product successfully');
             router.push(ROUTES.ADMIN_PRODUCT);
@@ -135,7 +151,10 @@ const ProductAction = ({ categories, defautlValues, type = 'ADD' }: Props) => {
     const handelEditProduct = async (fields: FormData) => {
         try {
             setIsLoadingAction(true);
-            await productService.updateProduct(Number(router.query.id), fields);
+            await productService.updateProduct(Number(router.query.id), {
+                ...fields,
+                discountPercent: fields.discountPercent || null,
+            });
             setIsLoadingAction(false);
             toast.success('Edit product successfully');
             router.push(ROUTES.ADMIN_PRODUCT);
@@ -227,6 +246,31 @@ const ProductAction = ({ categories, defautlValues, type = 'ADD' }: Props) => {
                                             );
                                         }}
                                         name="quantity"
+                                        control={control}
+                                    />
+                                    <Controller
+                                        render={({ field, fieldState }) => {
+                                            return (
+                                                <InputGroup
+                                                    label="Discount"
+                                                    required
+                                                    messageError={
+                                                        fieldState.error
+                                                            ?.message
+                                                    }
+                                                    InputProps={{
+                                                        ...field,
+                                                        type: 'number',
+                                                        onKeyDown: (e) => {
+                                                            if (e.key === '-') {
+                                                                e.preventDefault();
+                                                            }
+                                                        },
+                                                    }}
+                                                />
+                                            );
+                                        }}
+                                        name="discountPercent"
                                         control={control}
                                     />
                                     <Controller

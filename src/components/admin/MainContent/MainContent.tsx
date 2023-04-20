@@ -34,11 +34,12 @@ type Props = {
         onChange: (value: string) => void;
         value: string;
     };
-    TablePaginationProps: TablePaginationProps;
+    TablePaginationProps?: TablePaginationProps;
     RemoveProps?: {
         rowSelected: any[];
         ButtonRemoveProps?: LoadingButtonProps;
     };
+    showTop?: boolean;
 };
 
 const MainContent = ({
@@ -47,56 +48,61 @@ const MainContent = ({
     TableProps,
     TablePaginationProps,
     RemoveProps,
+    showTop = true,
 }: Props) => {
     return (
         <StyledMainContent>
-            <StyledMainContentHeader>
-                <Box
-                    component="div"
-                    className="search-container"
-                    sx={{
-                        ...SearchProps?.sx,
-                    }}
-                >
-                    <Input
-                        placeholder={SearchProps?.placeholder || 'Search'}
-                        name={SearchProps?.nameInput || 'name'}
-                        onChange={(e) => SearchProps?.onChange(e.target.value)}
-                        value={SearchProps?.value}
-                    />
-                    <Button
+            {showTop && (
+                <StyledMainContentHeader>
+                    <Box
+                        component="div"
+                        className="search-container"
                         sx={{
-                            textTransform: 'none',
-                        }}
-                        onClick={() => {
-                            SearchProps?.onClearSearch?.();
+                            ...SearchProps?.sx,
                         }}
                     >
-                        Clear
-                    </Button>
+                        <Input
+                            placeholder={SearchProps?.placeholder || 'Search'}
+                            name={SearchProps?.nameInput || 'name'}
+                            onChange={(e) =>
+                                SearchProps?.onChange(e.target.value)
+                            }
+                            value={SearchProps?.value}
+                        />
+                        <Button
+                            sx={{
+                                textTransform: 'none',
+                            }}
+                            onClick={() => {
+                                SearchProps?.onClearSearch?.();
+                            }}
+                        >
+                            Clear
+                        </Button>
+                        <Button
+                            variant="contained"
+                            sx={{
+                                textTransform: 'none',
+                            }}
+                            onClick={() => {
+                                SearchProps?.onSearch?.();
+                            }}
+                        >
+                            {SearchProps?.textButtonSearch || 'Search'}
+                        </Button>
+                    </Box>
                     <Button
                         variant="contained"
+                        className="button-add"
                         sx={{
                             textTransform: 'none',
                         }}
-                        onClick={() => {
-                            SearchProps?.onSearch?.();
-                        }}
+                        {...ButtonAddProps}
                     >
-                        {SearchProps?.textButtonSearch || 'Search'}
+                        {ButtonAddProps?.textButton || 'Add'}
                     </Button>
-                </Box>
-                <Button
-                    variant="contained"
-                    className="button-add"
-                    sx={{
-                        textTransform: 'none',
-                    }}
-                    {...ButtonAddProps}
-                >
-                    {ButtonAddProps?.textButton || 'Add'}
-                </Button>
-            </StyledMainContentHeader>
+                </StyledMainContentHeader>
+            )}
             <Table {...TableProps} hideFooter />
             <Stack
                 direction="row"
@@ -122,7 +128,15 @@ const MainContent = ({
                         )}
                     </Stack>
                 )}
-                <TablePagination {...TablePaginationProps} />
+                {TablePaginationProps && (
+                    <TablePagination
+                        {...TablePaginationProps}
+                        sx={{
+                            ...TablePaginationProps?.sx,
+                            marginLeft: 'auto',
+                        }}
+                    />
+                )}
             </Stack>
         </StyledMainContent>
     );

@@ -12,7 +12,6 @@ import {
     useTheme,
 } from '@mui/material';
 import {
-    IconHeart,
     IconLayoutDashboard,
     IconLogin,
     IconLogout,
@@ -129,7 +128,7 @@ const HeaderToolbar = ({ forSearch = false }: Props) => {
                         <>
                             <MenuItem
                                 disableRipple
-                                onClick={() => handleNavigate('/account')}
+                                onClick={() => handleNavigate(ROUTES.ACCOUNT)}
                             >
                                 <IconUser />
                                 <Typography>Account</Typography>
@@ -143,13 +142,6 @@ const HeaderToolbar = ({ forSearch = false }: Props) => {
                                     <Typography>Admin Dashboard</Typography>
                                 </MenuItem>
                             )}
-                            <MenuItem
-                                disableRipple
-                                onClick={() => handleNavigate('/wishlist')}
-                            >
-                                <IconHeart />
-                                <Typography>Wishlist</Typography>
-                            </MenuItem>
                             <MenuItem
                                 disableRipple
                                 onClick={async () => {
@@ -183,26 +175,6 @@ const HeaderToolbar = ({ forSearch = false }: Props) => {
                         </>
                     )}
                 </Menu>
-                <Tooltip
-                    title="Wishlist"
-                    arrow
-                    PopperProps={{
-                        modifiers: [
-                            {
-                                name: 'offset',
-                                options: {
-                                    offset: [0, -5],
-                                },
-                            },
-                        ],
-                    }}
-                >
-                    <IconButton disableTouchRipple className="wish-list">
-                        <Badge badgeContent={10}>
-                            <IconHeart color={theme.themeColor.primary} />
-                        </Badge>
-                    </IconButton>
-                </Tooltip>
                 <Stack direction="row" alignItems="center" gap={16}>
                     <Tooltip
                         title="Cart"

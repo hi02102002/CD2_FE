@@ -1,3 +1,8 @@
+import { useEffect, useState } from 'react';
+
+import { useRouter } from 'next/router';
+
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
     FormControlLabel,
     Grid,
@@ -9,17 +14,96 @@ import {
 } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { Box } from '@mui/system';
+import { getCookies, setCookie } from 'cookies-next';
+import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
+import * as yup from 'yup';
 
 import { CartItem } from '@/components/client';
-import { Button, Input, PageTop } from '@/components/common';
-import { ROUTES } from '@/constants';
+import { Button, Input, Label, PageTop, TextLink } from '@/components/common';
+import { ROUTES, phoneRegex } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
+import axiosServer from '@/lib/axiosServer';
+import orderService from '@/services/order.service';
+import useAuthStore from '@/store/auth';
+import useCartStore from '@/store/cart';
+import useCheckoutStore from '@/store/checkout';
+import { TAddress } from '@/types/address';
+import { OrderStatus } from '@/types/order';
 import { NextPageWithLayout } from '@/types/shared';
+import { formatCurrency } from '@/utils/formatCurrency';
 import { pxToRem } from '@/utils/pxToRem';
+import { withProtect } from '@/utils/withProtect';
 
-type Props = {};
+type Props = {
+    addresses: TAddress[];
+};
 
-const Checkout: NextPageWithLayout<Props> = () => {
+const schema = yup.object({
+    email: yup.string().required('Email is required').email('Email is invalid'),
+    fullName: yup.string().required('Full name is required'),
+    phoneNumber: yup
+        .string()
+        .required('Phone number is required')
+        .matches(phoneRegex, {
+            message: 'Phone number is invalid',
+        }),
+    addressId: yup.string().required('Address is required'),
+});
+
+type FormValues = yup.InferType<typeof schema>;
+
+const Checkout: NextPageWithLayout<Props> = ({ addresses }) => {
+    const { userCart, totalPrice, clearCart, clearCartClient } = useCartStore();
+    const { setIsSuccessful } = useCheckoutStore();
+    const { user } = useAuthStore();
+    const { control, handleSubmit, setValue, reset } = useForm<FormValues>({
+        resolver: yupResolver(schema),
+        defaultValues: {
+            email: user?.email || '',
+            fullName: user?.fullName || '',
+        },
+    });
+    const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
+    const [address, setAddress] = useState<TAddress | null>(
+        addresses.find((a) => a.isDefault) || null,
+    );
+
+    const handelCheckout = async (data: FormValues) => {
+        if (!userCart?.cartItems.length) {
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+
+            const { data: orderId } = await orderService.checkout({
+                ...data,
+                status: OrderStatus.Pending,
+                cartItemIds:
+                    userCart?.cartItems.map((item) => item.cartItemId) || [],
+                addressId: Number(data.addressId),
+            });
+            clearCartClient();
+            toast.success('Checkout successfully');
+            setIsLoading(false);
+            reset();
+            setIsSuccessful(true);
+            router.push(`${ROUTES.ORDER_SUCCESS}?orderId=${orderId}`);
+            setCookie('order_success', true);
+        } catch (error) {
+            toast.error('Checkout failed');
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (address) {
+            setValue('addressId', address.id.toString());
+        }
+    }, [address, setValue]);
+
     return (
         <Box>
             <PageTop
@@ -36,54 +120,122 @@ const Checkout: NextPageWithLayout<Props> = () => {
                 ]}
             />
             <Box component="div" className="container-app">
-                <form>
+                <form onSubmit={handleSubmit(handelCheckout)}>
                     <Grid container spacing={32}>
                         <Grid item xs={12} md={6}>
                             <StyledTitle variant="h4">
                                 Shipping Address
                             </StyledTitle>
                             <Stack spacing={16}>
-                                <Input
-                                    label="Email address"
-                                    required
-                                    placeholder="Email address"
+                                <Controller
+                                    name="email"
+                                    control={control}
+                                    render={({ field, fieldState }) => {
+                                        return (
+                                            <Input
+                                                label="Email address"
+                                                required
+                                                placeholder="Email address"
+                                                isError={
+                                                    !!fieldState.error?.message
+                                                }
+                                                messageError={
+                                                    fieldState.error?.message
+                                                }
+                                                {...field}
+                                            />
+                                        );
+                                    }}
                                 />
-                                <Input
-                                    label="Full name"
-                                    required
-                                    placeholder="Full name"
+                                <Controller
+                                    name="fullName"
+                                    control={control}
+                                    render={({ field, fieldState }) => {
+                                        return (
+                                            <Input
+                                                label="Full name"
+                                                required
+                                                placeholder="Full name"
+                                                isError={
+                                                    !!fieldState.error?.message
+                                                }
+                                                messageError={
+                                                    fieldState.error?.message
+                                                }
+                                                {...field}
+                                            />
+                                        );
+                                    }}
                                 />
-                                <Input
-                                    label="Street Address"
-                                    required
-                                    placeholder="Street address"
+                                <Controller
+                                    name="phoneNumber"
+                                    control={control}
+                                    render={({ field, fieldState }) => {
+                                        return (
+                                            <Input
+                                                label="Phone Number"
+                                                placeholder="Phone number"
+                                                required
+                                                isError={
+                                                    !!fieldState.error?.message
+                                                }
+                                                messageError={
+                                                    fieldState.error?.message
+                                                }
+                                                {...field}
+                                                inputProps={{
+                                                    type: 'number',
+                                                    maxLength: 10,
+                                                }}
+                                                type="number"
+                                            />
+                                        );
+                                    }}
                                 />
-                                <Input
-                                    label="City"
-                                    required
-                                    placeholder="City"
-                                />
-                                <Input
-                                    label="Zip/Postal Code"
-                                    required
-                                    placeholder="Zip/Postal code"
-                                />
-                                <Input
-                                    label="Country"
-                                    required
-                                    placeholder="Country"
-                                />
-                                <Input
-                                    label="State/Province"
-                                    required
-                                    placeholder="State/Province"
-                                />
-                                <Input label="Company" placeholder="Company" />
-                                <Input
-                                    label="Phone Number"
-                                    placeholder="Phone number"
-                                    required
-                                />
+                                <Stack>
+                                    <Label>Addresses</Label>
+                                    {addresses.length > 0 ? (
+                                        <RadioGroup
+                                            value={address?.id}
+                                            defaultChecked={address?.isDefault}
+                                            onChange={(e) => {
+                                                const _address = addresses.find(
+                                                    (a) =>
+                                                        a.id ===
+                                                        Number(e.target.value),
+                                                );
+                                                setAddress(
+                                                    _address as TAddress,
+                                                );
+                                            }}
+                                        >
+                                            {addresses?.map((address) => {
+                                                return (
+                                                    <FormControlLabel
+                                                        key={address.id}
+                                                        value={address.id}
+                                                        defaultChecked={
+                                                            address.isDefault
+                                                        }
+                                                        control={
+                                                            <Radio
+                                                                disableRipple
+                                                                defaultChecked={
+                                                                    address.isDefault
+                                                                }
+                                                            />
+                                                        }
+                                                        label={`${address.addressDetail}, ${address.ward}, ${address.district}, ${address.province}`}
+                                                    />
+                                                );
+                                            })}
+                                        </RadioGroup>
+                                    ) : (
+                                        <TextLink href={ROUTES.ACCOUNT_ADDRESS}>
+                                            Add new address
+                                        </TextLink>
+                                    )}
+                                </Stack>
                             </Stack>
                         </Grid>
 
@@ -95,23 +247,13 @@ const Checkout: NextPageWithLayout<Props> = () => {
                                     </StyledTitle>
                                     <RadioGroup
                                         aria-labelledby="demo-radio-buttons-group-label"
-                                        defaultValue="female"
+                                        defaultValue="cash"
                                         name="radio-buttons-group"
                                     >
                                         <StyledFormControlLabel
-                                            value="female"
-                                            control={<Radio disableRipple />}
-                                            label="Check / Money order"
-                                        />
-                                        <StyledFormControlLabel
-                                            value="male"
+                                            value="cash"
                                             control={<Radio disableRipple />}
                                             label="Cash On Delivery"
-                                        />
-                                        <StyledFormControlLabel
-                                            value="other"
-                                            control={<Radio disableRipple />}
-                                            label="Bank Transfer Payment"
                                         />
                                     </RadioGroup>
                                 </Box>
@@ -121,11 +263,14 @@ const Checkout: NextPageWithLayout<Props> = () => {
                                     Order Summary
                                 </StyledTitle>
                                 <StyledListCart>
-                                    {/* <StyledCartItem />
-                                    <StyledCartItem />
-                                    <StyledCartItem />
-                                    <StyledCartItem />
-                                    <StyledCartItem /> */}
+                                    {userCart?.cartItems.map((item) => {
+                                        return (
+                                            <StyledCartItem
+                                                key={item.cartItemId}
+                                                cartItem={item}
+                                            />
+                                        );
+                                    })}
                                 </StyledListCart>
                                 <Stack gap={16} paddingY={16}>
                                     <Stack gap={8}>
@@ -137,7 +282,9 @@ const Checkout: NextPageWithLayout<Props> = () => {
                                             <Typography>
                                                 Cart subtotal
                                             </Typography>
-                                            <Typography>$65.00</Typography>
+                                            <Typography>
+                                                {formatCurrency(totalPrice)}
+                                            </Typography>
                                         </Stack>
                                         <Stack
                                             direction="row"
@@ -154,43 +301,27 @@ const Checkout: NextPageWithLayout<Props> = () => {
                                         >
                                             <Typography>Order total</Typography>
                                             <Typography fontWeight={500}>
-                                                $85.00
+                                                {formatCurrency(totalPrice)}
                                             </Typography>
                                         </Stack>
                                     </Stack>
-                                    <Box>
-                                        <Input
-                                            label="Order comment"
-                                            multiline
-                                            sx={{
-                                                'textarea.MuiInputBase-input': {
-                                                    minHeight: 70,
-                                                    maxHeight: 200,
-                                                    paddingTop: 16,
-                                                },
-                                            }}
-                                        />
-                                    </Box>
-                                    <Stack direction="row" gap={16}>
-                                        <Input
-                                            placeholder="Enter discount code"
-                                            sx={{
-                                                height: '100%',
-                                                '.MuiInputBase-input ': {
-                                                    height: '100%',
-                                                },
-                                            }}
-                                        />
-                                        <Button
-                                            typeButton="secondary"
-                                            sx={{
-                                                flexShrink: 0,
-                                            }}
-                                        >
-                                            Apply Discount
-                                        </Button>
-                                    </Stack>
-                                    <Button>Place Order</Button>
+                                    <Button
+                                        type="submit"
+                                        disabled={
+                                            userCart?.cartItems.length === 0
+                                        }
+                                        isLoading={isLoading}
+                                    >
+                                        Place order
+                                    </Button>
+                                    <Button
+                                        typeButton="secondary"
+                                        onClick={() => {
+                                            router.push(ROUTES.PRODUCTS);
+                                        }}
+                                    >
+                                        Back to shopping
+                                    </Button>
                                 </Stack>
                             </Grid>
                         </Grid>
@@ -253,5 +384,25 @@ const StyledCartItem = styled(CartItem)`
         display: none;
     }
 `;
+
+export const getServerSideProps = withProtect({
+    isAdmin: false,
+    isProtect: true,
+})(async (ctx) => {
+    const { auth_token } = getCookies({
+        req: ctx.req,
+        res: ctx.res,
+    });
+
+    const addresses = await axiosServer(auth_token as string)
+        .get('/api/address')
+        .then((res) => res.data.data);
+
+    return {
+        props: {
+            addresses,
+        },
+    };
+});
 
 export default Checkout;

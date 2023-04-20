@@ -10,7 +10,7 @@ import { grey } from '@mui/material/colors';
 
 import { pxToRem } from '@/utils/pxToRem';
 
-type Props = {
+export type Props = {
     typeButton?: 'primary' | 'secondary';
     isLoading?: boolean;
     propsIconLoading?: CircularProgressProps;

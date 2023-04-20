@@ -1,57 +1,40 @@
 import { useRouter } from 'next/router';
 
-import { Box, List, ListItem, Typography, styled } from '@mui/material';
+import { Box, List, ListItem, styled } from '@mui/material';
 
 import { TextLink } from '@/components/common';
-import { DEVICE } from '@/constants';
+import { DEVICE, ROUTES } from '@/constants';
 import { pxToRem } from '@/utils/pxToRem';
 
 const LIST_ITEM = [
     {
-        href: '/account',
+        href: ROUTES.ACCOUNT,
         title: 'My Account',
     },
     {
-        href: '/account/orders',
+        href: ROUTES.ACCOUNT_ORDER,
         title: 'My Orders',
     },
     {
-        href: '/account/dowProducts',
-        title: 'My Downloadable Products',
+        href: ROUTES.ACCOUNT_ADDRESS,
+        title: 'Address',
     },
     {
-        href: '/account/wishlist',
-        title: 'My Wish List',
+        href: ROUTES.ACCOUNT_CHANGE_INFO,
+        title: 'Update Information',
     },
     {
-        href: '/account/addressBook',
-        title: 'Address Book',
+        href: ROUTES.CHANGE_PASS,
+        title: 'Change Password',
     },
     {
-        href: '/account/accInfor',
-        title: 'Account Information',
-    },
-    {
-        href: '/account/storePayMet',
-        title: 'Stored Payment Methods',
-    },
-    {
-        href: '/account/productReview',
+        href: ROUTES.ACCOUNT_PRODUCT_REVIEW,
         title: 'My Product Reviews',
-    },
-    {
-        href: '/account/newSub',
-        title: 'Newsletter Subscriptions',
-    },
-    {
-        href: '/account/abc',
-        title: 'Logout',
     },
 ];
 
 const Sidebar = () => {
     const router = useRouter();
-    const emtyWishlist = true;
 
     return (
         <MainSidebar>
@@ -77,24 +60,6 @@ const Sidebar = () => {
                     </List>
                 </nav>
             </StyledSideBarWrapper>
-            {emtyWishlist ? (
-                <Box sx={{ marginTop: 30 }}>
-                    <Typography
-                        variant="h3"
-                        sx={{
-                            fontSize: 20,
-                            fontWeight: 600,
-                        }}
-                    >
-                        My Wish List
-                    </Typography>
-                    <Typography component="span">
-                        You have no items in your wish list.
-                    </Typography>
-                </Box>
-            ) : (
-                <></>
-            )}
         </MainSidebar>
     );
 };
@@ -106,6 +71,7 @@ const MainSidebar = styled('div')`
 const StyledSideBarWrapper = styled(Box)`
     padding: 0;
     border: 1px solid ${(p) => p.theme.themeColor.border};
+    border-radius: 4px;
 
     @media screen and (${DEVICE.tablet}) {
         padding: ${pxToRem(24)};

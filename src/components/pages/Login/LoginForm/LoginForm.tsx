@@ -61,6 +61,9 @@ function LoginFrom() {
                     id: res.data.id,
                     fullName: res.data.fullName,
                     roles: res.data.roles,
+                    dateOfBirth: res.data.dateOfBirth,
+                    phoneNumber: res.data.phoneNumber,
+                    sex: res.data.sex,
                 },
                 accessToken: res.data.token,
             });
@@ -69,8 +72,10 @@ function LoginFrom() {
             setCookie('auth_token', res.data.token);
             setCookie('roles', res.data.roles);
             router.push(ROUTES.HOME);
-        } catch (error) {
+        } catch (error: any) {
+            console.log(error);
             setIsLoading(false);
+            toast.error(error?.response?.data?.message || 'Login failed!');
         }
     };
 

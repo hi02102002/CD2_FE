@@ -3,6 +3,7 @@ import {
     IconArrowBackUp,
     IconBallBasketball,
     IconCheese,
+    IconTruckDelivery,
     IconUsers,
 } from '@tabler/icons-react';
 
@@ -14,6 +15,11 @@ const sidebarItems: Array<SidebarItem> = [
         href: ROUTES.ADMIN,
         name: 'Dashboard',
         Icon: IconApps,
+    },
+    {
+        href: ROUTES.ADMIN_ORDERS,
+        name: 'Orders',
+        Icon: IconTruckDelivery,
     },
     {
         href: ROUTES.ADMIN_CUSTOMER,

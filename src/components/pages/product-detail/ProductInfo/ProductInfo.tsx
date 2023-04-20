@@ -1,28 +1,15 @@
 import { useState } from 'react';
 
-import Image from 'next/image';
-
 import { Box, Grid, Rating, Stack, Typography, styled } from '@mui/material';
-import {
-    IconArrowsRightLeft,
-    IconQuestionMark,
-    IconShare,
-    IconStar,
-} from '@tabler/icons-react';
+import { IconStar } from '@tabler/icons-react';
 import { toast } from 'react-hot-toast';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 
-import imgFooter from '@/assets/footer-payment.png';
 import { ChooseOptions } from '@/components/client';
-import {
-    Button,
-    InputChangeAmount,
-    TextHover,
-    Tooltip,
-} from '@/components/common';
+import { Button, InputChangeAmount, Tooltip } from '@/components/common';
 import { DEVICE } from '@/constants';
 import { useSelectedProductVariant } from '@/hooks/useSelectedProductVariant';
 import useAuthStore from '@/store/auth';
@@ -64,6 +51,10 @@ function ProductInfo({ product }: Props) {
             toast.error(' You must choose options before add to cart');
             return;
         }
+        if (product.quantity === 0) {
+            toast.error('This product is out of stock');
+            return;
+        }
         try {
             setLoading(true);
             await addProductToCart({
@@ -79,11 +70,14 @@ function ProductInfo({ product }: Props) {
         }
     };
 
+    const originalPrice = selectedProductVariant?.price || product.price;
+    const discountPrice =
+        originalPrice - (originalPrice * product.discountPercent) / 100;
+
     return (
         <StyledProductInfo item md={5.5} xs={12} className="product-info">
             <Box className="product-title-wrap">
                 <Typography component="span">{product.name}</Typography>
-
                 <Tooltip title="Add to Wish list" arrow placement="left">
                     <Box>
                         <Button
@@ -99,11 +93,11 @@ function ProductInfo({ product }: Props) {
             <Box className="product-rate">
                 <Box className="product-rate-price">
                     <Typography className="price">
-                        {formatCurrency(
-                            selectedProductVariant?.price || product.price,
-                        )}
+                        {formatCurrency(discountPrice)}
                     </Typography>
-                    <Typography className="discount">$25.00</Typography>
+                    <Typography className="discount">
+                        {formatCurrency(originalPrice)}
+                    </Typography>
                 </Box>
                 <Box className="product-rate-review">
                     <Rating
@@ -152,44 +146,17 @@ function ProductInfo({ product }: Props) {
                                 onClick={handelAddProductToCart}
                                 disabled={
                                     !isSelectAllKeyRequired ||
-                                    isQuantityInputLargerProductQuantity
+                                    isQuantityInputLargerProductQuantity ||
+                                    product.quantity === 0
                                 }
                                 isLoading={loading}
                             >
                                 Add to Cart
                             </StyledAddCartButton>
                         </Stack>
-
-                        <StyledBuyButton
-                            className="button-buy"
-                            typeButton="primary"
-                        >
-                            Buy It Now
-                        </StyledBuyButton>
                     </Box>
                 </Box>
             </Box>
-            <Stack direction="row" spacing={20} alignItems="center">
-                <StyledTextHover>
-                    <IconArrowsRightLeft />
-                    Add to Compare
-                </StyledTextHover>
-                <StyledTextHover>
-                    <IconShare />
-                    Share
-                </StyledTextHover>
-                <StyledTextHover>
-                    <IconQuestionMark />
-                    Ask a Question
-                </StyledTextHover>
-            </Stack>
-
-            <StyledInfoFooter component="div">
-                <Image src={imgFooter} alt={''}></Image>
-                <Typography variant="caption">
-                    Guarantee safe & secure checkout
-                </Typography>
-            </StyledInfoFooter>
         </StyledProductInfo>
     );
 }
@@ -290,36 +257,6 @@ const StyledProductInfo = styled(Grid)`
 const StyledAddCartButton = styled(Button)`
     height: ${pxToRem(44)};
     width: 100%;
-`;
-
-const StyledBuyButton = styled(Button)`
-    margin: ${pxToRem(20)} 0;
-    width: 100%;
-`;
-
-const StyledTextHover = styled(TextHover)`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: ${pxToRem(8)};
-    cursor: pointer;
-`;
-
-const StyledInfoFooter = styled(Box)`
-    width: 100%;
-    height: ${pxToRem(80)};
-    background-color: #f7f7f7;
-    margin: ${pxToRem(20)} 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    span {
-        margin-top: ${pxToRem(10)};
-        font-size: ${pxToRem(16)};
-        color: #000;
-    }
 `;
 
 export default ProductInfo;

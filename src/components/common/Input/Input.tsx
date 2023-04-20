@@ -1,15 +1,18 @@
+import { memo } from 'react';
+
 import {
     Box,
     BoxProps,
     InputBase,
     InputBaseProps,
-    Typography,
-    css,
     styled,
 } from '@mui/material';
 import { red } from '@mui/material/colors';
 
 import { pxToRem } from '@/utils/pxToRem';
+
+import Label from '../Label/Label';
+import MessageError from '../MessageError/MessageError';
 
 type Props = {
     label?: string;
@@ -17,57 +20,27 @@ type Props = {
     messageError?: string;
 } & InputBaseProps;
 
-const Input = ({ label, required, messageError, isError, ...rest }: Props) => {
-    return (
-        <StyledInputWrap required={required}>
-            {label && (
-                <Typography component="label" variant="body1" className="label">
-                    {label}
-                </Typography>
-            )}
-            <StyledInput required={required} isError={isError} {...rest} />
-            {messageError && isError && (
-                <Typography
-                    variant="body1"
-                    component="p"
-                    className="message-error"
-                >
-                    {messageError}
-                </Typography>
-            )}
-        </StyledInputWrap>
-    );
-};
+const Input = memo(
+    ({ label, required, messageError, isError, ...rest }: Props) => {
+        return (
+            <StyledInputWrap>
+                {label && <Label required={required}>{label}</Label>}
+                <StyledInput isError={isError} {...rest} />
+                {messageError && isError && (
+                    <MessageError>{messageError}</MessageError>
+                )}
+            </StyledInputWrap>
+        );
+    },
+);
+
+Input.displayName = 'Input';
 
 const StyledInputWrap = styled(Box)<BoxProps & { required?: boolean }>`
     display: flex;
     flex-direction: column;
     width: 100%;
-
-    .label {
-        display: flex;
-        align-items: center;
-        margin-bottom: ${pxToRem(5)};
-        height: 30px;
-
-        &::after {
-            ${({ required }) =>
-                required
-                    ? css`
-                          content: '*';
-                          color: #e02b27;
-                          font-size: 1.2rem;
-                          margin: 0 0 0 6px;
-                      `
-                    : undefined}
-        }
-    }
-
-    .message-error {
-        margin-top: ${pxToRem(7)};
-        font-size: ${pxToRem(12)};
-        color: ${red[500]};
-    }
+    gap: ${pxToRem(8)};
 `;
 
 const StyledInput = styled(InputBase)<Props>`

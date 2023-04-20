@@ -8,4 +8,7 @@ export type User = {
     fullName: string;
     email: string;
     roles: ROLE[];
+    phoneNumber: string | null;
+    sex: string | null;
+    dateOfBirth: string;
 };

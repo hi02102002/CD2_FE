@@ -1,13 +1,15 @@
+import { memo } from 'react';
+
 import {
     Box,
     BoxProps,
     Select as MuiSelect,
     SelectProps,
     Typography,
-    css,
     styled,
 } from '@mui/material';
 
+import { Label, MessageError } from '@/components/common';
 import { pxToRem } from '@/utils/pxToRem';
 
 type Props = {
@@ -19,75 +21,65 @@ type Props = {
     required?: boolean;
     SelectProps?: Omit<SelectProps<any>, 'label' | 'placeholder'>;
     placeholder?: string;
+    children?: React.ReactNode;
 };
 
-const Select = ({
-    className,
-    isError,
-    label,
-    messageError,
-    sx,
-    SelectProps,
-    placeholder,
-}: Props) => {
-    console.log({ className, isError, messageError, sx });
-    return (
-        <StyledSelect>
-            {label && (
-                <Typography component="label" variant="body1" className="label">
-                    {label}
-                </Typography>
-            )}
-            <StyledMuiSelect
-                {...SelectProps}
-                displayEmpty
-                renderValue={(value: any) =>
-                    value?.length ? (
-                        Array.isArray(value) ? (
-                            value.join(', ')
+const Select = memo(
+    ({
+        isError,
+        label,
+        messageError,
+        SelectProps,
+        placeholder,
+        required,
+        children,
+    }: Props) => {
+        return (
+            <StyledSelect>
+                {label && <Label required={required}>{label}</Label>}
+                <StyledMuiSelect
+                    {...SelectProps}
+                    displayEmpty
+                    renderValue={(value: any) =>
+                        value?.length ? (
+                            Array.isArray(value) ? (
+                                value.join(', ')
+                            ) : (
+                                value
+                            )
                         ) : (
-                            value
+                            <Typography className="placeholder">
+                                {placeholder || 'Select'}
+                            </Typography>
                         )
-                    ) : (
-                        <Typography className="placeholder">
-                            {placeholder || 'Select'}
-                        </Typography>
-                    )
-                }
-            />
-        </StyledSelect>
-    );
-};
+                    }
+                    MenuProps={{
+                        PaperProps: {
+                            sx: {
+                                boxShadow:
+                                    '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+                                ...SelectProps?.MenuProps?.PaperProps?.sx,
+                            },
+                            ...SelectProps?.MenuProps?.PaperProps,
+                        },
+                    }}
+                    error={isError || !!messageError}
+                >
+                    {children}
+                </StyledMuiSelect>
+                {messageError && <MessageError>{messageError}</MessageError>}
+            </StyledSelect>
+        );
+    },
+);
+
+Select.displayName = 'Select';
 
 const StyledSelect = styled(Box)<Props>`
     display: flex;
     flex-direction: column;
     width: 100%;
-
-    .label {
-        display: flex;
-        align-items: center;
-        margin-bottom: ${pxToRem(5)};
-        height: 30px;
-
-        &::after {
-            ${({ required }) =>
-                required
-                    ? css`
-                          content: '*';
-                          color: #e02b27;
-                          font-size: 1.2rem;
-                          margin: 0 0 0 6px;
-                      `
-                    : undefined}
-        }
-    }
-
-    .message-error {
-        margin-top: ${pxToRem(7)};
-        font-size: ${pxToRem(12)};
-        color: #e02b27;
-    }
+    gap: ${pxToRem(8)};
 `;
 
 const StyledMuiSelect = styled(MuiSelect)`

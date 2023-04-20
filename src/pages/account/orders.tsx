@@ -4,14 +4,10 @@ import { ROUTES } from '@/constants';
 import AccountLayout from '@/layouts/account';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
+import { withProtect } from '@/utils/withProtect';
 
 const Orders: NextPageWithLayout = () => {
-    return (
-        // <Box className="container-app" sx={{ padding: 0, marginBottom: 24 }}>
-        //     <Alert severity="warning">You have placed no orders.</Alert>
-        // </Box>
-        <OrderTable />
-    );
+    return <OrderTable />;
 };
 
 Orders.getLayout = (page) => {
@@ -38,5 +34,10 @@ Orders.getLayout = (page) => {
         </ClientLayout>
     );
 };
+
+export const getServerSideProps = withProtect({
+    isAdmin: false,
+    isProtect: true,
+})();
 
 export default Orders;

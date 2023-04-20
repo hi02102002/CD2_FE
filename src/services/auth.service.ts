@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { omit } from 'lodash';
 
 import axiosClient from '@/lib/axiosClient';
 import { BaseResponse } from '@/types/shared';
@@ -34,6 +35,50 @@ class AuthService {
 
     async logout() {
         await axios.get('/api/logout');
+    }
+
+    async requestForgotPassword(email: string) {
+        return await axiosClient.post(
+            '/api/user/resetPassword',
+            {},
+            {
+                params: {
+                    email,
+                },
+            },
+        );
+    }
+
+    async resetPassword(fields: {
+        confirmPassword: string;
+        password: string;
+        token: string;
+    }) {
+        return await axiosClient.post(
+            '/api/user/savePassword',
+            {
+                ...omit(fields, ['token']),
+            },
+            {
+                params: {
+                    token: fields.token,
+                },
+            },
+        );
+    }
+
+    async changePassword(fields: {
+        oldPassword: string;
+        newPassword: string;
+        confirmNewPassword: string;
+    }) {
+        return await axiosClient.put('/api/user/changePassword', fields);
+    }
+
+    async changeInfo(
+        fields: Omit<User, 'id' | 'roles' | 'email'>,
+    ): Promise<BaseResponse<Omit<User, 'id' | 'roles' | 'email'>>> {
+        return await axiosClient.put('/api/user', fields);
     }
 }
 
