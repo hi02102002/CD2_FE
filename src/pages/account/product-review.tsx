@@ -1,29 +1,25 @@
-import { Alert, Box } from '@mui/material';
-
 import { PageTop } from '@/components/common';
+import { ReviewTable } from '@/components/pages/account';
 import { ROUTES } from '@/constants';
 import AccountLayout from '@/layouts/account';
 import { ClientLayout } from '@/layouts/client';
 import { NextPageWithLayout } from '@/types/shared';
+import { withProtect } from '@/utils/withProtect';
 
-const StorePayment: NextPageWithLayout = () => {
+const productReview: NextPageWithLayout = () => {
     return (
-        <Box component="div" className="main-content">
-            <Alert severity="warning">
-                You have no stored payment methods.
-            </Alert>
-        </Box>
+        // <Box className="container-app" sx={{ padding: 0, marginBottom: 24 }}>
+        //     <Alert severity="warning">You have submitted no reviews.</Alert>
+        // </Box>
+        <ReviewTable />
     );
 };
 
-StorePayment.getLayout = (page) => {
+productReview.getLayout = (page) => {
     return (
-        <ClientLayout
-            title="My Store Payment Methods"
-            description="My Store Payment Methods"
-        >
+        <ClientLayout title="My Product Review" description="My Product Review">
             <PageTop
-                title="Store Payment Methods"
+                title="My Product Review"
                 breadcrumbItems={[
                     {
                         href: ROUTES.HOME,
@@ -35,7 +31,7 @@ StorePayment.getLayout = (page) => {
                     },
                     {
                         href: ROUTES.LOGIN,
-                        name: 'Stored Payment Methods',
+                        name: 'My Product Review',
                     },
                 ]}
             />
@@ -44,4 +40,9 @@ StorePayment.getLayout = (page) => {
     );
 };
 
-export default StorePayment;
+export const getServerSideProps = withProtect({
+    isAdmin: false,
+    isProtect: true,
+})();
+
+export default productReview;

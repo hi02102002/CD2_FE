@@ -1,26 +1,18 @@
 import { useState } from 'react';
 
-import { useRouter } from 'next/router';
-
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-    Box,
-    Checkbox,
-    FormControlLabel,
-    Stack,
-    Typography,
-    styled,
-} from '@mui/material';
+import { Box, Stack, Typography, styled } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import * as yup from 'yup';
 
 import { Button, Input, PageTop } from '@/components/common';
-import { ROUTES } from '@/constants';
+import { DEVICE, ROUTES } from '@/constants';
+import AccountLayout from '@/layouts/account';
 import { ClientLayout } from '@/layouts/client';
 import authService from '@/services/auth.service';
 import { NextPageWithLayout } from '@/types/shared';
-import { pxToRem } from '@/utils/pxToRem';
+import { withProtect } from '@/utils/withProtect';
 
 const schema = yup.object({
     password: yup
@@ -43,61 +35,68 @@ const schema = yup.object({
         .string()
         .required('Confirm password is required')
         .oneOf([yup.ref('password')], 'Re-entered password is incorrect'),
+    currentPassword: yup.string().required('Current password is required'),
 });
 
 type FormValues = yup.InferType<typeof schema>;
 
-const ResetPassword: NextPageWithLayout = () => {
-    const [typeInputPassword, setTypeInputPassword] =
-        useState<string>('password');
+const ChangePassword: NextPageWithLayout = () => {
     const { handleSubmit, control, reset } = useForm<FormValues>({
         resolver: yupResolver(schema),
     });
-    const router = useRouter();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleToggleTypePassword = () => {
-        setTypeInputPassword((type) => (type === 'text' ? 'password' : 'text'));
-    };
-
-    const handelResetPass = async (data: FormValues) => {
-        const token = router.query.token as string;
-
+    const handelChangePassword = async (data: FormValues) => {
         try {
-            if (!token) {
-                toast.error('Token invalid');
-                return;
-            }
             setIsLoading(true);
-            await authService.resetPassword({
-                token,
-                confirmPassword: data.confirmPassword,
-                password: data.password,
+            await authService.changePassword({
+                confirmNewPassword: data.confirmPassword,
+                newPassword: data.password,
+                oldPassword: data.currentPassword,
             });
-
             setIsLoading(false);
-            toast.success('Reset password successfully');
-            router.push(ROUTES.LOGIN);
+            toast.success('Change password successfully');
             reset({
-                confirmPassword: '',
+                currentPassword: '',
                 password: '',
+                confirmPassword: '',
             });
         } catch (error: any) {
             setIsLoading(false);
             toast.error(
-                error?.response?.data?.message || 'Something went wrong',
+                error?.response?.data?.data || 'Change password failed',
             );
         }
     };
 
     return (
-        <Box component="div" className="container-app">
-            <StyledResetPassWrapper>
-                <Typography marginBottom={24} textAlign="center">
-                    Enter new password to reset your password
-                </Typography>
-                <form onSubmit={handleSubmit(handelResetPass)}>
-                    <Stack spacing={16}>
+        <Box
+            p={16}
+            width="100%"
+            border={(theme) => `1px solid ${theme.themeColor.border}`}
+        >
+            <Stack gap={16}>
+                <Typography variant="h3">Change password</Typography>
+                <form onSubmit={handleSubmit(handelChangePassword)}>
+                    <Stack gap={16}>
+                        <Controller
+                            control={control}
+                            name="currentPassword"
+                            render={({ field, fieldState }) => {
+                                return (
+                                    <Input
+                                        label="Current password"
+                                        required
+                                        placeholder="Current password"
+                                        type="password"
+                                        error={!!fieldState.error?.message}
+                                        isError={!!fieldState.error?.message}
+                                        messageError={fieldState.error?.message}
+                                        {...field}
+                                    />
+                                );
+                            }}
+                        />
                         <Controller
                             control={control}
                             name="password"
@@ -107,7 +106,7 @@ const ResetPassword: NextPageWithLayout = () => {
                                         label="New password"
                                         required
                                         placeholder="New password"
-                                        type={typeInputPassword}
+                                        type="password"
                                         error={!!fieldState.error?.message}
                                         isError={!!fieldState.error?.message}
                                         messageError={fieldState.error?.message}
@@ -125,7 +124,7 @@ const ResetPassword: NextPageWithLayout = () => {
                                         label="Confirm new password"
                                         required
                                         placeholder="Confirm new password"
-                                        type={typeInputPassword}
+                                        type="password"
                                         error={!!fieldState.error?.message}
                                         isError={!!fieldState.error?.message}
                                         messageError={fieldState.error?.message}
@@ -134,66 +133,53 @@ const ResetPassword: NextPageWithLayout = () => {
                                 );
                             }}
                         />
-                        <FormControlLabel
-                            sx={{
-                                userSelect: 'none',
-                            }}
-                            control={
-                                <Checkbox
-                                    sx={{
-                                        padding: 0,
-                                        marginRight: 8,
-                                    }}
-                                    disableRipple
-                                />
-                            }
-                            label="Show password"
-                            onChange={handleToggleTypePassword}
-                        />
-                        <Button type="submit" isLoading={isLoading}>
+                        <StyledButton type="submit" isLoading={isLoading}>
                             Save changes
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                router.push(ROUTES.LOGIN);
-                            }}
-                            typeButton="secondary"
-                        >
-                            Back to login
-                        </Button>
+                        </StyledButton>
                     </Stack>
                 </form>
-            </StyledResetPassWrapper>
+            </Stack>
         </Box>
     );
 };
 
-ResetPassword.getLayout = (page) => (
-    <ClientLayout
-        title="Reset Your Password"
-        description="Enter new password to reset your password"
-    >
-        <PageTop
-            title="Reset Your Password
-                "
-            breadcrumbItems={[
-                {
-                    href: ROUTES.HOME,
-                    name: 'Home',
-                },
-                {
-                    href: ROUTES.FORGOT_PASS,
-                    name: 'Reset Your Password',
-                },
-            ]}
-        />
-        {page}
-    </ClientLayout>
-);
+const StyledButton = styled(Button)`
+    width: 100%;
 
-export default ResetPassword;
-
-const StyledResetPassWrapper = styled(Box)`
-    max-width: ${pxToRem(500)};
-    margin: 0 auto;
+    @media screen and (${DEVICE.tablet}) {
+        align-self: flex-end;
+        width: max-content;
+    }
 `;
+
+ChangePassword.getLayout = (page) => {
+    return (
+        <ClientLayout title="Change Password" description="Change Password">
+            <PageTop
+                title="Change Password"
+                breadcrumbItems={[
+                    {
+                        href: ROUTES.HOME,
+                        name: 'Home',
+                    },
+                    {
+                        href: ROUTES.ACCOUNT,
+                        name: 'Account',
+                    },
+                    {
+                        href: ROUTES.CHANGE_PASS,
+                        name: 'Change Password',
+                    },
+                ]}
+            />
+            <AccountLayout>{page}</AccountLayout>
+        </ClientLayout>
+    );
+};
+
+export const getServerSideProps = withProtect({
+    isAdmin: false,
+    isProtect: true,
+})();
+
+export default ChangePassword;

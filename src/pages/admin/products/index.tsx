@@ -35,6 +35,7 @@ import productService from '@/services/product.service';
 import useProductStore from '@/store/product';
 import { Option, Product } from '@/types/product';
 import { NextPageWithLayout } from '@/types/shared';
+import { formatCurrency } from '@/utils/formatCurrency';
 import { withProtect } from '@/utils/withProtect';
 
 const Action = ({ productId }: { productId: number }) => {
@@ -320,7 +321,6 @@ const Products: NextPageWithLayout = () => {
                 disableColumnMenu: true,
                 sortable: false,
             },
-
             {
                 field: 'imageUrl',
                 headerName: 'Image',
@@ -343,13 +343,15 @@ const Products: NextPageWithLayout = () => {
                     );
                 },
             },
+
             {
                 field: 'name',
                 headerName: 'Name',
                 sortable: false,
                 filterable: false,
                 disableColumnMenu: true,
-                flex: 1,
+                width: 400,
+                flex: 0,
             },
             {
                 field: 'price',
@@ -357,6 +359,26 @@ const Products: NextPageWithLayout = () => {
                 sortable: false,
                 disableColumnMenu: true,
                 flex: 1,
+                renderCell(params) {
+                    return <Box>{formatCurrency(params.value)}</Box>;
+                },
+            },
+            {
+                field: 'quantity',
+                headerName: 'Quantity',
+                sortable: false,
+                disableColumnMenu: true,
+                flex: 1,
+            },
+            {
+                field: 'discountPercent',
+                headerName: 'Discount',
+                sortable: false,
+                disableColumnMenu: true,
+                flex: 1,
+                renderCell(params) {
+                    return !!params.value && <Box>{params.value}%</Box>;
+                },
             },
             {
                 field: 'action',

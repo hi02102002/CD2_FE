@@ -111,7 +111,15 @@ const DrawerCart = ({ isOpen, onClose }: Props) => {
                     >
                         View Cart
                     </Button>
-                    <Button>Proceed to Checkout</Button>
+                    <Button
+                        disabled={!isShowCartItems}
+                        onClick={() => {
+                            router.push(ROUTES.CHECKOUT);
+                            onClose?.();
+                        }}
+                    >
+                        Proceed to Checkout
+                    </Button>
                 </StyledBottom>
             )}
         </StyledDrawerCart>

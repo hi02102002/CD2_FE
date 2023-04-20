@@ -15,6 +15,7 @@ import productService from '@/services/product.service';
 import useAuthStore from '@/store/auth';
 import useCartStore from '@/store/cart';
 import { OptionKeyValues, Product } from '@/types/product';
+import { formatCurrency } from '@/utils/formatCurrency';
 import { optionsKeyValues } from '@/utils/optionsKeyValues';
 import { pxToRem } from '@/utils/pxToRem';
 
@@ -41,6 +42,10 @@ const ProductItem = ({ product }: Props) => {
     const handleAddToCart = async () => {
         if (!user) {
             toast.error('Please login to add this product to cart');
+            return;
+        }
+        if (product.quantity === 0) {
+            toast.error('This product is out of stock');
             return;
         }
         try {
@@ -133,6 +138,7 @@ const ProductItem = ({ product }: Props) => {
                             typeButton="secondary"
                             isLoading={loading}
                             onClick={handleAddToCart}
+                            disabled={product.quantity === 0}
                         >
                             Add to Cart
                         </Button>
@@ -149,12 +155,25 @@ const ProductItem = ({ product }: Props) => {
                     >
                         {product?.name}
                     </TextLink>
-                    <Stack direction="row" spacing={pxToRem(8)}>
-                        <Typography className="price">
-                            ${product?.price}
-                        </Typography>
-                        <Typography className="discount">$102.00</Typography>
-                    </Stack>
+                    {product.quantity > 0 ? (
+                        <Stack direction="row" spacing={8}>
+                            <Typography className="price">
+                                {formatCurrency(
+                                    product?.price -
+                                        product?.price *
+                                            ((product?.discountPercent || 0) /
+                                                100),
+                                )}
+                            </Typography>
+                            {!!product?.discountPercent && (
+                                <Typography className="discount">
+                                    ${product?.price}
+                                </Typography>
+                            )}
+                        </Stack>
+                    ) : (
+                        <Typography className="price">Out of stock</Typography>
+                    )}
                 </StyledContent>
             </StyledProductItem>
             {isOpen && (

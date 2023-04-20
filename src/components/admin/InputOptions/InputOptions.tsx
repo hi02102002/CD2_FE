@@ -4,9 +4,10 @@ import { Button, IconButton, Stack } from '@mui/material';
 import { IconX } from '@tabler/icons-react';
 import { cloneDeep } from 'lodash';
 
+import { Label } from '@/components/common';
+
 import InputOption from '../InputOption';
 import type { Option } from '../InputOption/InputOption';
-import Label from '../Label';
 
 type Props = {
     value?: Option[];

@@ -2,8 +2,9 @@ import { ChangeEvent, useState } from 'react';
 
 import { Grid, Stack, TextField } from '@mui/material';
 
+import { Label } from '@/components/common';
+
 import InputTags from '../InputTags';
-import Label from '../Label';
 
 export type Option = {
     key: string;

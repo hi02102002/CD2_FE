@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import Image from 'next/image';
 
@@ -18,9 +18,10 @@ type Props = {
     cartItem: TCartItem;
 } & BoxProps;
 
-export const CartItem = ({ cartItem, ...props }: Props) => {
+export const CartItem = React.memo(({ cartItem, ...props }: Props) => {
     const { removeProductFromCart, updateProductQuantity } = useCartStore();
     const [quantity, setQuantity] = useState<number>(cartItem.quantity);
+
     return (
         <StyledCartItem {...props} className={`${props.className} cart`}>
             <StyledImageWrapper className="img-wrapper">
@@ -46,7 +47,6 @@ export const CartItem = ({ cartItem, ...props }: Props) => {
                 <Box component="ul" className="product-attributes">
                     {cartItem.option &&
                         Object?.entries(cartItem.option).map(([key, value]) => {
-                            console.log(key, value);
                             return (
                                 <Box
                                     component="li"
@@ -123,7 +123,9 @@ export const CartItem = ({ cartItem, ...props }: Props) => {
             </Box>
         </StyledCartItem>
     );
-};
+});
+
+CartItem.displayName = 'CartItem';
 
 const StyledCartItem = styled(Box)`
     display: flex;

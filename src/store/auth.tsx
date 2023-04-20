@@ -10,6 +10,7 @@ type AuthState = {
     accessToken: string | null;
     setAuth: (data: { accessToken: string | null; user: User | null }) => void;
     logout: () => Promise<void>;
+    updateInfor: (data: Omit<User, 'id' | 'roles' | 'email'>) => Promise<void>;
 };
 
 const useAuthStore = create<AuthState>()(
@@ -21,12 +22,29 @@ const useAuthStore = create<AuthState>()(
                     user: null,
                     setAuth: (data) =>
                         set((state) => {
-                            (state.accessToken = data.accessToken),
-                                (state.user = data.user);
+                            state.accessToken = data.accessToken;
+                            state.user = data.user;
                         }),
                     logout: async () => {
                         await authService.logout();
                         set({ user: null, accessToken: null });
+                    },
+                    updateInfor: async (data) => {
+                        const res = await authService.changeInfo({
+                            fullName: data.fullName,
+                            dateOfBirth: data.dateOfBirth,
+                            phoneNumber: data.phoneNumber,
+                            sex: data.sex,
+                        });
+
+                        set((state) => {
+                            if (state.user) {
+                                state.user = {
+                                    ...state.user,
+                                    ...res.data,
+                                };
+                            }
+                        });
                     },
                 };
             }),

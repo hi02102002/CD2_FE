@@ -2,9 +2,8 @@ import { KeyboardEvent, useRef, useState } from 'react';
 
 import { Chip, Stack, TextField, styled } from '@mui/material';
 
+import { Label } from '@/components/common';
 import { pxToRem } from '@/utils/pxToRem';
-
-import Label from '../Label';
 
 export type Tag = {
     name: string;

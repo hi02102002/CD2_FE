@@ -7,8 +7,7 @@ import {
     styled,
 } from '@mui/material';
 
-import Label from '../Label';
-import MessageError from '../MessageError';
+import { Label, MessageError } from '@/components/common';
 
 type Props = {
     InputProps?: InputProps;

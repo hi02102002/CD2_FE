@@ -1,145 +1,110 @@
-import { Box, styled } from '@mui/material';
-import { Stack } from '@mui/system';
+import { useEffect, useState } from 'react';
+
+import { Alert, Box, CircularProgress, styled } from '@mui/material';
 
 import { TextLink } from '@/components/common';
 import { DEVICE } from '@/constants';
+import orderService from '@/services/order.service';
+import { Order } from '@/types/order';
+import { formatCurrency } from '@/utils/formatCurrency';
 import { pxToRem } from '@/utils/pxToRem';
 
-type Props = {};
+const OrderTable = () => {
+    const [orders, setOrders] = useState<Order[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
 
-const OrderTable = (props: Props) => {
-    console.log(props);
+    useEffect(() => {
+        (async () => {
+            try {
+                setLoading(true);
+                const res = await orderService.getOrdersUser();
+                console.log(res);
+                setOrders(res.data);
+                setLoading(false);
+            } catch (error) {
+                setLoading(false);
+            }
+        })();
+    }, []);
+
     return (
-        <StyledOrderTable>
-            <StyledTHead>
-                <StyledTr>
-                    <StyedCol component="th" className="id head">
-                        Order #
-                    </StyedCol>
-                    <StyedCol component="th" className="date head">
-                        Date
-                    </StyedCol>
-                    <StyedCol component="th" className="total head">
-                        Total
-                    </StyedCol>
-                    <StyedCol component="th" className="status head">
-                        Status
-                    </StyedCol>
-                    <StyedCol component="th" className="action head">
-                        Actions
-                    </StyedCol>
-                </StyledTr>
-            </StyledTHead>
-            <StyledTBody>
-                <StyledTr>
-                    <StyedCol
-                        data-title="Order #"
-                        component="th"
-                        className="id"
-                    >
-                        1
-                    </StyedCol>
-                    <StyedCol data-title="Date" component="th" className="date">
-                        02/10/2023
-                    </StyedCol>
-                    <StyedCol
-                        data-title="Total"
-                        component="th"
-                        className="total"
-                    >
-                        33$
-                    </StyedCol>
-                    <StyedCol
-                        data-title="Status"
-                        component="th"
-                        className="status"
-                    >
-                        Pending
-                    </StyedCol>
-                    <StyedCol
-                        data-title="Actions"
-                        component="th"
-                        className="action"
-                    >
-                        <Stack>
-                            <TextLink href="/account/order/view/1">
-                                View order
-                            </TextLink>
-                        </Stack>
-                    </StyedCol>
-                </StyledTr>
-                <StyledTr>
-                    <StyedCol
-                        data-title="Order #"
-                        component="th"
-                        className="id"
-                    >
-                        1
-                    </StyedCol>
-                    <StyedCol data-title="Date" component="th" className="date">
-                        02/10/2023
-                    </StyedCol>
-                    <StyedCol
-                        data-title="Total"
-                        component="th"
-                        className="total"
-                    >
-                        33$
-                    </StyedCol>
-                    <StyedCol
-                        data-title="Status"
-                        component="th"
-                        className="status"
-                    >
-                        Pending
-                    </StyedCol>
-                    <StyedCol
-                        data-title="Actions"
-                        component="th"
-                        className="action"
-                    >
-                        <TextLink href="/account/order/view/1">
-                            View order
-                        </TextLink>
-                    </StyedCol>
-                </StyledTr>
-                <StyledTr>
-                    <StyedCol
-                        data-title="Order #"
-                        component="th"
-                        className="id"
-                    >
-                        1
-                    </StyedCol>
-                    <StyedCol data-title="Date" component="th" className="date">
-                        02/10/2023
-                    </StyedCol>
-                    <StyedCol
-                        data-title="Total"
-                        component="th"
-                        className="total"
-                    >
-                        33$
-                    </StyedCol>
-                    <StyedCol
-                        data-title="Status"
-                        component="th"
-                        className="status"
-                    >
-                        Pending
-                    </StyedCol>
-                    <StyedCol
-                        data-title="Actions"
-                        component="th"
-                        className="action"
-                    >
-                        <TextLink href="/account/order/view/1">
-                            View order
-                        </TextLink>
-                    </StyedCol>
-                </StyledTr>
-            </StyledTBody>
-        </StyledOrderTable>
+        <>
+            {loading ? (
+                <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    width="100%"
+                >
+                    <CircularProgress size={24} />
+                </Box>
+            ) : orders.length > 0 ? (
+                <StyledOrderTable>
+                    <StyledTHead>
+                        <StyledTr>
+                            <StyedCol component="th" className="id head">
+                                Order #
+                            </StyedCol>
+                            <StyedCol component="th" className="date head">
+                                Date
+                            </StyedCol>
+                            <StyedCol component="th" className="total head">
+                                Total
+                            </StyedCol>
+                            <StyedCol component="th" className="status head">
+                                Status
+                            </StyedCol>
+                            <StyedCol component="th" className="action head">
+                                Actions
+                            </StyedCol>
+                        </StyledTr>
+                    </StyledTHead>
+                    <StyledTBody>
+                        {orders.map((order) => (
+                            <Row key={order.orderId} order={order} />
+                        ))}
+                    </StyledTBody>
+                </StyledOrderTable>
+            ) : (
+                <Alert
+                    severity="warning"
+                    sx={{
+                        width: '100%',
+                        alignSelf: 'start',
+                    }}
+                >
+                    You have no orders yet.{' '}
+                </Alert>
+            )}
+        </>
+    );
+};
+
+type RowProps = {
+    order: Order;
+};
+
+const Row = ({ order }: RowProps) => {
+    return (
+        <StyledTr>
+            <StyedCol data-title="Order #" component="th" className="id">
+                {order.orderId}
+            </StyedCol>
+            <StyedCol
+                data-title="Date"
+                component="th"
+                className="date"
+            ></StyedCol>
+            <StyedCol data-title="Total" component="th" className="total">
+                {formatCurrency(order.totalPrice)}
+            </StyedCol>
+            <StyedCol data-title="Status" component="th" className="status">
+                {order.status.toUpperCase()}
+            </StyedCol>
+            <StyedCol data-title="Actions" component="th" className="action">
+                <TextLink href="/account/order/view/1">View order</TextLink>
+            </StyedCol>
+        </StyledTr>
     );
 };
 
@@ -150,7 +115,9 @@ const StyledOrderTable = styled('table')`
 
 const StyledTHead = styled('thead')``;
 
-const StyledTBody = styled('tbody')``;
+const StyledTBody = styled('tbody')`
+    width: 100%;
+`;
 
 const StyledTr = styled('tr')``;
 

@@ -36,8 +36,12 @@ const App = ({
         useCartStore();
 
     useEffect(() => {
-        if (user?.id) {
-            fetchCart(user.id);
+        try {
+            if (user?.id) {
+                fetchCart(user.id);
+            }
+        } catch (error) {
+            console.log(error);
         }
     }, [user?.id, fetchCart]);
 
