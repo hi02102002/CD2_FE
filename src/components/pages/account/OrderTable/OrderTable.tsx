@@ -23,7 +23,7 @@ const OrderTable = () => {
     ) => {
         try {
             setIsLoadingCancel(true);
-            await orderService.updateStatus(orderId, OrderStatus.Cancel);
+            await orderService.updateStatus(orderId, status);
             setOrders((prev) => {
                 return prev.map((order) => {
                     if (order.orderId === orderId) {
@@ -43,14 +43,19 @@ const OrderTable = () => {
                 case OrderStatus.Received:
                     toast.success('Received order successfully');
             }
-        } catch (error) {
+        } catch (error: any) {
             setIsLoadingCancel(false);
             switch (status) {
                 case OrderStatus.Cancel:
-                    toast.success('Cancel order failed');
+                    toast.error(
+                        error?.response?.data?.message || 'Cancel order failed',
+                    );
                     break;
                 case OrderStatus.Received:
-                    toast.success('Received order failed');
+                    toast.error(
+                        error?.response?.data?.message ||
+                            'Received order failed',
+                    );
             }
         }
     };
