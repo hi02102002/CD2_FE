@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 
+import { useRouter } from 'next/router';
+
 import { Alert, Box, CircularProgress, Stack, styled } from '@mui/material';
 import { toast } from 'react-hot-toast';
 
 import { LoadingFullPage, TextHover, TextLink } from '@/components/common';
-import { DEVICE } from '@/constants';
+import { DEVICE, ROUTES } from '@/constants';
 import orderService from '@/services/order.service';
 import { Order, OrderStatus } from '@/types/order';
 import { formatCurrency } from '@/utils/formatCurrency';
@@ -15,7 +17,10 @@ const OrderTable = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [isLoadingCancel, setIsLoadingCancel] = useState<boolean>(false);
 
-    const handelCancelOrder = async (orderId: number) => {
+    const handelUpdateStatusOrder = async (
+        orderId: number,
+        status: Order['status'],
+    ) => {
         try {
             setIsLoadingCancel(true);
             await orderService.updateStatus(orderId, OrderStatus.Cancel);
@@ -24,17 +29,29 @@ const OrderTable = () => {
                     if (order.orderId === orderId) {
                         return {
                             ...order,
-                            status: OrderStatus.Cancel,
+                            status,
                         };
                     }
                     return order;
                 });
             });
             setIsLoadingCancel(false);
-            toast.success('Cancel order successfully');
+            switch (status) {
+                case OrderStatus.Cancel:
+                    toast.success('Cancel order successfully');
+                    break;
+                case OrderStatus.Received:
+                    toast.success('Received order successfully');
+            }
         } catch (error) {
             setIsLoadingCancel(false);
-            toast.error('Cancel order failed');
+            switch (status) {
+                case OrderStatus.Cancel:
+                    toast.success('Cancel order failed');
+                    break;
+                case OrderStatus.Received:
+                    toast.success('Received order failed');
+            }
         }
     };
 
@@ -90,7 +107,7 @@ const OrderTable = () => {
                             <Row
                                 key={order.orderId}
                                 order={order}
-                                onCancelOder={handelCancelOrder}
+                                onChangeStatus={handelUpdateStatusOrder}
                             />
                         ))}
                     </StyledTBody>
@@ -112,10 +129,12 @@ const OrderTable = () => {
 
 type RowProps = {
     order: Order;
-    onCancelOder: (orderId: number) => void;
+    onChangeStatus: (orderId: number, status: Order['status']) => void;
 };
 
-const Row = ({ order, onCancelOder }: RowProps) => {
+const Row = ({ order, onChangeStatus }: RowProps) => {
+    const router = useRouter();
+
     return (
         <StyledTr>
             <StyedCol data-title="Order #" component="th" className="id">
@@ -147,7 +166,12 @@ const Row = ({ order, onCancelOder }: RowProps) => {
                                 fontWeight: 500,
                                 cursor: 'pointer',
                             }}
-                            onClick={() => onCancelOder(order.orderId)}
+                            onClick={() =>
+                                onChangeStatus(
+                                    order.orderId,
+                                    OrderStatus.Cancel,
+                                )
+                            }
                         >
                             Cancel
                         </TextHover>
@@ -158,8 +182,27 @@ const Row = ({ order, onCancelOder }: RowProps) => {
                                 fontWeight: 500,
                                 cursor: 'pointer',
                             }}
+                            onClick={() =>
+                                onChangeStatus(
+                                    order.orderId,
+                                    OrderStatus.Received,
+                                )
+                            }
                         >
                             Received
+                        </TextHover>
+                    )}
+                    {order.status === OrderStatus.Received && (
+                        <TextHover
+                            sx={{
+                                fontWeight: 500,
+                                cursor: 'pointer',
+                            }}
+                            onClick={() => {
+                                router.push(ROUTES.ACCOUNT_PRODUCT_REVIEW);
+                            }}
+                        >
+                            Rate
                         </TextHover>
                     )}
                 </Stack>
