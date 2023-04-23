@@ -1,17 +1,42 @@
 import { useEffect, useState } from 'react';
 
-import { Alert, Box, CircularProgress, styled } from '@mui/material';
+import { Alert, Box, CircularProgress, Stack, styled } from '@mui/material';
+import { toast } from 'react-hot-toast';
 
-import { TextLink } from '@/components/common';
+import { LoadingFullPage, TextHover, TextLink } from '@/components/common';
 import { DEVICE } from '@/constants';
 import orderService from '@/services/order.service';
-import { Order } from '@/types/order';
+import { Order, OrderStatus } from '@/types/order';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { pxToRem } from '@/utils/pxToRem';
 
 const OrderTable = () => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const [isLoadingCancel, setIsLoadingCancel] = useState<boolean>(false);
+
+    const handelCancelOrder = async (orderId: number) => {
+        try {
+            setIsLoadingCancel(true);
+            await orderService.updateStatus(orderId, OrderStatus.Cancel);
+            setOrders((prev) => {
+                return prev.map((order) => {
+                    if (order.orderId === orderId) {
+                        return {
+                            ...order,
+                            status: OrderStatus.Cancel,
+                        };
+                    }
+                    return order;
+                });
+            });
+            setIsLoadingCancel(false);
+            toast.success('Cancel order successfully');
+        } catch (error) {
+            setIsLoadingCancel(false);
+            toast.error('Cancel order failed');
+        }
+    };
 
     useEffect(() => {
         (async () => {
@@ -29,6 +54,7 @@ const OrderTable = () => {
 
     return (
         <>
+            {isLoadingCancel && <LoadingFullPage />}
             {loading ? (
                 <Box
                     display="flex"
@@ -61,7 +87,11 @@ const OrderTable = () => {
                     </StyledTHead>
                     <StyledTBody>
                         {orders.map((order) => (
-                            <Row key={order.orderId} order={order} />
+                            <Row
+                                key={order.orderId}
+                                order={order}
+                                onCancelOder={handelCancelOrder}
+                            />
                         ))}
                     </StyledTBody>
                 </StyledOrderTable>
@@ -82,19 +112,25 @@ const OrderTable = () => {
 
 type RowProps = {
     order: Order;
+    onCancelOder: (orderId: number) => void;
 };
 
-const Row = ({ order }: RowProps) => {
+const Row = ({ order, onCancelOder }: RowProps) => {
     return (
         <StyledTr>
             <StyedCol data-title="Order #" component="th" className="id">
                 {order.orderId}
             </StyedCol>
-            <StyedCol
-                data-title="Date"
-                component="th"
-                className="date"
-            ></StyedCol>
+            <StyedCol data-title="Date" component="th" className="date">
+                {new Date(order.createdDate || Date.now()).toLocaleDateString(
+                    'en-US',
+                    {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    },
+                )}
+            </StyedCol>
             <StyedCol data-title="Total" component="th" className="total">
                 {formatCurrency(order.totalPrice)}
             </StyedCol>
@@ -102,7 +138,31 @@ const Row = ({ order }: RowProps) => {
                 {order.status.toUpperCase()}
             </StyedCol>
             <StyedCol data-title="Actions" component="th" className="action">
-                <TextLink href="/account/order/view/1">View order</TextLink>
+                <Stack direction="row" gap={16}>
+                    <TextLink href="/account/order/view/1">View order</TextLink>
+                    {(order.status === OrderStatus.Pending ||
+                        order.status === OrderStatus.Success) && (
+                        <TextHover
+                            sx={{
+                                fontWeight: 500,
+                                cursor: 'pointer',
+                            }}
+                            onClick={() => onCancelOder(order.orderId)}
+                        >
+                            Cancel
+                        </TextHover>
+                    )}
+                    {order.status === OrderStatus.Delivering && (
+                        <TextHover
+                            sx={{
+                                fontWeight: 500,
+                                cursor: 'pointer',
+                            }}
+                        >
+                            Received
+                        </TextHover>
+                    )}
+                </Stack>
             </StyedCol>
         </StyledTr>
     );
