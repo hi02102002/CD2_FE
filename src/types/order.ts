@@ -2,11 +2,10 @@ import { CartItem } from './cart';
 
 export enum OrderStatus {
     Pending = 'pending',
-    Accepted = 'accepted',
-    Rejected = 'rejected',
+    Cancel = 'cancel',
     Delivering = 'delivering',
-    Delivered = 'delivered',
     Success = 'success',
+    Received = 'received',
 }
 
 export type Order = {
@@ -19,6 +18,7 @@ export type Order = {
     status: OrderStatus;
     totalPrice: number;
     orderItemsResponses: Array<CartItem>;
+    createdDate: string | null;
 };
 
 export type OrderInput = Pick<

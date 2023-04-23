@@ -9,6 +9,7 @@ import {
     IconButton,
     MenuItem,
     Select,
+    SelectChangeEvent,
     Stack,
     Table,
     TableBody,
@@ -20,8 +21,10 @@ import {
 } from '@mui/material';
 import { GridColDef } from '@mui/x-data-grid';
 import { IconX } from '@tabler/icons-react';
+import { toast } from 'react-hot-toast';
 
 import { Breadcrumbs, MainContent } from '@/components/admin';
+import { LoadingFullPage } from '@/components/common';
 import { ROUTES } from '@/constants';
 import { useDisclosure } from '@/hooks/useDisclosure';
 import { AdminLayout } from '@/layouts/admin';
@@ -32,19 +35,78 @@ import { formatCurrency } from '@/utils/formatCurrency';
 
 const SelectStatus = ({
     currentStatus,
+    onStatusChange,
 }: {
     currentStatus: Order['status'];
+    onStatusChange: (status: Order['status']) => void;
 }) => {
+    const [status, setStatus] = useState<Order['status']>(currentStatus);
+    const handleChange = (event: SelectChangeEvent<string>) => {
+        setStatus(event.target.value as Order['status']);
+        onStatusChange(event.target.value as Order['status']);
+    };
+
     return (
-        <Select>
-            {Object.values(OrderStatus).map((status) => (
-                <MenuItem key={status}>{status}</MenuItem>
-            ))}
+        <Select
+            size="small"
+            sx={{
+                width: '100%',
+            }}
+            value={status}
+            defaultValue={currentStatus.toUpperCase()}
+            onChange={handleChange}
+            disabled={
+                status === OrderStatus.Cancel || status === OrderStatus.Received
+            }
+        >
+            {Object.values(OrderStatus).map((status) => {
+                let disabled =
+                    (status === OrderStatus.Delivering ||
+                        status === OrderStatus.Received) &&
+                    currentStatus === OrderStatus.Pending;
+
+                if (
+                    currentStatus === OrderStatus.Success &&
+                    (status === OrderStatus.Pending ||
+                        status === OrderStatus.Received)
+                ) {
+                    disabled = true;
+                }
+
+                if (
+                    (status === OrderStatus.Delivering ||
+                        status === OrderStatus.Received) &&
+                    currentStatus === OrderStatus.Cancel
+                ) {
+                    disabled = true;
+                }
+
+                if (
+                    currentStatus === OrderStatus.Delivering &&
+                    (status === OrderStatus.Pending ||
+                        status === OrderStatus.Cancel ||
+                        status === OrderStatus.Success)
+                ) {
+                    disabled = true;
+                }
+
+                return (
+                    <MenuItem key={status} value={status} disabled={disabled}>
+                        {status.toUpperCase()}
+                    </MenuItem>
+                );
+            })}
         </Select>
     );
 };
 
-const ViewOrder = ({ order }: { order: Order }) => {
+const ViewOrder = ({
+    order,
+    onStatusChange,
+}: {
+    order: Order;
+    onStatusChange: (status: Order['status']) => void;
+}) => {
     const { isOpen, onClose, onOpen } = useDisclosure();
 
     return (
@@ -53,7 +115,7 @@ const ViewOrder = ({ order }: { order: Order }) => {
                 View{' '}
             </Button>
             {isOpen && (
-                <Dialog open={isOpen} fullWidth>
+                <Dialog open={isOpen} fullWidth onClose={onClose}>
                     <DialogTitle
                         display="flex"
                         alignItems="center"
@@ -170,12 +232,19 @@ const ViewOrder = ({ order }: { order: Order }) => {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                            <Stack direction="row" justifyContent="flex-end">
+                            <Stack
+                                direction="row"
+                                justifyContent="flex-end"
+                                mb={16}
+                            >
                                 <Typography fontWeight={700}>
                                     Total: {formatCurrency(order.totalPrice)}
                                 </Typography>
                             </Stack>
-                            <SelectStatus currentStatus={order.status} />
+                            <SelectStatus
+                                currentStatus={order.status}
+                                onStatusChange={onStatusChange}
+                            />
                         </Box>
                     </DialogContent>
                 </Dialog>
@@ -190,6 +259,34 @@ const Orders: NextPageWithLayout = () => {
     const [total, setTotal] = useState<number>(0);
     const [page, setPage] = useState<number>(0);
     const [limit, setLimit] = useState<number>(10);
+
+    const [isLoadingChangeStatus, setIsLoadingIsLoadingChangeStatus] =
+        useState<boolean>(false);
+
+    const handelStatusChange =
+        (orderId: number) => async (status: Order['status']) => {
+            try {
+                console.log(orderId, status);
+                setIsLoadingIsLoadingChangeStatus(true);
+                const res = await orderService.updateStatus(orderId, status);
+                setOrders((prev) => {
+                    return prev.map((o) => {
+                        if (o.orderId === orderId) {
+                            return {
+                                ...o,
+                                status,
+                            };
+                        }
+                        return o;
+                    });
+                });
+                setIsLoadingIsLoadingChangeStatus(false);
+                toast.success('Update status successfully');
+            } catch (error) {
+                setIsLoadingIsLoadingChangeStatus(false);
+                toast.error('Update status failed');
+            }
+        };
 
     const handelFetchOrders = useCallback(
         async (q: { page?: number; limit?: number }) => {
@@ -252,6 +349,26 @@ const Orders: NextPageWithLayout = () => {
                 },
             },
             {
+                field: 'createdDate',
+                headerName: 'Created Date',
+                sortable: false,
+                disableColumnMenu: true,
+                width: 150,
+                renderCell(params) {
+                    return (
+                        <>
+                            {new Date(
+                                params.value || Date.now(),
+                            ).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                            })}
+                        </>
+                    );
+                },
+            },
+            {
                 field: 'totalPrice',
                 headerName: 'Price',
                 sortable: false,
@@ -268,7 +385,14 @@ const Orders: NextPageWithLayout = () => {
                 disableColumnMenu: true,
                 width: 100,
                 renderCell(params) {
-                    return <ViewOrder order={params.row} />;
+                    return (
+                        <ViewOrder
+                            order={params.row}
+                            onStatusChange={handelStatusChange(
+                                params.row.orderId,
+                            )}
+                        />
+                    );
                 },
             },
         ],
@@ -281,6 +405,7 @@ const Orders: NextPageWithLayout = () => {
 
     return (
         <>
+            {isLoadingChangeStatus && <LoadingFullPage />}
             <Box p={16}>
                 <Breadcrumbs
                     breadcrumbs={[
