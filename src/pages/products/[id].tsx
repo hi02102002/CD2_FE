@@ -88,8 +88,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const { auth_token } = getCookies({ req: ctx.req, res: ctx.res });
 
 
-
-
     let product: Product | null = null;
     let relatives: Array<Product> = [];
 

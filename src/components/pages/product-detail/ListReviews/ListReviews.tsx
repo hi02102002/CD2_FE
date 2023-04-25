@@ -2,9 +2,13 @@ import { Box, Rating, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 
 import { DEVICE } from '@/constants';
+import { Review } from '@/types/review';
 import { pxToRem } from '@/utils/pxToRem';
 
-function ListReviews() {
+type Props = {
+    reviews: Review[];
+};
+function ListReviews({ reviews }: Props) {
     return (
         <Box
             component="div"
@@ -19,46 +23,44 @@ function ListReviews() {
                 className="customer-reviews-item"
                 sx={{ paddingBottom: '40px' }}
             >
-                <Typography
-                    variant="caption"
-                    sx={{ fontSize: '14px', color: '#000', fontWeight: '600' }}
-                >
-                    Cheap price, high quality
-                </Typography>
-                <StyledRatingComment component="div">
-                    <Box component="div" className="rating">
-                        <Typography
-                            component="legend"
-                            sx={{ marginRight: '18px' }}
-                        >
-                            Customer Rating
-                        </Typography>
-                        <Rating
-                            name="read-only"
-                            value={5}
-                            readOnly
-                            sx={{ fontSize: '16px' }}
-                        />
-                    </Box>
-                    <Box component="div" className="comment" fontSize="16px">
-                        <Typography
-                            variant="body1"
-                            sx={{ marginBottom: '20px' }}
-                        >
-                            The quality of the shirt is very nice, in general,
-                            it is thick, good value for money so buy it, I
-                            guarantee it. Will be back for more support haha
-                        </Typography>
-                        <Typography variant="body1">
-                            Review by{' '}
-                            <strong
-                                style={{ fontWeight: '600', color: '#000' }}
+                {reviews?.map((review) => (
+                    <StyledRatingComment component="div" key={review.reviewId}>
+                        <Box component="div" className="rating">
+                            <Typography
+                                component="legend"
+                                sx={{ marginRight: '18px' }}
                             >
-                                Sơn
-                            </strong>
-                        </Typography>
-                    </Box>
-                </StyledRatingComment>
+                                Customer Rating
+                            </Typography>
+                            <Rating
+                                name="read-only"
+                                value={review.rating}
+                                readOnly
+                                sx={{ fontSize: '16px' }}
+                            />
+                        </Box>
+                        <Box
+                            component="div"
+                            className="comment"
+                            fontSize="16px"
+                        >
+                            <Typography
+                                variant="body1"
+                                sx={{ marginBottom: '20px' }}
+                            >
+                                {review.description}
+                            </Typography>
+                            <Typography variant="body1">
+                                Review by{' '}
+                                <strong
+                                    style={{ fontWeight: '600', color: '#000' }}
+                                >
+                                    {review.fullName}
+                                </strong>
+                            </Typography>
+                        </Box>
+                    </StyledRatingComment>
+                ))}
             </Box>
         </Box>
     );
@@ -75,7 +77,7 @@ const StyledRatingComment = styled(Box)`
     }
 
     .comment {
-        margin-left: ${pxToRem(24)};
+        margin-left: ${pxToRem(16)};
         flex: 3;
     }
 

@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
+    Dialog,
     FormControlLabel,
     Grid,
     Radio,
@@ -20,16 +21,29 @@ import { toast } from 'react-hot-toast';
 import * as yup from 'yup';
 
 import { CartItem } from '@/components/client';
-import { Button, Input, Label, PageTop, TextLink } from '@/components/common';
+import {
+    Button,
+    Input,
+    Label,
+    LoadingFullPage,
+    MenuItem,
+    ModalBody,
+    ModalHeader,
+    PageTop,
+    Select,
+    TextLink,
+} from '@/components/common';
 import { ROUTES, phoneRegex } from '@/constants';
+import { useDisclosure } from '@/hooks/useDisclosure';
+import { useOverflowHidden } from '@/hooks/useOverflowHidden';
 import { ClientLayout } from '@/layouts/client';
 import axiosServer from '@/lib/axiosServer';
 import orderService from '@/services/order.service';
+import paymentService from '@/services/payment.service';
 import useAuthStore from '@/store/auth';
 import useCartStore from '@/store/cart';
-import useCheckoutStore from '@/store/checkout';
 import { TAddress } from '@/types/address';
-import { OrderStatus } from '@/types/order';
+import { MethodPayment, OrderStatus } from '@/types/order';
 import { NextPageWithLayout } from '@/types/shared';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { pxToRem } from '@/utils/pxToRem';
@@ -37,6 +51,7 @@ import { withProtect } from '@/utils/withProtect';
 
 type Props = {
     addresses: TAddress[];
+    methodsPayment: MethodPayment[];
 };
 
 const schema = yup.object({
@@ -49,19 +64,24 @@ const schema = yup.object({
             message: 'Phone number is invalid',
         }),
     addressId: yup.string().required('Address is required'),
+    paymentId: yup.number().required('Method payment is required'),
 });
 
 type FormValues = yup.InferType<typeof schema>;
 
-const Checkout: NextPageWithLayout<Props> = ({ addresses }) => {
-    const { userCart, totalPrice, clearCart, clearCartClient } = useCartStore();
-    const { setIsSuccessful } = useCheckoutStore();
+const CreateOrder: NextPageWithLayout<Props> = ({
+    addresses,
+    methodsPayment,
+}) => {
+    const { userCart, totalPrice, clearCartClient } = useCartStore();
     const { user } = useAuthStore();
     const { control, handleSubmit, setValue, reset } = useForm<FormValues>({
         resolver: yupResolver(schema),
         defaultValues: {
             email: user?.email || '',
             fullName: user?.fullName || '',
+            phoneNumber: user?.phoneNumber || '',
+            paymentId: methodsPayment[0].paymentId,
         },
     });
     const [isLoading, setIsLoading] = useState(false);
@@ -69,9 +89,24 @@ const Checkout: NextPageWithLayout<Props> = ({ addresses }) => {
     const [address, setAddress] = useState<TAddress | null>(
         addresses.find((a) => a.isDefault) || null,
     );
+    const {
+        isOpen: isOpenSelectBank,
+        onClose: onCloseSelectBank,
+        onOpen: onOpenSelectBank,
+    } = useDisclosure();
+    const [bank, setBank] = useState<string | null>(null);
 
-    const handelCheckout = async (data: FormValues) => {
+    const handelCreateOrder = async (data: FormValues) => {
         if (!userCart?.cartItems.length) {
+            return;
+        }
+        const { paymentId } = data;
+        const methodPayment = methodsPayment.find(
+            (m) => m.paymentId === paymentId,
+        );
+
+        if (methodPayment?.paymentCode === 'VNPAY') {
+            onOpenSelectBank();
             return;
         }
 
@@ -89,9 +124,38 @@ const Checkout: NextPageWithLayout<Props> = ({ addresses }) => {
             toast.success('Checkout successfully');
             setIsLoading(false);
             reset();
-            setIsSuccessful(true);
             router.push(`${ROUTES.ORDER_SUCCESS}?orderId=${orderId}`);
             setCookie('order_success', true);
+        } catch (error) {
+            toast.error('Checkout failed');
+            setIsLoading(false);
+        }
+    };
+
+    const handelCheckoutWithVnpay = async (data: FormValues) => {
+        try {
+            setIsLoading(true);
+
+            const { data: orderId } = await orderService.checkout({
+                ...data,
+                status: OrderStatus.Pending,
+                cartItemIds:
+                    userCart?.cartItems.map((item) => item.cartItemId) || [],
+                addressId: Number(data.addressId),
+            });
+
+            const { data: vnpayUrl } = await paymentService.createPayment(
+                orderId,
+                {
+                    bankCode: bank as string,
+                    amount: totalPrice + 5,
+                    description: 'Thanh toán đơn hàng',
+                },
+            );
+
+            clearCartClient();
+
+            router.push(vnpayUrl);
         } catch (error) {
             toast.error('Checkout failed');
             setIsLoading(false);
@@ -104,23 +168,12 @@ const Checkout: NextPageWithLayout<Props> = ({ addresses }) => {
         }
     }, [address, setValue]);
 
+    useOverflowHidden(isLoading);
+
     return (
-        <Box>
-            <PageTop
-                title="Express Checkout"
-                breadcrumbItems={[
-                    {
-                        href: ROUTES.HOME,
-                        name: 'Home',
-                    },
-                    {
-                        href: ROUTES.CHECKOUT,
-                        name: 'Checkout',
-                    },
-                ]}
-            />
+        <>
             <Box component="div" className="container-app">
-                <form onSubmit={handleSubmit(handelCheckout)}>
+                <form onSubmit={handleSubmit(handelCreateOrder)}>
                     <Grid container spacing={32}>
                         <Grid item xs={12} md={6}>
                             <StyledTitle variant="h4">
@@ -245,17 +298,37 @@ const Checkout: NextPageWithLayout<Props> = ({ addresses }) => {
                                     <StyledTitle variant="h4">
                                         Payment Method
                                     </StyledTitle>
-                                    <RadioGroup
-                                        aria-labelledby="demo-radio-buttons-group-label"
-                                        defaultValue="cash"
-                                        name="radio-buttons-group"
-                                    >
-                                        <StyledFormControlLabel
-                                            value="cash"
-                                            control={<Radio disableRipple />}
-                                            label="Cash On Delivery"
-                                        />
-                                    </RadioGroup>
+                                    <Controller
+                                        control={control}
+                                        name="paymentId"
+                                        render={({ field, fieldState }) => {
+                                            return (
+                                                <RadioGroup
+                                                    aria-labelledby="demo-radio-buttons-group-label"
+                                                    defaultValue={
+                                                        methodsPayment[0]
+                                                            .paymentId
+                                                    }
+                                                    {...field}
+                                                >
+                                                    {methodsPayment.map((m) => (
+                                                        <StyledFormControlLabel
+                                                            value={m.paymentId}
+                                                            control={
+                                                                <Radio
+                                                                    disableRipple
+                                                                />
+                                                            }
+                                                            label={
+                                                                m.paymentName
+                                                            }
+                                                            key={m.paymentId}
+                                                        />
+                                                    ))}
+                                                </RadioGroup>
+                                            );
+                                        }}
+                                    />
                                 </Box>
                             </Grid>
                             <Grid item xs={12}>
@@ -292,7 +365,7 @@ const Checkout: NextPageWithLayout<Props> = ({ addresses }) => {
                                             alignItems="center"
                                         >
                                             <Typography>Shipping</Typography>
-                                            <Typography>$20.00</Typography>
+                                            <Typography>$5</Typography>
                                         </Stack>
                                         <Stack
                                             direction="row"
@@ -301,7 +374,7 @@ const Checkout: NextPageWithLayout<Props> = ({ addresses }) => {
                                         >
                                             <Typography>Order total</Typography>
                                             <Typography fontWeight={500}>
-                                                {formatCurrency(totalPrice)}
+                                                {formatCurrency(totalPrice + 5)}
                                             </Typography>
                                         </Stack>
                                     </Stack>
@@ -328,13 +401,113 @@ const Checkout: NextPageWithLayout<Props> = ({ addresses }) => {
                     </Grid>
                 </form>
             </Box>
-        </Box>
+            <Dialog
+                open={isOpenSelectBank}
+                fullWidth
+                maxWidth="xs"
+                onClose={onCloseSelectBank}
+            >
+                <ModalHeader title="Choose bank" onClose={onCloseSelectBank} />
+                <ModalBody>
+                    <Stack gap={16}>
+                        <Select
+                            sx={{
+                                width: '100%',
+                            }}
+                            SelectProps={{
+                                value: bank,
+                                onChange: (e) => {
+                                    setBank(e.target.value as string);
+                                },
+                            }}
+                        >
+                            <MenuItem value="NCB">NCB</MenuItem>
+                            <MenuItem value={1} disabled>
+                                Vietcombank
+                            </MenuItem>
+                            <MenuItem value={2} disabled>
+                                Vietinbank
+                            </MenuItem>
+                            <MenuItem value={3} disabled>
+                                BIDV
+                            </MenuItem>
+                            <MenuItem value={4} disabled>
+                                Techcombank
+                            </MenuItem>
+                            <MenuItem value={5} disabled>
+                                MB Bank
+                            </MenuItem>
+                            <MenuItem value={6} disabled>
+                                Agribank
+                            </MenuItem>
+                            <MenuItem value={7} disabled>
+                                VP Bank
+                            </MenuItem>
+                            <MenuItem value={8} disabled>
+                                Sacombank
+                            </MenuItem>
+                            <MenuItem value={9} disabled>
+                                ACB
+                            </MenuItem>
+                            <MenuItem value={10} disabled>
+                                DongA Bank
+                            </MenuItem>
+                            <MenuItem value={11} disabled>
+                                TP Bank
+                            </MenuItem>
+                            <MenuItem value={12} disabled>
+                                HDBank
+                            </MenuItem>
+                            <MenuItem value={13} disabled>
+                                OceanBank
+                            </MenuItem>
+                            <MenuItem value={15} disabled>
+                                VIB
+                            </MenuItem>
+                        </Select>
+                        <form
+                            style={{
+                                display: 'block',
+                            }}
+                            onSubmit={handleSubmit(handelCheckoutWithVnpay)}
+                        >
+                            <Button
+                                sx={{
+                                    minHeight: 40,
+                                    py: 0,
+                                    width: '100%',
+                                }}
+                                disabled={bank === null}
+                                type="submit"
+                                isLoading={isLoading}
+                            >
+                                Checkout
+                            </Button>
+                        </form>
+                    </Stack>
+                </ModalBody>
+            </Dialog>
+            {isLoading && <LoadingFullPage />}
+        </>
     );
 };
 
-Checkout.getLayout = (page) => {
+CreateOrder.getLayout = (page) => {
     return (
         <ClientLayout title="Checkout" description="Checkout">
+            <PageTop
+                title="Express Checkout"
+                breadcrumbItems={[
+                    {
+                        href: ROUTES.HOME,
+                        name: 'Home',
+                    },
+                    {
+                        href: ROUTES.CHECKOUT,
+                        name: 'Checkout',
+                    },
+                ]}
+            />
             {page}
         </ClientLayout>
     );
@@ -398,11 +571,16 @@ export const getServerSideProps = withProtect({
         .get('/api/address')
         .then((res) => res.data.data);
 
+    const methodsPayment = await axiosServer(auth_token as string)
+        .get('/api/payment/getAll')
+        .then((res) => res.data.data);
+
     return {
         props: {
             addresses,
+            methodsPayment,
         },
     };
 });
 
-export default Checkout;
+export default CreateOrder;
