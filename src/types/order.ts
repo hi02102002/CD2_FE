@@ -19,12 +19,19 @@ export type Order = {
     totalPrice: number;
     orderItemsResponses: Array<CartItem>;
     createdDate: string | null;
+    paymentId: number;
 };
 
 export type OrderInput = Pick<
     Order,
-    'email' | 'fullName' | 'phoneNumber' | 'status'
+    'email' | 'fullName' | 'phoneNumber' | 'status' | 'paymentId'
 > & {
     cartItemIds: number[];
     addressId: number;
+};
+
+export type MethodPayment = {
+    paymentId: number;
+    paymentName: string;
+    paymentCode: string;
 };

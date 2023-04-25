@@ -14,7 +14,7 @@ import { pxToRem } from '@/utils/pxToRem';
 
 const OrderTable = () => {
     const [orders, setOrders] = useState<Order[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     const [isLoadingCancel, setIsLoadingCancel] = useState<boolean>(false);
 
     const handelUpdateStatusOrder = async (
@@ -23,7 +23,7 @@ const OrderTable = () => {
     ) => {
         try {
             setIsLoadingCancel(true);
-            await orderService.updateStatus(orderId, OrderStatus.Cancel);
+            await orderService.updateStatus(orderId, status);
             setOrders((prev) => {
                 return prev.map((order) => {
                     if (order.orderId === orderId) {
@@ -158,7 +158,9 @@ const Row = ({ order, onChangeStatus }: RowProps) => {
             </StyedCol>
             <StyedCol data-title="Actions" component="th" className="action">
                 <Stack direction="row" gap={16}>
-                    <TextLink href="/account/order/view/1">View order</TextLink>
+                    <TextLink href={`${ROUTES.ACCOUNT_ORDER}/${order.orderId}`}>
+                        View order
+                    </TextLink>
                     {(order.status === OrderStatus.Pending ||
                         order.status === OrderStatus.Success) && (
                         <TextHover

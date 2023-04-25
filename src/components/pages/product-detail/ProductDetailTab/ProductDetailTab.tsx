@@ -44,7 +44,7 @@ function a11yProps(index: number) {
 }
 
 function ProductDetailTab() {
-    const [tab, setTab] = useState(1);
+    const [tab, setTab] = useState(0);
     const theme = useTheme();
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -72,31 +72,31 @@ function ProductDetailTab() {
                         className="btn-changetab"
                         label={`Reviews ${1}`}
                         disableRipple
-                        {...a11yProps(1)}
+                        {...a11yProps(0)}
                     />
                     <Tab
                         className="btn-changetab"
                         label="About Brand"
                         disableRipple
-                        {...a11yProps(2)}
+                        {...a11yProps(1)}
                     />
                     <Tab
                         className="btn-changetab"
                         disableRipple
                         label="Shipping and Returns"
-                        {...a11yProps(3)}
+                        {...a11yProps(2)}
                     />
                 </Tabs>
             </Box>
-            <TabPanel value={tab} index={1}>
+            <TabPanel value={tab} index={0}>
                 <ReviewTab />
             </TabPanel>
 
-            <TabPanel value={tab} index={2}>
+            <TabPanel value={tab} index={1}>
                 <AboutBrandTab />
             </TabPanel>
 
-            <TabPanel value={tab} index={3}>
+            <TabPanel value={tab} index={2}>
                 <ShippingTab />
             </TabPanel>
         </StyledProductDetailTab>
