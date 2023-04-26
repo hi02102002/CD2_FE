@@ -72,8 +72,12 @@ const ProductItem = ({ product }: Props) => {
 
             setLoading(false);
             toast.success('Add this product to your cart successfully');
-        } catch (error) {
-            toast.error('Something went wrong');
+        } catch (error: any) {
+            toast.error(
+                error?.response?.data?.message ||
+                    error?.message ||
+                    'Add this product to your cart failed',
+            );
             setLoading(false);
         }
     };

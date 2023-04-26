@@ -29,6 +29,7 @@ const ROUTERS_AUTH = [
     ROUTES.CHECKOUT,
     ROUTES.ACCOUNT_CHANGE_INFO,
     ROUTES.ACCOUNT_PRODUCT_REVIEW,
+    ROUTES.CART,
 ];
 
 const AuthWrapper = ({ children }: Props) => {

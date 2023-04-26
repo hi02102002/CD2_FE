@@ -138,12 +138,6 @@ const OrderDetail: NextPageWithLayout<Props> = ({ order }) => {
                     </TableContainer>
                     <Stack alignItems="flex-end">
                         <Typography fontWeight={600}>
-                            Sub total: {formatCurrency(order.totalPrice - 5)}
-                        </Typography>
-                        <Typography fontWeight={600}>
-                            Shipping: {formatCurrency(5)}
-                        </Typography>
-                        <Typography fontWeight={600}>
                             Total: {formatCurrency(order.totalPrice)}
                         </Typography>
                     </Stack>

@@ -7,7 +7,7 @@ import { toast } from 'react-hot-toast';
 
 import { Button, LoadingFullPage, PageTop } from '@/components/common';
 import { TableCart } from '@/components/pages/cart';
-import { DEVICE, ROUTES } from '@/constants';
+import { DEVICE, FREE_SHIP_PRICE, ROUTES, SHIP_PRICE } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
 import useCart from '@/store/cart';
 import { NextPageWithLayout } from '@/types/shared';
@@ -81,7 +81,11 @@ const Cart: NextPageWithLayout = () => {
                                 <Typography>
                                     Shipping (Flat Rate - Fixed)
                                 </Typography>
-                                <Typography>$20.00</Typography>
+                                <Typography>
+                                    {totalPrice >= FREE_SHIP_PRICE
+                                        ? 'Freeship'
+                                        : formatCurrency(SHIP_PRICE)}
+                                </Typography>
                             </Stack>
                             <Stack
                                 direction="row"
@@ -104,7 +108,12 @@ const Cart: NextPageWithLayout = () => {
                                     fontWeight="inherit"
                                     fontSize={18}
                                 >
-                                    $125.00
+                                    {formatCurrency(
+                                        totalPrice +
+                                            (totalPrice >= FREE_SHIP_PRICE
+                                                ? 0
+                                                : SHIP_PRICE),
+                                    )}
                                 </Typography>
                             </Stack>
                         </Stack>

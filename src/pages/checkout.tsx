@@ -33,7 +33,7 @@ import {
     Select,
     TextLink,
 } from '@/components/common';
-import { ROUTES, phoneRegex } from '@/constants';
+import { FREE_SHIP_PRICE, ROUTES, SHIP_PRICE, phoneRegex } from '@/constants';
 import { useDisclosure } from '@/hooks/useDisclosure';
 import { useOverflowHidden } from '@/hooks/useOverflowHidden';
 import { ClientLayout } from '@/layouts/client';
@@ -146,7 +146,10 @@ const CreateOrder: NextPageWithLayout<Props> = ({
                 orderId,
                 {
                     bankCode: bank as string,
-                    amount: totalPrice + 5,
+                    amount:
+                        totalPrice >= FREE_SHIP_PRICE
+                            ? totalPrice
+                            : totalPrice + SHIP_PRICE,
                     description: 'Thanh toán đơn hàng',
                 },
             );
@@ -363,7 +366,13 @@ const CreateOrder: NextPageWithLayout<Props> = ({
                                             alignItems="center"
                                         >
                                             <Typography>Shipping</Typography>
-                                            <Typography>$5</Typography>
+                                            <Typography>
+                                                {totalPrice >= FREE_SHIP_PRICE
+                                                    ? 'Freeship'
+                                                    : formatCurrency(
+                                                          SHIP_PRICE,
+                                                      )}
+                                            </Typography>
                                         </Stack>
                                         <Stack
                                             direction="row"
@@ -372,7 +381,13 @@ const CreateOrder: NextPageWithLayout<Props> = ({
                                         >
                                             <Typography>Order total</Typography>
                                             <Typography fontWeight={500}>
-                                                {formatCurrency(totalPrice + 5)}
+                                                {formatCurrency(
+                                                    totalPrice +
+                                                        (totalPrice >=
+                                                        FREE_SHIP_PRICE
+                                                            ? 0
+                                                            : SHIP_PRICE),
+                                                )}
                                             </Typography>
                                         </Stack>
                                     </Stack>

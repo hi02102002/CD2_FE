@@ -6,6 +6,8 @@ import { immer } from 'zustand/middleware/immer';
 import authService from '@/services/auth.service';
 import { User } from '@/types/user';
 
+import useCartStore from './cart';
+
 type AuthState = {
     user: User | null;
     accessToken: string | null;
@@ -17,7 +19,7 @@ type AuthState = {
 const useAuthStore = create<AuthState>()(
     devtools(
         persist(
-            immer((set) => {
+            immer((set, get) => {
                 return {
                     accessToken: null,
                     user: null,
@@ -37,6 +39,7 @@ const useAuthStore = create<AuthState>()(
                             path: '/',
                         });
                         set({ user: null, accessToken: null });
+                        useCartStore.getState().clearCartClient();
                     },
                     updateInfor: async (data) => {
                         const res = await authService.changeInfo({

@@ -54,3 +54,5 @@ export const API_URL = 'https://shopping-cart-demo.herokuapp.com';
 
 export const provinces = JSON.parse(JSON.stringify(provincesJson));
 export const phoneRegex = /((^(\+84|84|0|0084){1})(3|5|7|8|9))+([0-9]{8})$/;
+export const SHIP_PRICE = 5;
+export const FREE_SHIP_PRICE = 200;

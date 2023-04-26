@@ -51,7 +51,7 @@ function ProductInfo({ product }: Props) {
             toast.error(' You must choose options before add to cart');
             return;
         }
-        if (product.quantity === 0) {
+        if (product.quantity <= 0) {
             toast.error('This product is out of stock');
             return;
         }
@@ -64,8 +64,12 @@ function ProductInfo({ product }: Props) {
             });
             setLoading(false);
             toast.success('Add this product to your cart successfully');
-        } catch (error) {
-            toast.error('Something went wrong');
+        } catch (error: any) {
+            toast.error(
+                error?.response?.data?.message ||
+                    error?.message ||
+                    'Add this product to your cart failed',
+            );
             setLoading(false);
         }
     };
