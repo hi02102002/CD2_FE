@@ -24,7 +24,7 @@ export type Order = {
 
 export type OrderInput = Pick<
     Order,
-    'email' | 'fullName' | 'phoneNumber' | 'status' | 'paymentId'
+    'email' | 'fullName' | 'phoneNumber' | 'paymentId'
 > & {
     cartItemIds: number[];
     addressId: number;

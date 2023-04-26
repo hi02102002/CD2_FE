@@ -1,6 +1,8 @@
+import { NextApiResponse } from 'next';
+
 import { deleteCookie } from 'cookies-next';
 
-export default async function handler(req: any, res: any) {
+export default async function handler(req: any, res: NextApiResponse) {
     deleteCookie('auth_token', {
         req,
         res,

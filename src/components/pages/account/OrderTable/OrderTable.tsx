@@ -43,14 +43,19 @@ const OrderTable = () => {
                 case OrderStatus.Received:
                     toast.success('Received order successfully');
             }
-        } catch (error) {
+        } catch (error: any) {
             setIsLoadingCancel(false);
             switch (status) {
                 case OrderStatus.Cancel:
-                    toast.success('Cancel order failed');
+                    toast.error(
+                        error?.response?.data?.message || 'Cancel order failed',
+                    );
                     break;
                 case OrderStatus.Received:
-                    toast.success('Received order failed');
+                    toast.error(
+                        error?.response?.data?.message ||
+                            'Received order failed',
+                    );
             }
         }
     };

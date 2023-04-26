@@ -1,3 +1,4 @@
+import { deleteCookie } from 'cookies-next';
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
@@ -27,6 +28,14 @@ const useAuthStore = create<AuthState>()(
                         }),
                     logout: async () => {
                         await authService.logout();
+                        deleteCookie('auth_token', {
+                            domain: process.env.NEXT_PUBLIC_DOMAIN,
+                            path: '/',
+                        });
+                        deleteCookie('roles', {
+                            domain: process.env.NEXT_PUBLIC_DOMAIN,
+                            path: '/',
+                        });
                         set({ user: null, accessToken: null });
                     },
                     updateInfor: async (data) => {
