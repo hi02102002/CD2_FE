@@ -56,36 +56,36 @@ const SelectStatus = ({
             defaultValue={currentStatus.toUpperCase()}
             onChange={handleChange}
             disabled={
-                status === OrderStatus.Cancel || status === OrderStatus.Received
+                status === OrderStatus.cancel || status === OrderStatus.received
             }
         >
             {Object.values(OrderStatus).map((status) => {
                 let disabled =
-                    (status === OrderStatus.Delivering ||
-                        status === OrderStatus.Received) &&
-                    currentStatus === OrderStatus.Pending;
+                    (status === OrderStatus.delivering ||
+                        status === OrderStatus.received) &&
+                    currentStatus === OrderStatus.pending;
 
                 if (
-                    currentStatus === OrderStatus.Success &&
-                    (status === OrderStatus.Pending ||
-                        status === OrderStatus.Received)
+                    currentStatus === OrderStatus.success &&
+                    (status === OrderStatus.pending ||
+                        status === OrderStatus.received)
                 ) {
                     disabled = true;
                 }
 
                 if (
-                    (status === OrderStatus.Delivering ||
-                        status === OrderStatus.Received) &&
-                    currentStatus === OrderStatus.Cancel
+                    (status === OrderStatus.delivering ||
+                        status === OrderStatus.received) &&
+                    currentStatus === OrderStatus.cancel
                 ) {
                     disabled = true;
                 }
 
                 if (
-                    currentStatus === OrderStatus.Delivering &&
-                    (status === OrderStatus.Pending ||
-                        status === OrderStatus.Cancel ||
-                        status === OrderStatus.Success)
+                    currentStatus === OrderStatus.delivering &&
+                    (status === OrderStatus.pending ||
+                        status === OrderStatus.cancel ||
+                        status === OrderStatus.success)
                 ) {
                     disabled = true;
                 }

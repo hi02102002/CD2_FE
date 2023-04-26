@@ -1,11 +1,11 @@
 import { CartItem } from './cart';
 
 export enum OrderStatus {
-    Pending = 'pending',
-    Cancel = 'cancel',
-    Delivering = 'delivering',
-    Success = 'success',
-    Received = 'received',
+    pending = 'pending',
+    cancel = 'cancel',
+    delivering = 'delivering',
+    success = 'success',
+    received = 'received',
 }
 
 export type Order = {

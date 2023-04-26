@@ -125,7 +125,7 @@ const HeaderToolbar = ({ forSearch = false }: Props) => {
                     }}
                 >
                     {user ? (
-                        <>
+                        <div>
                             <MenuItem
                                 disableRipple
                                 onClick={() => handleNavigate(ROUTES.ACCOUNT)}
@@ -155,9 +155,9 @@ const HeaderToolbar = ({ forSearch = false }: Props) => {
                                 <IconLogout />
                                 <Typography>Logout</Typography>
                             </MenuItem>
-                        </>
+                        </div>
                     ) : (
-                        <>
+                        <div>
                             <MenuItem
                                 disableRipple
                                 onClick={() => handleNavigate(ROUTES.LOGIN)}
@@ -172,7 +172,7 @@ const HeaderToolbar = ({ forSearch = false }: Props) => {
                                 <IconUserPlus />
                                 <Typography>Register</Typography>
                             </MenuItem>
-                        </>
+                        </div>
                     )}
                 </Menu>
                 <Stack direction="row" alignItems="center" gap={16}>
