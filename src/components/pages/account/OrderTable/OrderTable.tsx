@@ -37,21 +37,21 @@ const OrderTable = () => {
             });
             setIsLoadingCancel(false);
             switch (status) {
-                case OrderStatus.Cancel:
+                case OrderStatus.cancel:
                     toast.success('Cancel order successfully');
                     break;
-                case OrderStatus.Received:
+                case OrderStatus.received:
                     toast.success('Received order successfully');
             }
         } catch (error: any) {
             setIsLoadingCancel(false);
             switch (status) {
-                case OrderStatus.Cancel:
+                case OrderStatus.cancel:
                     toast.error(
                         error?.response?.data?.message || 'Cancel order failed',
                     );
                     break;
-                case OrderStatus.Received:
+                case OrderStatus.received:
                     toast.error(
                         error?.response?.data?.message ||
                             'Received order failed',
@@ -166,8 +166,8 @@ const Row = ({ order, onChangeStatus }: RowProps) => {
                     <TextLink href={`${ROUTES.ACCOUNT_ORDER}/${order.orderId}`}>
                         View order
                     </TextLink>
-                    {(order.status === OrderStatus.Pending ||
-                        order.status === OrderStatus.Success) && (
+                    {(order.status === OrderStatus.pending ||
+                        order.status === OrderStatus.success) && (
                         <TextHover
                             sx={{
                                 fontWeight: 500,
@@ -176,14 +176,14 @@ const Row = ({ order, onChangeStatus }: RowProps) => {
                             onClick={() =>
                                 onChangeStatus(
                                     order.orderId,
-                                    OrderStatus.Cancel,
+                                    OrderStatus.cancel,
                                 )
                             }
                         >
                             Cancel
                         </TextHover>
                     )}
-                    {order.status === OrderStatus.Delivering && (
+                    {order.status === OrderStatus.delivering && (
                         <TextHover
                             sx={{
                                 fontWeight: 500,
@@ -192,14 +192,14 @@ const Row = ({ order, onChangeStatus }: RowProps) => {
                             onClick={() =>
                                 onChangeStatus(
                                     order.orderId,
-                                    OrderStatus.Received,
+                                    OrderStatus.received,
                                 )
                             }
                         >
                             Received
                         </TextHover>
                     )}
-                    {order.status === OrderStatus.Received && (
+                    {order.status === OrderStatus.received && (
                         <TextHover
                             sx={{
                                 fontWeight: 500,
