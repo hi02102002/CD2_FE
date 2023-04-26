@@ -69,8 +69,14 @@ function LoginFrom() {
             });
             setIsLoading(false);
             toast.success('Login successfully!');
-            setCookie('auth_token', res.data.token);
-            setCookie('roles', res.data.roles);
+            setCookie('auth_token', res.data.token, {
+                domain: process.env.NEXT_PUBLIC_DOMAIN,
+                path: '/',
+            });
+            setCookie('roles', res.data.roles, {
+                domain: process.env.NEXT_PUBLIC_DOMAIN,
+                path: '/',
+            });
             router.push(ROUTES.HOME);
         } catch (error: any) {
             console.log(error);

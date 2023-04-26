@@ -43,7 +43,7 @@ import paymentService from '@/services/payment.service';
 import useAuthStore from '@/store/auth';
 import useCartStore from '@/store/cart';
 import { TAddress } from '@/types/address';
-import { MethodPayment, OrderStatus } from '@/types/order';
+import { MethodPayment } from '@/types/order';
 import { NextPageWithLayout } from '@/types/shared';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { pxToRem } from '@/utils/pxToRem';
@@ -115,7 +115,6 @@ const CreateOrder: NextPageWithLayout<Props> = ({
 
             const { data: orderId } = await orderService.checkout({
                 ...data,
-                status: OrderStatus.Pending,
                 cartItemIds:
                     userCart?.cartItems.map((item) => item.cartItemId) || [],
                 addressId: Number(data.addressId),
@@ -138,7 +137,6 @@ const CreateOrder: NextPageWithLayout<Props> = ({
 
             const { data: orderId } = await orderService.checkout({
                 ...data,
-                status: OrderStatus.Pending,
                 cartItemIds:
                     userCart?.cartItems.map((item) => item.cartItemId) || [],
                 addressId: Number(data.addressId),
