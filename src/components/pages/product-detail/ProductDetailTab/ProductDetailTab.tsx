@@ -70,7 +70,7 @@ function ProductDetailTab() {
                 >
                     <Tab
                         className="btn-changetab"
-                        label={`Reviews ${1}`}
+                        label={`Reviews`}
                         disableRipple
                         {...a11yProps(0)}
                     />

@@ -125,12 +125,14 @@ const useCartStore = create<CartState>()(
                     });
                 },
                 fetchCart: async (userId) => {
-                    const userCart = await cartService
-                        .getUserCart(userId)
-                        .then((v) => v.data);
-                    set((state) => {
-                        state.userCart = userCart;
-                    });
+                    try {
+                        const userCart = await cartService
+                            .getUserCart(userId)
+                            .then((v) => v.data);
+                        set((state) => {
+                            state.userCart = userCart;
+                        });
+                    } catch (error) {}
                 },
                 setTotalPrice: () => {
                     set((state) => {

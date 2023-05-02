@@ -264,7 +264,7 @@ const Action = ({ productId }: { productId: number }) => {
 
 const Products: NextPageWithLayout = () => {
     const router = useRouter();
-    const [isLoadingFetch, setIsLoadingFetch] = useState<boolean>(false);
+    const [isLoadingFetch, setIsLoadingFetch] = useState<boolean>(true);
     const { fetchProducts, products, total, removeProducts } =
         useProductStore();
     const [page, setPage] = useState<number>(0);

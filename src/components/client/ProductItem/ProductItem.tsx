@@ -5,10 +5,9 @@ import Link from 'next/link';
 
 import { Box, Typography, styled } from '@mui/material';
 import { Stack } from '@mui/system';
-import { IconEye, IconHeart } from '@tabler/icons-react';
 import { toast } from 'react-hot-toast';
 
-import { Button, TextLink, Tooltip } from '@/components/common';
+import { Button, TextLink } from '@/components/common';
 import { DEVICE, ROUTES } from '@/constants';
 import { useDisclosure } from '@/hooks/useDisclosure';
 import productService from '@/services/product.service';
@@ -108,28 +107,6 @@ const ProductItem = ({ product }: Props) => {
                             />
                         </Box>
                     </Link>
-                    <StyledTools spacing={pxToRem(10)} className="tools">
-                        <Tooltip title="Quick view" arrow placement="left">
-                            <Box>
-                                <Button
-                                    typeButton="secondary"
-                                    className="btn-tool"
-                                >
-                                    <IconEye />
-                                </Button>
-                            </Box>
-                        </Tooltip>
-                        <Tooltip title="Add to wishlist" arrow placement="left">
-                            <Box>
-                                <Button
-                                    typeButton="secondary"
-                                    className="btn-tool"
-                                >
-                                    <IconHeart />
-                                </Button>
-                            </Box>
-                        </Tooltip>
-                    </StyledTools>
                     <Box
                         component="div"
                         className="btn-wrapper"

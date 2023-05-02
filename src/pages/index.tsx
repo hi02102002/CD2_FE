@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
                 limit: 8,
             },
         })
-        .then((d) => d.data?.content)
+        .then((d) => d.data?.content.filter((p: Product) => !p.isDelete))
         .catch((e) => console.log(e));
 
     return {

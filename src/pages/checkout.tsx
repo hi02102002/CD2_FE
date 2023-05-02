@@ -507,9 +507,9 @@ const CreateOrder: NextPageWithLayout<Props> = ({
 
 CreateOrder.getLayout = (page) => {
     return (
-        <ClientLayout title="Checkout" description="Checkout">
+        <ClientLayout title="Place Order" description="Place Order">
             <PageTop
-                title="Express Checkout"
+                title="Place Order"
                 breadcrumbItems={[
                     {
                         href: ROUTES.HOME,
@@ -517,7 +517,7 @@ CreateOrder.getLayout = (page) => {
                     },
                     {
                         href: ROUTES.CHECKOUT,
-                        name: 'Checkout',
+                        name: 'Place order',
                     },
                 ]}
             />

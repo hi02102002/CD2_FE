@@ -254,7 +254,7 @@ const ViewOrder = ({
 };
 
 const Orders: NextPageWithLayout = () => {
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [orders, setOrders] = useState<Order[]>([]);
     const [total, setTotal] = useState<number>(0);
     const [page, setPage] = useState<number>(0);

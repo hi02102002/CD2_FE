@@ -9,6 +9,9 @@ export type Product = {
     categoryId: number;
     options: Option[];
     discountPercent: number;
+    isDelete: boolean;
+    countReviews: number | null;
+    averageRating: number | null;
 };
 
 export type Option = {

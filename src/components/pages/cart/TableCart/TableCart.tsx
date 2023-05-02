@@ -114,7 +114,9 @@ const Row = ({ cartItem }: PropsRow) => {
                             </Box>
                         </Box>
                         <Box width="70%">
-                            <Typography variant="h4"></Typography>
+                            <Typography variant="h4">
+                                {cartItem.productName}
+                            </Typography>
                             {cartItem.option &&
                                 Object?.entries(cartItem.option).map(
                                     ([key, value]) => {

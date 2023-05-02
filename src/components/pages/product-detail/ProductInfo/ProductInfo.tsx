@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { Box, Grid, Rating, Stack, Typography, styled } from '@mui/material';
-import { IconStar } from '@tabler/icons-react';
 import { toast } from 'react-hot-toast';
 import 'swiper/css';
 import 'swiper/css/free-mode';
@@ -9,7 +8,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 
 import { ChooseOptions } from '@/components/client';
-import { Button, InputChangeAmount, Tooltip } from '@/components/common';
+import { Button, InputChangeAmount } from '@/components/common';
 import { DEVICE } from '@/constants';
 import { useSelectedProductVariant } from '@/hooks/useSelectedProductVariant';
 import useAuthStore from '@/store/auth';
@@ -82,16 +81,6 @@ function ProductInfo({ product }: Props) {
         <StyledProductInfo item md={5.5} xs={12} className="product-info">
             <Box className="product-title-wrap">
                 <Typography component="span">{product.name}</Typography>
-                <Tooltip title="Add to Wish list" arrow placement="left">
-                    <Box>
-                        <Button
-                            className="button-wishlist"
-                            typeButton="secondary"
-                        >
-                            <IconStar />
-                        </Button>
-                    </Box>
-                </Tooltip>
             </Box>
 
             <Box className="product-rate">
@@ -106,11 +95,13 @@ function ProductInfo({ product }: Props) {
                 <Box className="product-rate-review">
                     <Rating
                         name="read-only"
-                        value={5}
+                        value={product.averageRating || 0}
                         readOnly
                         sx={{ fontSize: 16 }}
                     />
-                    <Typography component="a">(1 Review)</Typography>
+                    <Typography component="a">
+                        ({product.countReviews || 0} Review)
+                    </Typography>
                 </Box>
             </Box>
 

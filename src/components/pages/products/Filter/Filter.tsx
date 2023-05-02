@@ -65,7 +65,6 @@ const Filter = ({ categories }: Props) => {
                                 >
                                     {category.name}
                                 </TextHover>
-                                <span className="amount">(19)</span>
                             </Box>
                         );
                     })}

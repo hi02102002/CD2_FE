@@ -106,6 +106,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
         }
 
+        console.log(product)
+
         const res = await axiosServer(auth_token as string)
             .get('/api/product/filter', {
                 params: {

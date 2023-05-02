@@ -1,6 +1,6 @@
 import { Box, styled } from '@mui/material';
 
-import { PageTop, SignInSocial } from '@/components/common';
+import { PageTop } from '@/components/common';
 import RegisterContainer from '@/components/pages/register/RegisterContainer';
 import { DEVICE, ROUTES } from '@/constants';
 import { ClientLayout } from '@/layouts/client';
@@ -27,10 +27,6 @@ const Register: NextPageWithLayout<Props> = () => {
                 ]}
             />
             <Box className="container-app">
-                <LoginSocial className="block-content">
-                    <SignInSocial social="facebook" />
-                    <SignInSocial social="google" />
-                </LoginSocial>
                 <RegisterContainer />
             </Box>
         </>

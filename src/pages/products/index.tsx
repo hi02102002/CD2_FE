@@ -106,7 +106,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         })
         .then((d) => {
             return {
-                products: d.data?.content as Product[],
+                products: d.data?.content.filter(
+                    (p: Product) => !p.isDelete,
+                ) as Product[],
                 total: d.data.totalPages,
             };
         });

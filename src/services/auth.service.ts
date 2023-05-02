@@ -80,6 +80,21 @@ class AuthService {
     ): Promise<BaseResponse<Omit<User, 'id' | 'roles' | 'email'>>> {
         return await axiosClient.put('/api/user', fields);
     }
+
+    async getAllUser(q?: { page?: number; limit?: number }): Promise<
+        BaseResponse<{
+            totalElements: number;
+            totalPages: number;
+            content: User[];
+        }>
+    > {
+        return await axiosClient.get('/api/user/get-all', {
+            params: {
+                offset: q?.page,
+                limit: q?.limit,
+            },
+        });
+    }
 }
 
 const authService = new AuthService();

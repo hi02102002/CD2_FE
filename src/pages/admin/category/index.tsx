@@ -165,7 +165,8 @@ const Category: NextPageWithLayout = () => {
                 ]}
             />
             <Box marginTop={16}>
-                <MainContent
+                    <MainContent
+                        
                     TableProps={{
                         columns: columns,
                         rows: categories,

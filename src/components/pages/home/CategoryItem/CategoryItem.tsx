@@ -47,9 +47,6 @@ const CategoryItem = ({ category }: Props) => {
                                     {category.name}
                                 </Typography>
                             </Link>
-                            <Typography component="span" className="amount">
-                                8 Items
-                            </Typography>
                         </Box>
                         <Link href={linkTo}>
                             <Button
