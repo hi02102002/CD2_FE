@@ -5,6 +5,7 @@ const nextConfig = {
             'd33wubrfki0l68.cloudfront.net',
             'blueskytechmage.com',
             'upload-image-shoppingcart.s3.ap-southeast-1.amazonaws.com',
+            'loremflickr.com',
         ],
     },
     async headers() {
@@ -15,7 +16,7 @@ const nextConfig = {
                 headers: [
                     {
                         key: 'Content-Security-Policy',
-                        value: "frame-ancestors https://www.facebook.com",
+                        value: 'frame-ancestors https://www.facebook.com',
                     },
                     {
                         key: 'Access-Control-Allow-Origin',

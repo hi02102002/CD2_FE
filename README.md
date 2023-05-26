@@ -1,38 +1,54 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Project Môn chuyên đề thực tế 2
 
-## Getting Started
+## Chức năng
 
-First, run the development server:
+-   Đăng nhập
+-   Đăng ký
+-   Đăng xuất
+-   Quên mật khẩu
+-   Đổi mật khẩu
+-   Thay đổi thông tin cá nhân
+-   Xem thông tin cá nhân
+-   Mua hàng
+-   Xem giỏ hàng
+-   Đánh giá sản phẩm
+-   Xem đánh giá sản phẩm
+-   Xem sản phẩm
+-   Xem danh sách sản phẩm
+-   Xem danh sách đơn hàng
+-   Xem chi tiết đơn hàng
+-   Quản lý sản phẩm
+-   Quản lý đơn hàng
+-   Quản lý người dùng
+-   Quản lý danh mục
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## Ngôn ngữ và framework
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-   Client: ReactJS, Nextjs, Typescript, Zustand, Material UI, Axios, React Hook Form,
+-   Server: Java, Spring Boot,...
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Link Backend
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+-   [Backend](https://github.com/khanh1902/shoppingcart)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Giao diện
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+![Trang chủ]('../../images/Picture4.png')
 
-## Learn More
+![Đăng nhập]('../../images/Picture1.png')
 
-To learn more about Next.js, take a look at the following resources:
+![Đăng kí]('../../images/Picture2.png')
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![Quên mật khẩu]('../../images/Picture3.png')
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+![Danh sách sản phẩm]('../../images/Picture5.png')
 
-## Deploy on Vercel
+![Giỏ hàng]('../../images/Picture6.png')
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+![Thanh toán]('../../images/Picture7.png')
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![Thông tin người dùng]('../../images/Picture8.png')
+
+![Admin]('../../images/Picture9.png')
+
+![Quản lý sản phẩm]('../../images/Picture10.png')
