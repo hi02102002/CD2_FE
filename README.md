@@ -33,22 +33,22 @@
 
 ## Giao diện
 
-![Trang chủ](../../images/Picture4.png)
+![Trang chủ](images/Picture4.png)
 
-![Đăng nhập](../../images/Picture1.png)
+![Đăng nhập](images/Picture1.png)
 
-![Đăng kí](../../images/Picture2.png)
+![Đăng kí](images/Picture2.png)
 
-![Quên mật khẩu](../../images/Picture3.png)
+![Quên mật khẩu](images/Picture3.png)
 
-![Danh sách sản phẩm](../../images/Picture5.png)
+![Danh sách sản phẩm](images/Picture5.png)
 
-![Giỏ hàng](../../images/Picture6.png)
+![Giỏ hàng](images/Picture6.png)
 
-![Thanh toán](../../images/Picture7.png)
+![Thanh toán](images/Picture7.png)
 
-![Thông tin người dùng](../../images/Picture8.png)
+![Thông tin người dùng](images/Picture8.png)
 
-![Admin](../../images/Picture9.png)
+![Admin](images/Picture9.png)
 
-![Quản lý sản phẩm](../../images/Picture10.png)
+![Quản lý sản phẩm](images/Picture10.png)
